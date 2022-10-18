@@ -1,0 +1,210 @@
+<template>
+  <div class="record-list">
+    <div>
+      <van-cell title="发票日期" :value="state.date" @click="state.showCalendar = true" center>
+        <template #right-icon>
+          <van-icon v-if="state.showDown" name="arrow-down" />
+          <van-icon v-if="state.showCross" name="cross" @click.stop="clearDate" />
+        </template>
+      </van-cell>
+      <van-calendar
+        v-model:show="state.showCalendar"
+        type="range"
+        color="#1989fa"
+        :min-date="state.minDate"
+        @confirm="onConfirm"
+      />
+    </div>
+    <div v-if="state.empty">
+      <van-empty image="search" description="暂时还没有开票记录" />
+    </div>
+    <van-list
+      v-else
+      v-model:loading="state.loading"
+      :finished="state.finished"
+      finished-text="没有更多数据了"
+      @load="loadMore"
+    >
+      <div
+        class="record-list_item"
+        v-for="(item, index) in state.invoiceList"
+        :key="index"
+        @click="gotoDetail(item.invoiceId)"
+      >
+        <div class="record-list_item_top">
+          <p hidden>{{ item.invoiceId }}</p>
+          <p>
+            <van-tag v-if="item.category === '增值税电子普通发票'" type="danger">电</van-tag>
+            <van-tag v-else-if="item.category === '增值税普通发票'" type="danger">普</van-tag>
+            <van-tag v-else-if="item.category === '增值税专用发票'" type="danger">专</van-tag>
+            <van-tag v-else type="danger">票</van-tag>
+            <span class="status">{{ item.statements }}</span>
+          </p>
+        </div>
+        <div class="record-list_item_bottom">
+          <p class="text">
+            <span>{{ item.purchaserName }}</span>
+          </p>
+          <p class="record-list_item_bottom_time">
+            <span>{{ item.addTime }}</span>
+            <span class="price">￥{{ item.price }}</span>
+          </p>
+        </div>
+      </div>
+    </van-list>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { getRecordListApi } from '@/api/record';
+import moment from 'moment';
+
+const router = useRouter();
+
+const state = shallowReactive({
+  loading: false,
+  empty: false,
+  finished: false,
+  page: {
+    page: 0,
+    size: 10,
+    total: 0,
+  },
+  startAddTime: '',
+  endAddTime: '',
+  invoiceList: [],
+  date: '',
+  showCalendar: false,
+  showDown: true,
+  showCross: false,
+  minDate: new Date(2000, 0, 1),
+});
+
+/**
+ * 获取发票类型
+ */
+const getRecordList = () => {
+  state.loading = true;
+  let params = {
+    size: state.page.size,
+    page: state.page.page,
+    startAddTime: state.startAddTime,
+    endAddTime: state.endAddTime,
+  };
+  getRecordListApi(params).then(res => {
+    state.loading = false;
+    if (res.code === 1) {
+      let data = res.content;
+      state.page.total = res.totalPages;
+      state.invoiceList = state.invoiceList.concat(data);
+    } else {
+      state.empty = true;
+      state.invoiceList = [];
+    }
+  });
+};
+
+/**
+ * 上拉加载
+ */
+const loadMore = () => {
+  if (state.page.total !== 0 && state.page.page > 0 && state.page.page >= state.page.total) {
+    state.finished = true;
+    return;
+  }
+  getRecordList();
+  state.page.page++;
+};
+
+/**
+ * 跳转详情
+ */
+const gotoDetail = id => {
+  router.push({ path: '/invoice/detail', query: { id: id } });
+};
+
+const formatDate = date => {
+  return `${date.getYear() + 1900}/${date.getMonth() + 1}/${date.getDate()}`;
+};
+
+const onConfirm = date => {
+  const [start, end] = date;
+  state.showCalendar = false;
+  state.date = `${formatDate(start)} - ${formatDate(end)}`;
+  state.startAddTime = moment(date[0]).format('YYYY-MM-DD 00:00:00');
+  state.endAddTime = moment(date[1]).format('YYYY-MM-DD 23:59:59');
+  state.page.page = 0;
+  state.page.page = 0;
+  state.invoiceList = [];
+  state.empty = false;
+  state.showDown = false;
+  state.showCross = true;
+  state.finished = false;
+  getRecordList();
+};
+
+const clearDate = () => {
+  state.date = '';
+  state.startAddTime = '';
+  state.endAddTime = '';
+  state.page.page = 0;
+  state.invoiceList = [];
+  state.empty = false;
+  state.showDown = true;
+  state.showCross = false;
+  state.finished = false;
+};
+</script>
+
+<style lang="less">
+.record-list {
+  .van-cell__value {
+    min-width: 60%;
+    margin-right: 8px;
+    span {
+      display: inline-block;
+      text-align: left;
+      word-break: break-all;
+    }
+  }
+}
+</style>
+<style lang="less" scoped>
+.record-list {
+  padding: 15px 20px 0px 20px;
+
+  .record-list_item {
+    background: url('@/assets/images/record-bg.png') no-repeat center;
+    background-size: 100% 100%;
+    padding: 15px 24px 20px;
+    margin-top: 10px;
+
+    .record-list_item_top {
+      .status {
+        color: #1989fa;
+        float: right;
+      }
+    }
+
+    .record-list_item_bottom {
+      margin-top: 30px;
+
+      .text {
+        color: #333;
+        font-size: 14px;
+      }
+
+      .record-list_item_bottom_time {
+        margin-top: 10px;
+        color: #666;
+        font-size: 12px;
+      }
+
+      .price {
+        color: #ff4848;
+        float: right;
+      }
+    }
+  }
+}
+</style>
