@@ -61,7 +61,7 @@ import moment from 'moment';
 
 const router = useRouter();
 
-const state = shallowReactive({
+const state = reactive({
   loading: false,
   empty: false,
   finished: false,

@@ -16,12 +16,12 @@
       <van-cell
         title="抬头管理"
         is-link
-        :to="{ path: '/company/', params: { from: state.index } }"
+        :to="{ path: '/company/list', params: { from: state.index } }"
       />
       <van-cell
         title="地址管理"
         is-link
-        :to="{ path: '/address/', params: { from: state.index } }"
+        :to="{ path: '/address/list', params: { from: state.index } }"
       />
     </van-cell-group>
     <div class="remark">如果无法提交开票申请，请联系客服13656171020</div>
@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-// import { showLoadingToast } from 'vant';
+import { showLoadingToast, closeToast } from 'vant';
 import { localStorage } from '@/utils/local-storage';
 import { getShopApi } from '@/api/shop';
 import { findSettingApi } from '@/api/setting';
@@ -90,9 +90,9 @@ const getOrderTypeList = () => {
   getOrderTypeListApi().then(res => {
     if (res.code === 1) {
       state.orderTypeList = res.content;
-      // setTimeout(function () {
-      //   Toast.clear();
-      // }, 1500);
+      setTimeout(function () {
+        closeToast();
+      }, 1000);
     }
   });
 };
@@ -123,11 +123,11 @@ const findSetting = () => {
 
 onMounted(() => {
   initialization();
-  // showLoadingToast({
-  //   overlay: true,
-  //   message: '加载中...',
-  //   forbidClick: true,
-  // });
+  showLoadingToast({
+    duration: 0,
+    message: '加载中...',
+    forbidClick: true,
+  });
   getShop();
   getOrderTypeList();
   setTimeout(() => {

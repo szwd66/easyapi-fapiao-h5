@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="invoice-detail">
     <van-cell-group @click="viewPicture" inset>
       <van-cell
         :title="state.invoiceDetail.category + '（' + state.invoiceDetail.statements + '）'"
@@ -33,6 +33,8 @@
       <van-field label="电子邮件" v-model="state.invoiceDetail.email" />
       <van-field label="手机号码" v-model="state.invoiceDetail.addrMobile" />
       <van-cell
+        @click="goAssociatedOrder"
+        v-if="state.outOrderCount > 0"
         :title="'1张发票，含' + state.outOrderCount + '个订单'"
         :label="state.invoiceDetail.updateTime"
         is-link
@@ -74,13 +76,14 @@
 </template>
 
 <script setup lang="ts">
+import { showToast, showLoadingToast, closeToast } from 'vant';
 import { getInvoiceApi } from '@/api/invoice';
 import { getOutOrderCountApi } from '@/api/out-order';
 
 const route = useRoute();
 const router = useRouter();
 
-const state = shallowReactive({
+const state = reactive({
   outOrderCount: 0,
   popupVisible: false,
   invoiceDetail: {
@@ -110,13 +113,13 @@ const viewPicture = () => {
   if (state.invoiceDetail.state === 1) {
     state.popupVisible = true;
   } else if (state.invoiceDetail.state === 2) {
-    // state.$toast('当前发票作废了');
+    showToast('当前发票作废了');
   } else if (state.invoiceDetail.state === 3) {
-    // state.$toast('当前发票退票中');
+    showToast('当前发票退票中');
   } else if (state.invoiceDetail.state === 4) {
-    // state.$toast('正在开票中');
+    showToast('正在开票中');
   } else {
-    // state.$toast('等待后台审核通过');
+    showToast('等待后台审核通过');
   }
 };
 
@@ -138,8 +141,17 @@ const copyLink = () => {
   // });
 };
 
+/**
+ * 获取发票详情
+ */
 const getInvoiceDetail = () => {
+  showLoadingToast({
+    duration: 0,
+    message: '加载中...',
+    forbidClick: true,
+  });
   getInvoiceApi(route.query.id).then(res => {
+    closeToast();
     if (res.code === 1) {
       state.invoiceDetail = res.content;
     }
@@ -162,61 +174,27 @@ onMounted(() => {
   getOutOrderCount();
 });
 </script>
-
-<style scoped>
-.tag {
-  margin-left: 16px;
+<style lang="less">
+.invoice-detail {
+  .van-cell__value {
+    min-width: 60%;
+    text-align: left;
+    span {
+      display: inline-block;
+      word-break: break-all;
+    }
+  }
 }
+</style>
+<style lang="less" scoped>
+.invoice-detail {
+  padding-top: 20px;
 
-.invoiced {
-  margin-top: 60px;
-}
-
-.page-part p {
-  height: 40px;
-  line-height: 40px;
-  margin-left: 10px;
-  color: #666;
-}
-
-.page-part a {
-  border-bottom: 1px solid #f4f4f4;
-}
-
-.bottom {
-  padding: 0 10px;
-  margin-top: 20px;
-}
-
-.bottom .submit {
-  width: 100%;
-  background: #56cbf6;
-  border: none;
-  height: 50px;
-  border-radius: 10px;
-  color: #fff;
-}
-
-.mint-cell-wrapper {
-  background: none !important;
-}
-
-.submit {
-  border: none;
-  height: 40px;
-  border-radius: 5px;
-  color: #fff;
-}
-
-.van-button__text {
-  font-size: 15px;
-  font-weight: 500;
-  /* letter-spacing:2px;
-  text-indent: 2px */
-}
-
-.van-cell__value {
-  min-width: 74%;
-  text-align: left;
+  .submit {
+    border: none;
+    height: 40px;
+    border-radius: 5px;
+    color: #fff;
+  }
 }
 </style>

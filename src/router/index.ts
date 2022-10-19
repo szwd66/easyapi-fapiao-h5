@@ -10,8 +10,10 @@ import error from '@/views/error.vue';
 import rule from '@/views/rule.vue';
 import invoiceRecord from '@/views/invoice/record/index.vue';
 import invoiceDetail from '@/views/invoice/detail/index.vue';
-// import mock from '@/views/mock/index.vue';
-// import charts from '@/views/charts/index.vue';
+import companyList from '@/views/company/list/index.vue';
+import companyEdit from '@/views/company/edit/index.vue';
+import addressList from '@/views/address/list/index.vue';
+import addressEdit from '@/views/address/edit/index.vue';
 
 // 定义路由，每个路由都需要映射到一个组件
 const routes = [
@@ -40,16 +42,26 @@ const routes = [
     name: 'invoiceDetail',
     component: invoiceDetail,
   },
-  // {
-  //   path: '/mock',
-  //   name: 'mock',
-  //   component: mock,
-  // },
-  // {
-  //   path: '/charts',
-  //   name: 'charts',
-  //   component: charts,
-  // },
+  {
+    path: '/company/list',
+    name: 'companyList',
+    component: companyList,
+  },
+  {
+    path: '/company/edit',
+    name: 'companyEdit',
+    component: companyEdit,
+  },
+  {
+    path: '/address/list',
+    name: 'addressList',
+    component: addressList,
+  },
+  {
+    path: '/address/edit',
+    name: 'addressEdit',
+    component: addressEdit,
+  },
 ];
 
 // 创建路由实例并传递 `routes` 配置

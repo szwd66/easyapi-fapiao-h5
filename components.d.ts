@@ -6,6 +6,7 @@ import '@vue/runtime-core'
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Chart: typeof import('./src/components/chart/index.vue')['default']
+    VanArea: typeof import('vant/es')['Area']
     VanButton: typeof import('vant/es')['Button']
     VanCalendar: typeof import('vant/es')['Calendar']
     VanCell: typeof import('vant/es')['Cell']
@@ -15,7 +16,9 @@ declare module '@vue/runtime-core' {
     VanField: typeof import('vant/es')['Field']
     VanIcon: typeof import('vant/es')['Icon']
     VanList: typeof import('vant/es')['List']
+    VanLoading: typeof import('vant/es')['Loading']
     VanPopup: typeof import('vant/es')['Popup']
+    VanSwitch: typeof import('vant/es')['Switch']
     VanTag: typeof import('vant/es')['Tag']
   }
 }
