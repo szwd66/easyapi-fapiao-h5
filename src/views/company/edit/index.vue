@@ -57,7 +57,9 @@
 
     <van-cell-group class="default" inset>
       <van-cell center title="设置为默认抬头">
-        <van-switch v-model="state.companyForm.ifDefault" active-color="#FFC2A8" />
+        <template #right-icon>
+          <van-switch v-model="state.companyForm.ifDefault" active-color="#FFC2A8" />
+        </template>
       </van-cell>
     </van-cell-group>
 

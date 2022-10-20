@@ -31,21 +31,20 @@
 
     <van-cell-group class="default" inset>
       <van-cell center title="设置为默认地址">
-        <van-switch v-model="state.addressForm.ifDefault" active-color="#FFC2A8" />
+        <template #right-icon>
+          <van-switch v-model="state.addressForm.ifDefault" active-color="#FFC2A8" />
+        </template>
       </van-cell>
     </van-cell-group>
 
     <van-popup v-model:show="state.showPopup" position="bottom" :style="{ height: '50%' }">
-      <van-area
-        title="请选择所在地区"
-        :area-list="state.areaList"
-        :columns-placeholder="['请选择', '请选择', '请选择']"
-        @confirm="onAddrConfirm"
-      />
+      <van-area title="请选择所在地区" :area-list="state.areaList" @confirm="onAddrConfirm" />
     </van-popup>
     <div class="bottom fixed-bottom-bgColor">
       <van-button type="primary" class="save" block @click="confirm">保存</van-button>
-      <van-button v-if="route.query.id" class="delete" block @click="deleteData">删除</van-button>
+      <van-button type="danger" v-if="route.query.id" class="delete" block @click="deleteData">
+        删除
+      </van-button>
     </div>
   </div>
 </template>
@@ -54,7 +53,6 @@ import { getAddressApi, createAddressApi, updateAddressApi, deleteAddressApi } f
 import { showToast, showLoadingToast, closeToast, showConfirmDialog } from 'vant';
 import { getAreaListApi } from '@/api/area';
 
-// const router = useRouter();
 const route = useRoute();
 
 const state = reactive({
@@ -66,6 +64,7 @@ const state = reactive({
     name: '',
     mobile: '',
     addr: '',
+    ifDefault: false,
   },
   name: '',
   showPopup: false,
@@ -90,7 +89,6 @@ const getAddress = () => {
 
 const getAreaList = () => {
   getAreaListApi().then(res => {
-    console.log(res);
     if (res.status == 1) {
       let provinces = res.provinces;
       let province_list = {};
@@ -119,8 +117,6 @@ const getAreaList = () => {
   });
 };
 
-// 创建
-
 //删除
 const deleteData = () => {
   showConfirmDialog({
@@ -136,6 +132,7 @@ const deleteData = () => {
 };
 
 const confirm = () => {
+  console.log(state.addressForm, 45645);
   if (
     !state.addressForm.name ||
     !state.addressForm.mobile ||
@@ -143,11 +140,11 @@ const confirm = () => {
     !state.addressForm.addr
   ) {
     showToast('请将信息填写完整！');
+    return;
   }
   showConfirmDialog({
     title: '提示',
     message: '确定提交吗？',
-    showCancelButton: true,
   }).then(() => {
     if (route.query.id) {
       updateAddressApi(route.query.id, state.addressForm).then(res => {
@@ -165,7 +162,6 @@ const confirm = () => {
   });
 };
 const onAddrConfirm = e => {
-  console.log(e, 45645);
   state.addressForm.province = e.selectedOptions[0].text;
   state.addressForm.city = e.selectedOptions[1].text;
   state.addressForm.district = e.selectedOptions[2].text;
@@ -212,5 +208,4 @@ onMounted(() => {
     }
   }
 }
-/* @import '../address.css'; */
 </style>

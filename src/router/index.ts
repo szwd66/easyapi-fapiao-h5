@@ -14,6 +14,7 @@ import companyList from '@/views/company/list/index.vue';
 import companyEdit from '@/views/company/edit/index.vue';
 import addressList from '@/views/address/list/index.vue';
 import addressEdit from '@/views/address/edit/index.vue';
+import makeProduct from '@/views/make/product/index.vue';
 
 // 定义路由，每个路由都需要映射到一个组件
 const routes = [
@@ -61,6 +62,11 @@ const routes = [
     path: '/address/edit',
     name: 'addressEdit',
     component: addressEdit,
+  },
+  {
+    path: '/make/product',
+    name: 'makeProduct',
+    component: makeProduct,
   },
 ];
 

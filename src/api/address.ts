@@ -37,7 +37,6 @@ export async function getAddressApi(id): Promise<any> {
 
 export async function createAddressApi(data): Promise<any> {
   data.accessToken = localStorage.get('accessToken');
-  data.ifDefault = true;
   return request.post(`/address`, data);
 }
 
@@ -49,7 +48,6 @@ export async function createAddressApi(data): Promise<any> {
 
 export async function updateAddressApi(id, data): Promise<any> {
   data.accessToken = localStorage.get('accessToken');
-  data.ifDefault = true;
   return request.put(`/address/${id}`, data);
 }
 

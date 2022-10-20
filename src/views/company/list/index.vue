@@ -1,8 +1,11 @@
 <template>
-  <div class="company">
-    <div class="company-list">
+  <div class="company" v-if="!state.loading">
+    <div v-if="state.companyList.length == 0">
+      <van-empty image="search" description="暂无数据" />
+    </div>
+    <div class="company-list" v-else>
       <div class="company-list-item" v-for="(item, index) in state.companyList" :key="index">
-        <div class="address-top fixed-bottom-bgColor">
+        <div class="company-top fixed-bottom-bgColor">
           <span class="rise-text">{{ item.name }}</span>
           <van-tag plain type="warning" size="medium" v-if="item.ifDefault">默认</van-tag>
           <span class="edit" @click="gotoEditCompany(item.companyId)">编辑</span>
@@ -17,7 +20,7 @@
       </div>
     </div>
     <div class="bottom fixed-bottom-bgColor">
-      <van-button type="primary" class="sumbit" block @click="gotoEditCompany('')">
+      <van-button type="primary" class="sumbit" block @click="gotoEditCompany()">
         新增抬头
       </van-button>
     </div>
@@ -94,7 +97,7 @@ onMounted(() => {
       margin-top: 15px;
       overflow: hidden;
 
-      .address-top {
+      .company-top {
         border-bottom: 1px solid #f4f4f4;
         height: 40px;
         line-height: 40px;

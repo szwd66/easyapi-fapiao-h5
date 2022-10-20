@@ -35,7 +35,6 @@ export async function getCompanyApi(id): Promise<any> {
  */
 export async function createCompanyApi(data): Promise<any> {
   data.accessToken = localStorage.get('accessToken');
-  data.ifDefault = true;
   return request.post(`/company`, data);
 }
 
@@ -47,7 +46,6 @@ export async function createCompanyApi(data): Promise<any> {
 
 export async function updateCompanyApi(id, data): Promise<any> {
   data.accessToken = localStorage.get('accessToken');
-  data.ifDefault = true;
   return request.put(`/company/${id}`, data);
 }
 
