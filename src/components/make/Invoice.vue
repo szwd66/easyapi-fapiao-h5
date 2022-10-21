@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="nav" style="margin-top: 10px">
-      <p>请选择发票类型</p>
-      <van-row type="flex" justify="space-between" class="invoice-type">
-        <van-col span="12" v-show="state.ifElectronic">
+    <div class="invoice-type">
+      <p class="title">请选择发票类型</p>
+      <van-row justify="space-between" class="invoice-type-list">
+        <van-col span="12" v-if="props.ifElectronic">
           <div
             :class="{
               'invoice-type_blue_box': state.childInvoiceForm.property === '电子',
@@ -16,7 +16,7 @@
             <p style="font-size: 12px; margin-top: 6px">{{ state.electronicInvoiceMakeTime }}</p>
           </div>
         </van-col>
-        <van-col span="12" v-show="props.ifPaper === 'true'">
+        <van-col span="12" v-if="props.ifPaper">
           <div
             :class="{
               'invoice-type_blue_box': state.childInvoiceForm.property === '纸质',
@@ -31,100 +31,88 @@
         </van-col>
       </van-row>
     </div>
-    <div class="page-part invoice-con">
-      <p>发票详情</p>
-      <form action="" id="formBox" ref="childInvoiceForm" :model="state.childInvoiceForm">
-        <van-cell title="抬头类型" center required>
-          <van-radio-group
-            class="van-radio-group_type"
-            v-model="state.childInvoiceForm.type"
-            direction="horizontal"
-            @change="selectInvoiceType"
-          >
-            <van-radio name="企业">企业</van-radio>
-            <van-radio name="个人">个人/事业单位</van-radio>
-          </van-radio-group>
-        </van-cell>
-        <van-cell title="发票类型" center v-show="state.childInvoiceForm.property === '纸质'">
-          <van-radio-group
-            class="van-radio-group_type"
-            v-model="state.childInvoiceForm.category"
-            direction="horizontal"
-          >
-            <van-radio style="margin-bottom: 5px" name="增值税普通发票">增值税普通发票</van-radio>
-            <van-radio name="增值税专用发票" v-if="state.childInvoiceForm.type === '企业'">
-              增值税专用发票
-            </van-radio>
-          </van-radio-group>
-        </van-cell>
+
+    <van-cell-group title="发票详情" inset>
+      <van-cell title="抬头类型" required>
+        <van-radio-group
+          v-model="state.childInvoiceForm.type"
+          direction="horizontal"
+          @change="selectInvoiceType"
+        >
+          <van-radio name="企业">企业</van-radio>
+          <van-radio name="个人">个人/事业单位</van-radio>
+        </van-radio-group>
+      </van-cell>
+      <van-cell title="发票类型" v-if="state.childInvoiceForm.property === '纸质'">
+        <van-radio-group v-model="state.childInvoiceForm.category" direction="horizontal">
+          <van-radio style="margin-bottom: 5px" name="增值税普通发票">增值税普通发票</van-radio>
+          <van-radio name="增值税专用发票" v-if="state.childInvoiceForm.type === '企业'">
+            增值税专用发票
+          </van-radio>
+        </van-radio-group>
+      </van-cell>
+      <van-field
+        label="发票抬头"
+        v-if="state.childInvoiceForm.type === '个人'"
+        placeholder="请输入姓名/事业单位"
+        v-model="state.childInvoiceForm.purchaserName"
+        required
+      />
+      <van-field
+        label="发票抬头"
+        readonly
+        v-if="state.childInvoiceForm.type === '企业'"
+        @click="gotoCompany"
+        right-icon="arrow"
+        placeholder="请选择发票抬头"
+        v-model="state.childCompany.name"
+        required
+      />
+      <van-field
+        label="税号"
+        readonly
+        v-if="state.childInvoiceForm.type === '企业'"
+        v-model="state.childCompany.taxNumber"
+        required
+      />
+      <van-field
+        label="更多"
+        right-icon="arrow-down"
+        v-if="state.childInvoiceForm.type === '企业'"
+        @click="purchaserMore"
+        v-show="state.hide"
+        readonly
+        placeholder="地址、电话、开户行等"
+      />
+      <div v-if="state.show">
         <van-field
-          label="发票抬头"
-          v-if="state.childInvoiceForm.type === '个人'"
-          placeholder="请输入姓名/事业单位"
-          v-model="childInvoiceForm.purchaserName"
-          required
-        />
-        <van-field
-          label="发票抬头"
-          readonly
           v-if="state.childInvoiceForm.type === '企业'"
-          @click="gotoCompany"
-          right-icon="arrow"
-          placeholder="请选择发票抬头"
-          v-model="state.childCompany.name"
-          required
+          @click="purchaserMoreHide"
+          label="地址"
+          readonly
+          v-model="state.childCompany.address"
+          right-icon="arrow-up"
         />
         <van-field
-          label="税号"
-          value=""
-          readonly
           v-if="state.childInvoiceForm.type === '企业'"
-          v-model="state.childCompany.taxNumber"
-          required
+          label="电话"
+          readonly
+          v-model="state.childCompany.phone"
         />
         <van-field
-          label="更多"
-          right-icon="arrow-down"
           v-if="state.childInvoiceForm.type === '企业'"
-          @click="purchaserMore"
-          v-show="state.hide"
+          label="开户行"
           readonly
-          placeholder="地址、电话、开户行等"
+          v-model="state.childCompany.bank"
         />
-        <div v-show="state.show">
-          <van-field
-            v-if="state.childInvoiceForm.type === '企业'"
-            @click="purchaserMoreHide"
-            label="地址"
-            value=""
-            readonly
-            v-model="state.childCompany.address"
-            right-icon="arrow-up"
-          />
-          <van-field
-            v-if="state.childInvoiceForm.type === '企业'"
-            label="电话"
-            value=""
-            readonly
-            v-model="state.childCompany.phone"
-          />
-          <van-field
-            v-if="state.childInvoiceForm.type === '企业'"
-            label="开户行"
-            value=""
-            readonly
-            v-model="state.childCompany.bank"
-          />
-          <van-field
-            v-if="state.childInvoiceForm.type === '企业'"
-            label="银行账号"
-            value=""
-            readonly
-            v-model="state.childCompany.bankAccount"
-          />
-        </div>
-      </form>
-    </div>
+        <van-field
+          v-if="state.childInvoiceForm.type === '企业'"
+          label="银行账号"
+          readonly
+          v-model="state.childCompany.bankAccount"
+        />
+      </div>
+    </van-cell-group>
   </div>
 </template>
 
@@ -227,6 +215,7 @@ const gotoCompany = () => {
     },
   });
 };
+
 /**
  * 购买方更多信息
  */
@@ -234,6 +223,7 @@ const purchaserMore = () => {
   state.show = true;
   state.hide = false;
 };
+
 /**
  * 隐藏购买方更多信息
  */
@@ -241,6 +231,7 @@ const purchaserMoreHide = () => {
   state.show = false;
   state.hide = true;
 };
+
 const getDefaultCompany = () => {
   getDefaultCompanyApi().then(res => {
     if (res.code === 1) {
@@ -256,6 +247,7 @@ const getDefaultCompany = () => {
     }
   });
 };
+
 const getDefaultAddress = () => {
   getDefaultAddressApi().then(res => {
     if (res.code === 1) {
@@ -264,6 +256,7 @@ const getDefaultAddress = () => {
     }
   });
 };
+
 /**
  * 获取电子发票文案说明
  */
@@ -281,31 +274,40 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .invoice-type {
-  height: 70px;
-  text-align: center;
-  background: #fff;
-  padding: 20px 10px;
-}
+  padding: 0 15px;
 
-.invoice-type_blue_box {
-  box-sizing: border-box;
-  padding: 17px 0;
-  font-size: 15px;
-  height: 70px;
-  border: 1px solid #1989fa;
-  color: #1989fa;
-  border-radius: 4px;
-}
+  .title {
+    padding: 15px 0;
+    color: #969799;
+  }
 
-.invoice-type_gray_box {
-  box-sizing: border-box;
-  padding: 17px 0;
-  font-size: 15px;
-  height: 70px;
-  border: 1px solid #999;
-  color: #999;
-  border-radius: 4px;
+  .invoice-type-list {
+    text-align: center;
+    background: #fff;
+    padding: 20px 10px;
+    border-radius: 8px;
+  }
+
+  .invoice-type_blue_box {
+    box-sizing: border-box;
+    padding: 17px 0;
+    font-size: 15px;
+    height: 70px;
+    border: 1px solid #1989fa;
+    color: #1989fa;
+    border-radius: 4px;
+  }
+
+  .invoice-type_gray_box {
+    box-sizing: border-box;
+    padding: 17px 0;
+    font-size: 15px;
+    height: 70px;
+    border: 1px solid #999;
+    color: #999;
+    border-radius: 4px;
+  }
 }
 </style>

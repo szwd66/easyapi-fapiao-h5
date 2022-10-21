@@ -1,7 +1,6 @@
 <template>
   <div>
-    <div class="page-part" style="margin-bottom: 60px" v-if="props.ifElectronic">
-      <p>接收方式</p>
+    <van-cell-group title="接收方式" inset v-if="props.ifElectronic">
       <van-field v-if="!ifNeedEmail" label="电子邮箱" v-model="state.childForm.email"></van-field>
       <van-field
         v-if="props.ifNeedEmail"
@@ -22,9 +21,9 @@
         maxlength="11"
         required
       ></van-field>
-    </div>
-    <div class="page-part" style="margin-bottom: 60px" v-if="!props.ifElectronic">
-      <p>接收方式</p>
+    </van-cell-group>
+
+    <van-cell-group title="接收方式" inset v-if="!props.ifElectronic">
       <van-field
         right-icon="arrow"
         label="收件人"
@@ -43,7 +42,8 @@
         "
         readonly
       ></van-cell>
-    </div>
+    </van-cell-group>
+
     <div class="page-part" style="margin-bottom: 60px" v-if="!props.ifElectronic">
       <p>开票金额不足200元，需支付邮费</p>
     </div>
@@ -134,18 +134,4 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
-.page-part .van-cell__title {
-  width: 6.2em;
-  flex: none;
-}
-
-.page-part .van-cell__value {
-  flex: 3;
-  text-align: left;
-}
-
-.van-cell__value {
-  min-width: 74%;
-}
-</style>
+<style lang="less" scoped></style>
