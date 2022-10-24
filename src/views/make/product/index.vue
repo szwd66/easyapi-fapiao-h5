@@ -25,10 +25,10 @@
         </ul>
         <van-cell class="line" />
         <ul class="product-content" v-for="(product, index) in state.productList" :key="index">
-          <li style="width: 35%; line-height: 15px; padding-top: 12px">
+          <li style="width: 30%">
             {{ product.name }}
           </li>
-          <li style="width: 35%; line-height: 15px; padding-top: 12px">
+          <li style="width: 30%">
             {{ product.specification }}
           </li>
           <li>{{ product.unit }}</li>
@@ -36,7 +36,7 @@
           <li>{{ product.price }}</li>
           <li style="color: #1989fa" @click="deleteProduct(product.productId)">删除</li>
         </ul>
-        <!-- <van-cell class="line" /> -->
+        <van-cell class="line" />
         <div class="btn">
           <van-button class="submit-btn" @click="showProductSearchPopup">+添加发票内容</van-button>
         </div>
@@ -78,37 +78,35 @@
         @input="onProductSearch"
       />
       <van-list :finished="true" finished-text="没有更多了">
-        <van-radio-group>
-          <van-cell v-for="item in state.productListAll" :key="item.productId">
-            <van-row type="flex" align="center">
-              <van-col span="6">
-                <van-image width="60" height="60" :src="item.img" />
-              </van-col>
-              <van-col span="11">
-                <span style="display: block">{{ item.name }}</span>
-                <span style="display: block; font-size: 12px; color: #888">
-                  {{ item.specification }}
-                </span>
-                <span>￥</span>
-                <input
-                  style="width: 40px; text-align: center; border: none"
-                  v-model="item.price"
-                  @change="calcTotalPrice"
-                />
-                <span>元 / {{ item.unit }}</span>
-              </van-col>
-              <van-col span="7">
-                <van-stepper
-                  v-model="item.number"
-                  integer
-                  min="0"
-                  default-value="0"
-                  @change="calcTotalPrice"
-                />
-              </van-col>
-            </van-row>
-          </van-cell>
-        </van-radio-group>
+        <van-cell v-for="item in state.productListAll" :key="item.productId">
+          <van-row type="flex" align="center">
+            <van-col span="6">
+              <van-image width="60" height="60" :src="item.img" />
+            </van-col>
+            <van-col span="11">
+              <div>{{ item.name }}</div>
+              <div>
+                {{ item.specification }}
+              </div>
+              <span>￥</span>
+              <input
+                style="width: 40px; text-align: center; border: none"
+                v-model="item.price"
+                @change="calcTotalPrice"
+              />
+              <span>元 / {{ item.unit }}</span>
+            </van-col>
+            <van-col span="7">
+              <van-stepper
+                v-model="item.number"
+                integer
+                min="0"
+                default-value="0"
+                @change="calcTotalPrice"
+              />
+            </van-col>
+          </van-row>
+        </van-cell>
       </van-list>
       <van-submit-bar
         :price="state.productPrice * 100"
@@ -128,7 +126,7 @@ import makeMixins from '../mixins/make';
 import { localStorage } from '@/utils/local-storage';
 import { showToast, showLoadingToast, closeToast, showConfirmDialog } from 'vant';
 
-let { common, getInvoiceRemark, ifNeedMobileEmail, checkEmailMobile } = makeMixins();
+const { common, getInvoiceRemark, ifNeedMobileEmail, checkEmailMobile } = makeMixins();
 
 const router = useRouter();
 
@@ -170,6 +168,7 @@ const state = reactive({
 
 /** 计算发票金额 */
 const calcAmount = () => {
+  console.log(state.productList);
   let money = 0;
   if (state.productList !== null) {
     for (let i = 0; i < state.productList.length; i++) {
@@ -214,7 +213,9 @@ const appendProduct = () => {
         name: state.productListAll[i].name,
         number: state.productListAll[i].number,
       };
-      let oldList = JSON.parse(localStorage.get('productList')) || [];
+      let oldList = localStorage.get('productList')
+        ? JSON.parse(localStorage.get('productList'))
+        : [];
       oldList.push(obj);
       localStorage.set('productList', JSON.stringify(oldList));
       state.productList = JSON.parse(localStorage.get('productList'));
@@ -267,45 +268,46 @@ const makeInvoice = () => {
   if (state.productList === null) {
     return showToast('商品服务不能为空');
   }
-  checkEmailMobile();
+  checkEmailMobile(state.invoiceForm);
   if (!common.ifCheckEmailMobile) {
     return;
   }
   showConfirmDialog({
     title: '提示',
     message: '确认抬头正确并开票吗？',
-  }).then(() => {
-    showLoadingToast({
-      message: '开票中...',
-      forbidClick: true,
-      duration: 0,
-    });
-    state.invoiceForm.companyId = state.company.companyId;
-    state.invoiceForm.products = state.productList;
-    productMakeInvoiceApi(state.invoiceForm).then(res => {
-      closeToast();
-      if (res.code === 1) {
-        router.push({ path: '/make/success' });
-        return;
-      } else {
-        showToast(res.message);
-      }
-    });
-  });
-  localStorage.remove('productList');
+  })
+    .then(() => {
+      showLoadingToast({
+        message: '开票中...',
+        forbidClick: true,
+        duration: 0,
+      });
+      state.invoiceForm.companyId = state.company.companyId;
+      state.invoiceForm.products = state.productList;
+      productMakeInvoiceApi(state.invoiceForm).then(res => {
+        closeToast();
+        if (res.code === 1) {
+          router.push({ path: '/make/success' });
+        } else {
+          showToast(res.message);
+        }
+      });
+      localStorage.remove('productList');
+    })
+    .catch(() => {});
 };
 
 onMounted(() => {
-  getProductList({});
-  calcAmount();
-  getInvoiceRemark();
-  ifNeedMobileEmail();
   state.productList = localStorage.get('productList')
     ? JSON.parse(localStorage.get('productList'))
     : [];
   if (localStorage.get('type')) {
     state.invoiceForm.type = localStorage.get('type');
   }
+  getProductList({});
+  calcAmount();
+  getInvoiceRemark();
+  ifNeedMobileEmail();
 });
 </script>
 
@@ -317,6 +319,16 @@ onMounted(() => {
 
   .merge-order_price .van-field__control {
     color: red;
+  }
+
+  .line {
+    padding: 1px;
+  }
+}
+
+.popupClass {
+  .van-cell__value {
+    text-align: left;
   }
 }
 </style>

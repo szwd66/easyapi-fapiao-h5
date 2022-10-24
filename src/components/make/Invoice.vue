@@ -207,12 +207,7 @@ const selectInvoiceType = () => {
  */
 const gotoCompany = () => {
   router.push({
-    path: '/company/',
-    name: 'Company',
-    params: {
-      id: state.childCompany ? state.childCompany.companyId : '',
-      from: 'make',
-    },
+    path: '/company/list',
   });
 };
 

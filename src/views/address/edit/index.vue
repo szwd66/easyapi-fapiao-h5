@@ -132,7 +132,6 @@ const deleteData = () => {
 };
 
 const confirm = () => {
-  console.log(state.addressForm, 45645);
   if (
     !state.addressForm.name ||
     !state.addressForm.mobile ||

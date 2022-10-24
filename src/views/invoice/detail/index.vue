@@ -177,7 +177,7 @@ onMounted(() => {
 <style lang="less">
 .invoice-detail {
   .van-cell__value {
-    min-width: 60%;
+    min-width: 70%;
     text-align: left;
     span {
       display: inline-block;

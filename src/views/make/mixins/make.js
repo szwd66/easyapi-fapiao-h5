@@ -5,7 +5,6 @@ import { findSettingApi } from '@/api/setting';
 import { showToast } from 'vant';
 import { validEmail, validMobile } from '@/utils/validate';
 import { reactive } from 'vue';
-import { localStorage } from '@/utils/local-storage';
 
 export default function () {
   const common = reactive({
@@ -13,26 +12,17 @@ export default function () {
     ifNeedMobile: false, //手机号码是否必填
     ifNeedEmail: false, //邮箱是否必填
     ifCheckEmailMobile: true, //邮箱和手机是否效验通过
-    invoiceForm: {
-      email: '',
-      addrMobile: '',
-      remark: '',
-    },
   });
 
   /**
    * 获取发票备注填写说明
    */
   const getInvoiceRemark = () => {
-    if (localStorage.get('invoiceForm')) {
-      common.invoiceForm.remark = JSON.parse(localStorage.get('invoiceForm')).remark;
-    } else {
-      findSettingApi({ fieldKeys: 'make-placeholder-remark' }).then(res => {
-        if (res.code === 1) {
-          common.remarkPlaceholder = res.content[0].fieldValue;
-        }
-      });
-    }
+    findSettingApi({ fieldKeys: 'make-placeholder-remark' }).then(res => {
+      if (res.code === 1) {
+        common.remarkPlaceholder = res.content[0].fieldValue;
+      }
+    });
   };
 
   /**
@@ -57,19 +47,19 @@ export default function () {
   /**
    * 检查邮箱和手机号码
    */
-  const checkEmailMobile = () => {
+  const checkEmailMobile = data => {
     //验证邮箱
     if (common.ifNeedEmail === true) {
-      if (common.invoiceForm.email === '') {
+      if (data.email === '') {
         showToast('请输入邮箱');
         common.ifCheckEmailMobile = false;
-      } else if (!validEmail(common.invoiceForm.email)) {
+      } else if (!validEmail(data.email)) {
         showToast('邮箱格式不正确');
         common.ifCheckEmailMobile = false;
       }
     } else {
-      if (common.invoiceForm.email) {
-        if (!validEmail(common.invoiceForm.email)) {
+      if (data.email) {
+        if (!validEmail(data.email)) {
           showToast('邮箱格式不正确');
           common.ifCheckEmailMobile = false;
         }
@@ -77,18 +67,18 @@ export default function () {
     }
     //手机号验证
     if (common.ifNeedMobile === true) {
-      if (common.invoiceForm.addrMobile === '') {
+      if (data.addrMobile === '') {
         showToast('请输入手机号码');
         common.ifCheckEmailMobile = false;
-      } else if (!validMobile(common.invoiceForm.addrMobile)) {
+      } else if (!validMobile(data.addrMobile)) {
         showToast('手机号码格式不正确');
         common.ifCheckEmailMobile = false;
       } else {
         common.ifCheckEmailMobile = true;
       }
     } else {
-      if (common.invoiceForm.addrMobile) {
-        if (!validMobile(common.invoiceForm.addrMobile)) {
+      if (data.addrMobile) {
+        if (!validMobile(data.addrMobile)) {
           showToast('手机号码格式不正确');
           common.ifCheckEmailMobile = false;
         } else {
