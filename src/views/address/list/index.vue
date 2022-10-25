@@ -1,4 +1,5 @@
 <template>
+  <Header headerTitle="地址管理" v-if="store.ifShowH5NavBar"></Header>
   <div class="address" v-if="!state.loading">
     <div v-if="state.addressList.length == 0">
       <van-empty image="search" description="暂无数据" />
@@ -29,8 +30,11 @@
 </template>
 
 <script setup lang="ts">
+import { Header } from '@/components';
 import { getAddressListApi, defaultAddressApi } from '@/api/address';
 import { showLoadingToast, closeToast } from 'vant';
+import { useStore } from '@/stores';
+const store = useStore();
 
 const router = useRouter();
 

@@ -1,4 +1,5 @@
 <template>
+  <Header headerTitle="开票记录" v-if="store.ifShowH5NavBar"></Header>
   <div class="record-list">
     <div>
       <van-cell title="发票日期" :value="state.date" @click="state.showCalendar = true" center>
@@ -56,9 +57,11 @@
 </template>
 
 <script setup lang="ts">
+import { Header } from '@/components';
 import { getRecordListApi } from '@/api/record';
 import moment from 'moment';
-
+import { useStore } from '@/stores';
+const store = useStore();
 const router = useRouter();
 
 const state = reactive({

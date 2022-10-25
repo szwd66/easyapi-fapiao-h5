@@ -4,7 +4,7 @@
       <van-cell
         v-for="type in state.orderTypeList"
         :key="type.orderTypeId"
-        :value="type.name"
+        :title="type.name"
         is-link
         :to="{ path: '/out-order', query: { type: type.name } }"
         size="large"

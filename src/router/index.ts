@@ -10,6 +10,7 @@ import error from '@/views/error.vue';
 import rule from '@/views/rule.vue';
 import invoiceRecord from '@/views/invoice/record/index.vue';
 import invoiceDetail from '@/views/invoice/detail/index.vue';
+import invoiceOutOrder from '@/views/invoice/out-order/index.vue';
 import companyList from '@/views/company/list/index.vue';
 import companyEdit from '@/views/company/edit/index.vue';
 import addressList from '@/views/address/list/index.vue';
@@ -18,6 +19,9 @@ import makeProduct from '@/views/make/product/index.vue';
 import makeSuccess from '@/views/make/success.vue';
 import makeCategory from '@/views/make/category/index.vue';
 import makeMergeOrder from '@/views/make/merge/merge-order.vue';
+import makeSingleOrder from '@/views/make/single/index.vue';
+import makeSingleQuery from '@/views/make/single-query/index.vue';
+import singleOrderSuccess from '@/views/make/single-order-success.vue';
 
 // 定义路由，每个路由都需要映射到一个组件
 const routes = [
@@ -45,6 +49,11 @@ const routes = [
     path: '/invoice/detail',
     name: 'invoiceDetail',
     component: invoiceDetail,
+  },
+  {
+    path: '/invoice/out-order',
+    name: 'invoiceOutOrder',
+    component: invoiceOutOrder,
   },
   {
     path: '/company/list',
@@ -77,6 +86,11 @@ const routes = [
     component: makeSuccess,
   },
   {
+    path: '/make/single-order-success',
+    name: 'singleOrderSuccess',
+    component: singleOrderSuccess,
+  },
+  {
     path: '/make/category',
     name: 'makeCategory',
     component: makeCategory,
@@ -85,6 +99,16 @@ const routes = [
     path: '/make/merge-order',
     name: 'makeMergeOrder',
     component: makeMergeOrder,
+  },
+  {
+    path: '/make/single-order',
+    name: 'makeSingleOrder',
+    component: makeSingleOrder,
+  },
+  {
+    path: '/make/single-query',
+    name: 'makeSingleQuery',
+    component: makeSingleQuery,
   },
 ];
 

@@ -1,4 +1,5 @@
 <template>
+  <Header headerTitle="发票详情" v-if="store.ifShowH5NavBar"></Header>
   <div class="invoice-detail">
     <van-cell-group @click="viewPicture" inset>
       <van-cell
@@ -53,33 +54,36 @@
       <van-field label="手机号码" readonly></van-field>
     </van-cell-group>
 
-    <van-popup v-model="state.popupVisible" style="padding: 30px" align="center">
-      <p style="fontsize: 17px">发票预览</p>
+    <van-popup v-model:show="state.popupVisible" style="padding: 30px" align="center">
+      <p style="font-size: 18px; margin-bottom: 20px">发票预览</p>
       <img :src="state.invoiceDetail.electronicInvoiceImg" alt="" style="width: 350px" />
       <div style="margin-bottom: 20px">
         <van-button
-          type="info"
+          type="primary"
           data-clipboard-action="copy"
           class="copyPdfUrl submit"
-          :data-clipboard-text="state.invoiceDetail.url"
+          :data-clipboard-text="state.invoiceDetail.electronicInvoiceUrl"
           @click="copyLink"
         >
           复制发票下载地址
         </van-button>
       </div>
-      <div style="width: 200px; font-size: 12px">
-        <textarea :value="url" style="width: 300px" />
+      <div style="width: 300px; font-size: 12px">
+        <textarea :value="state.invoiceDetail.electronicInvoiceUrl" style="width: 300px" />
       </div>
-      <p style="margin-top: 7px">复制发票下载地址并在浏览器中打开进行下载</p>
+      <p style="margin-top: 20px">复制发票下载地址并在浏览器中打开进行下载</p>
     </van-popup>
   </div>
 </template>
 
 <script setup lang="ts">
+import { Header } from '@/components';
 import { showToast, showLoadingToast, closeToast } from 'vant';
 import { getInvoiceApi } from '@/api/invoice';
 import { getOutOrderCountApi } from '@/api/out-order';
-
+import { useStore } from '@/stores';
+import clipboard from 'clipboard';
+const store = useStore();
 const route = useRoute();
 const router = useRouter();
 
@@ -131,14 +135,13 @@ const goAssociatedOrder = () => {
 };
 
 const copyLink = () => {
-  // let that = this;
-  // let clipboard = new this.clipboard('.copyPdfUrl');
-  // clipboard.on('success', function () {
-  //   // that.$toast({ message: '复制成功', className: 'top-toast' });
-  // });
-  // clipboard.on('error', function () {
-  //   // that.$toast({ message: '复制失败', className: 'top-toast' });
-  // });
+  let newclipboard = new clipboard('.copyPdfUrl');
+  newclipboard.on('success', function () {
+    showToast('复制成功');
+  });
+  newclipboard.on('error', function () {
+    showToast('复制失败');
+  });
 };
 
 /**

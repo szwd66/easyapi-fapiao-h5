@@ -1,4 +1,5 @@
 <template>
+  <Header headerTitle="抬头管理" v-if="store.ifShowH5NavBar"></Header>
   <div class="company" v-if="!state.loading">
     <div v-if="state.companyList.length == 0">
       <van-empty image="search" description="暂无数据" />
@@ -27,9 +28,11 @@
   </div>
 </template>
 <script setup lang="ts">
+import { Header } from '@/components';
 import { showLoadingToast, closeToast } from 'vant';
 import { defaultCompanyApi, getCompanyListApi } from '@/api/company';
-
+import { useStore } from '@/stores';
+const store = useStore();
 const router = useRouter();
 
 const state = reactive({
