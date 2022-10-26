@@ -61,7 +61,7 @@
           v-model="state.imageList"
           multiple
           :max-count="3"
-          :data="{ key: qnKey, token: qnToken }"
+          :data="{ key: state.qnKey, token: state.qnToken }"
           :after-read="onAfterRead"
         ></van-uploader>
       </van-cell>

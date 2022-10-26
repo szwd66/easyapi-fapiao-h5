@@ -171,7 +171,6 @@ const state = reactive({
 
 /** 计算发票金额 */
 const calcAmount = () => {
-  console.log(state.productList);
   let money = 0;
   if (state.productList !== null) {
     for (let i = 0; i < state.productList.length; i++) {

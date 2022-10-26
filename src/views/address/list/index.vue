@@ -95,7 +95,7 @@ onMounted(() => {
 <style lang="less" scoped>
 .address {
   .address-list {
-    padding: 0px 20px;
+    padding: 0px 16px;
     padding-bottom: 80px;
 
     .address-list-item {
@@ -133,7 +133,7 @@ onMounted(() => {
     position: fixed;
     bottom: 0;
     width: 100%;
-    padding: 10px 20px;
+    padding: 10px 16px;
 
     .submit {
       border: none;

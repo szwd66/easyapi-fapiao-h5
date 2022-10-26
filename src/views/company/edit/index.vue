@@ -203,7 +203,7 @@ onMounted(() => {
     position: fixed;
     bottom: 0;
     width: 100%;
-    padding: 10px 20px;
+    padding: 10px 16px;
 
     .save,
     .delete {

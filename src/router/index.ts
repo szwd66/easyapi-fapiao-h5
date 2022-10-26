@@ -22,6 +22,7 @@ import makeMergeOrder from '@/views/make/merge/merge-order.vue';
 import makeSingleOrder from '@/views/make/single/index.vue';
 import makeSingleQuery from '@/views/make/single-query/index.vue';
 import singleOrderSuccess from '@/views/make/single-order-success.vue';
+import outOrder from '@/views/out-order/index.vue';
 
 // 定义路由，每个路由都需要映射到一个组件
 const routes = [
@@ -109,6 +110,11 @@ const routes = [
     path: '/make/single-query',
     name: 'makeSingleQuery',
     component: makeSingleQuery,
+  },
+  {
+    path: '/out-order',
+    name: 'outOrder',
+    component: outOrder,
   },
 ];
 

@@ -271,7 +271,7 @@ onMounted(() => {
 
 <style lang="less" scoped>
 .invoice-type {
-  padding: 0 15px;
+  padding: 0 16px;
 
   .title {
     padding: 15px 0;

@@ -25,6 +25,7 @@
       :finished="state.finished"
       finished-text="没有更多数据了"
       @load="loadMore"
+      :style="{ height: state.windowHeight + 'px' }"
     >
       <div
         class="record-list_item"
@@ -33,14 +34,11 @@
         @click="gotoDetail(item.invoiceId)"
       >
         <div class="record-list_item_top">
-          <p hidden>{{ item.invoiceId }}</p>
-          <p>
-            <van-tag v-if="item.category === '增值税电子普通发票'" type="danger">电</van-tag>
-            <van-tag v-else-if="item.category === '增值税普通发票'" type="danger">普</van-tag>
-            <van-tag v-else-if="item.category === '增值税专用发票'" type="danger">专</van-tag>
-            <van-tag v-else type="danger">票</van-tag>
-            <span class="status">{{ item.statements }}</span>
-          </p>
+          <van-tag v-if="item.category === '增值税电子普通发票'" type="danger">电</van-tag>
+          <van-tag v-else-if="item.category === '增值税普通发票'" type="danger">普</van-tag>
+          <van-tag v-else-if="item.category === '增值税专用发票'" type="danger">专</van-tag>
+          <van-tag v-else type="danger">票</van-tag>
+          <span class="status">{{ item.statements }}</span>
         </div>
         <div class="record-list_item_bottom">
           <p class="text">
@@ -65,13 +63,13 @@ const store = useStore();
 const router = useRouter();
 
 const state = reactive({
-  loading: false,
+  loading: true,
   empty: false,
   finished: false,
-  page: {
-    page: 0,
+  pagination: {
+    page: 1,
     size: 10,
-    total: 0,
+    totalPages: 0,
   },
   startAddTime: '',
   endAddTime: '',
@@ -81,16 +79,16 @@ const state = reactive({
   showDown: true,
   showCross: false,
   minDate: new Date(2000, 0, 1),
+  windowHeight: 0,
 });
 
 /**
  * 获取发票类型
  */
 const getRecordList = () => {
-  state.loading = true;
   let params = {
-    size: state.page.size,
-    page: state.page.page,
+    size: state.pagination.size,
+    page: state.pagination.page - 1,
     startAddTime: state.startAddTime,
     endAddTime: state.endAddTime,
   };
@@ -98,7 +96,7 @@ const getRecordList = () => {
     state.loading = false;
     if (res.code === 1) {
       let data = res.content;
-      state.page.total = res.totalPages;
+      state.pagination.totalPages = res.totalPages;
       state.invoiceList = state.invoiceList.concat(data);
     } else {
       state.empty = true;
@@ -111,12 +109,12 @@ const getRecordList = () => {
  * 上拉加载
  */
 const loadMore = () => {
-  if (state.page.total !== 0 && state.page.page > 0 && state.page.page >= state.page.total) {
+  if (state.pagination.page == state.pagination.totalPages) {
     state.finished = true;
     return;
   }
+  state.pagination.page++;
   getRecordList();
-  state.page.page++;
 };
 
 /**
@@ -136,8 +134,7 @@ const onConfirm = date => {
   state.date = `${formatDate(start)} - ${formatDate(end)}`;
   state.startAddTime = moment(date[0]).format('YYYY-MM-DD 00:00:00');
   state.endAddTime = moment(date[1]).format('YYYY-MM-DD 23:59:59');
-  state.page.page = 0;
-  state.page.page = 0;
+  state.pagination.page = 0;
   state.invoiceList = [];
   state.empty = false;
   state.showDown = false;
@@ -150,13 +147,23 @@ const clearDate = () => {
   state.date = '';
   state.startAddTime = '';
   state.endAddTime = '';
-  state.page.page = 0;
+  state.pagination.page = 0;
   state.invoiceList = [];
   state.empty = false;
   state.showDown = true;
   state.showCross = false;
   state.finished = false;
 };
+
+const getWindowHeight = () => {
+  let clientHeight = document.documentElement.clientHeight;
+  state.windowHeight = clientHeight - 69 - (store.ifShowH5NavBar ? 46 : 0);
+};
+
+onMounted(() => {
+  getWindowHeight();
+  getRecordList();
+});
 </script>
 
 <style lang="less">
@@ -174,7 +181,7 @@ const clearDate = () => {
 </style>
 <style lang="less" scoped>
 .record-list {
-  padding: 15px 20px 0px 20px;
+  padding: 15px 16px 0px 16px;
 
   .record-list_item {
     background: url('@/assets/images/record-bg.png') no-repeat center;
@@ -183,9 +190,11 @@ const clearDate = () => {
     margin-top: 10px;
 
     .record-list_item_top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       .status {
         color: #1989fa;
-        float: right;
       }
     }
 
@@ -201,11 +210,13 @@ const clearDate = () => {
         margin-top: 10px;
         color: #666;
         font-size: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
 
       .price {
         color: #ff4848;
-        float: right;
       }
     }
   }

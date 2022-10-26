@@ -91,7 +91,7 @@ onMounted(() => {
 <style lang="less" scoped>
 .company {
   .company-list {
-    padding: 0px 20px;
+    padding: 0px 16px;
     padding-bottom: 80px;
 
     .company-list-item {
@@ -129,7 +129,7 @@ onMounted(() => {
     position: fixed;
     bottom: 0;
     width: 100%;
-    padding: 10px 20px;
+    padding: 10px 16px;
 
     .submit {
       border: none;
