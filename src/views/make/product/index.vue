@@ -205,6 +205,11 @@ const getProductList = params => {
 /** 追加商品服务 */
 const appendProduct = () => {
   let obj = {};
+
+  if (state.productListAll.filter(x => x.number > 0 && (!x.price || x.price == 0 || x.price < 0)).length > 0) {
+    return showToast('请输入正确的商品金额');
+  }
+
   for (let i = 0; i < state.productListAll.length; i++) {
     if (state.productListAll[i].number > 0) {
       obj = {
