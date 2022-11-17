@@ -5,7 +5,6 @@ import '@vue/runtime-core'
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    Chart: typeof import('./src/components/chart/index.vue')['default']
     Invoice: typeof import('./src/components/make/Invoice.vue')['default']
     Receive: typeof import('./src/components/make/Receive.vue')['default']
     VanArea: typeof import('vant/es')['Area']

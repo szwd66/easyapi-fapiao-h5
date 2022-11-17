@@ -11,8 +11,6 @@ import vue from '@vitejs/plugin-vue';
 import legacy from '@vitejs/plugin-legacy';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 
-import mock from './build/mock/createMockServer';
-
 export default ({ command, mode }: ConfigEnv): UserConfig => {
   const root = process.cwd();
   const env = loadEnv(mode, root);
@@ -56,13 +54,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           enabled: true,
         },
       }),
-
-      mock({
-        watch: true,
-        mockUrlList: [/api/],
-        cwd: process.cwd(),
-        enable: env.VITE_HTTP_MOCK && env.VITE_MOCK && process.env.NODE_ENV !== 'production',
-      }),
     ],
 
     build: {
@@ -83,7 +74,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       port: 3000,
       proxy: env.VITE_HTTP_MOCK && env.VITE_MOCK && process.env.NODE_ENV !== 'production' ? undefined : {
         '/api': {
-          // backend url
           target: '',
           ws: false,
           changeOrigin: true,

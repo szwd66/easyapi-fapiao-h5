@@ -2,14 +2,12 @@
   "name": "easyapi-fapiao-h5",
   "version": "1.0.0",
   "scripts": {
-    "dev": "cross-env MOCK_SERVER_PORT=8086 vite",
+    "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "build:dev": "vue-tsc --noEmit && vite build --mode=development",
     "lint:script": "eslint --ext .js,.jsx,.ts,.tsx --fix --quiet ./",
     "lint:style": "stylelint --fix \"src/**/*.{css,less}\"",
-    "preview": "vite preview",
-    "test": "vitest",
-    "plop": "plop"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@types/lodash-es": "^4.17.6",
@@ -45,9 +43,6 @@
     "autoprefixer": "^10.4.8",
     "babel-plugin-module-resolver": "^4.1.0",
     "commitizen": "^4.2.5",
-    "consola": "^2.15.3",
-    "cross-env": "^7.0.3",
-    "cz-emoji-chinese": "^0.3.1",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
@@ -56,9 +51,7 @@
     "husky": "^8.0.1",
     "less": "^4.1.2",
     "lint-staged": "^13.0.3",
-    "mockjs": "^1.1.0",
     "path-to-regexp": "^6.2.1",
-    "plop": "^3.1.0",
     "postcss": "^8.4.16",
     "postcss-px-to-viewport-8-plugin": "^1.1.3",
     "prettier": "^2.7.1",
@@ -78,7 +71,6 @@
     "unplugin-vue-components": "^0.19.6",
     "vite": "^3.0.0",
     "vite-plugin-vconsole": "^1.2.2",
-    "vitest": "^0.22.0",
     "vue-tsc": "^0.39.5"
   },
   "lint-staged": {
