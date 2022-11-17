@@ -1,5 +1,6 @@
 <template>
-  <div class="make-product">
+  <Header headerTitle="开具电子发票" v-if="store.ifShowH5NavBar"></Header>
+  <div class="make-invoice">
     <Invoice
       :isShow="state.isShow"
       :isHide="state.isHide"
@@ -25,10 +26,10 @@
         </ul>
         <van-cell class="line" />
         <ul class="product-content" v-for="(product, index) in state.productList" :key="index">
-          <li style="width: 30%">
+          <li style="width: 30%; line-height: 15px; padding-top: 12px">
             {{ product.name }}
           </li>
-          <li style="width: 30%">
+          <li style="width: 30%; line-height: 15px; padding-top: 12px">
             {{ product.specification }}
           </li>
           <li>{{ product.unit }}</li>
@@ -66,6 +67,8 @@
     <div class="bottom fixed-bottom-bgColor">
       <van-button type="primary" class="submit" block @click="makeInvoice">提交</van-button>
     </div>
+
+    <van-dialog />
     <van-popup
       class="popupClass"
       v-model:show="state.showPopup"
@@ -121,13 +124,13 @@
 <script setup lang="ts">
 import { getProductListApi } from '@/api/product';
 import { productMakeInvoiceApi } from '@/api/make';
-import { Invoice, Receive } from '@/components';
+import { Invoice, Receive, Header } from '@/components';
 import makeMixins from '../mixins/make';
 import { localStorage } from '@/utils/local-storage';
 import { showToast, showLoadingToast, closeToast, showConfirmDialog } from 'vant';
-
 const { common, getInvoiceRemark, ifNeedMobileEmail, checkEmailMobile } = makeMixins();
-
+import { useStore } from '@/stores';
+const store = useStore();
 const router = useRouter();
 
 const state = reactive({
@@ -168,7 +171,6 @@ const state = reactive({
 
 /** 计算发票金额 */
 const calcAmount = () => {
-  console.log(state.productList);
   let money = 0;
   if (state.productList !== null) {
     for (let i = 0; i < state.productList.length; i++) {
@@ -203,6 +205,11 @@ const getProductList = params => {
 /** 追加商品服务 */
 const appendProduct = () => {
   let obj = {};
+
+  if (state.productListAll.filter(x => x.number > 0 && (!x.price || x.price == 0 || x.price < 0)).length > 0) {
+    return showToast('请输入正确的商品金额');
+  }
+
   for (let i = 0; i < state.productListAll.length; i++) {
     if (state.productListAll[i].number > 0) {
       obj = {
@@ -312,108 +319,5 @@ onMounted(() => {
 </script>
 
 <style lang="less">
-.make-product {
-  .van-cell__value {
-    min-width: 70%;
-  }
-
-  .merge-order_price .van-field__control {
-    color: red;
-  }
-
-  .line {
-    padding: 1px;
-  }
-}
-
-.popupClass {
-  .van-cell__value {
-    text-align: left;
-  }
-}
-</style>
-<style lang="less" scoped>
-.make-product {
-  padding-bottom: 75px;
-
-  .invoice-contents {
-    padding: 0 15px;
-    height: auto;
-
-    .contents-title {
-      padding: 15px 0;
-      color: #969799;
-    }
-
-    .contents-product {
-      border-radius: 8px;
-      overflow: hidden;
-
-      .product-head {
-        background-color: #fff;
-        padding: 0 10px;
-        display: flex;
-        list-style: none;
-
-        li {
-          width: 18%;
-          line-height: 44px;
-          color: #333;
-          font-size: 12px;
-          text-align: center;
-          font-weight: 500;
-        }
-      }
-
-      .product-content {
-        background-color: #fff;
-        padding: 0 10px;
-        display: flex;
-        list-style: none;
-
-        li {
-          width: 18%;
-          line-height: 40px;
-          text-align: center;
-          font-size: 12px;
-          color: #333;
-        }
-      }
-
-      .btn {
-        width: 100%;
-        height: 80px;
-        background-color: #fff;
-        text-align: center;
-      }
-
-      .btn .submit-btn {
-        width: 143px;
-        height: 33px;
-        background-color: #fff;
-        color: #1989fa;
-        font-size: 12px;
-        margin-top: 20px;
-        border: 1px solid #1989fa;
-      }
-    }
-  }
-
-  .bottom {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    padding: 10px 20px;
-
-    .submit {
-      border: none;
-      height: 40px;
-      border-radius: 5px;
-      font-size: 18px;
-      font-weight: 500;
-      letter-spacing: 2px;
-      text-indent: 2px;
-    }
-  }
-}
+@import '../make.less';
 </style>

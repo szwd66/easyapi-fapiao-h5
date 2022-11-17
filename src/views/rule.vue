@@ -26,7 +26,7 @@ onMounted(() => {
 
 <style lang="less" scoped>
 .invoice-rule {
-  padding: 15px 20px;
+  padding: 15px 16px;
   line-height: 24px;
 }
 </style>

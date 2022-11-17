@@ -1,4 +1,5 @@
 <template>
+  <Header headerTitle="编辑地址" v-if="store.ifShowH5NavBar"></Header>
   <div class="address-edit">
     <van-cell-group inset>
       <van-field
@@ -49,9 +50,12 @@
   </div>
 </template>
 <script setup lang="ts">
+import { Header } from '@/components';
 import { getAddressApi, createAddressApi, updateAddressApi, deleteAddressApi } from '@/api/address';
 import { showToast, showLoadingToast, closeToast, showConfirmDialog } from 'vant';
 import { getAreaListApi } from '@/api/area';
+import { useStore } from '@/stores';
+const store = useStore();
 
 const route = useRoute();
 
@@ -189,7 +193,7 @@ onMounted(() => {
     position: fixed;
     bottom: 0;
     width: 100%;
-    padding: 10px 20px;
+    padding: 10px 16px;
 
     .save,
     .delete {

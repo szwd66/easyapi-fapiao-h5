@@ -21,13 +21,5 @@ const gotoIndex = () => {
 </script>
 
 <style lang="less" scoped>
-.success {
-  margin-top: 120px;
-  text-align: center;
-  padding: 0 10px;
-}
-
-.success-button {
-  margin-top: 30px;
-}
+@import './success.less';
 </style>

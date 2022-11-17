@@ -4,7 +4,7 @@
       <van-cell
         v-for="type in state.orderTypeList"
         :key="type.orderTypeId"
-        :value="type.name"
+        :title="type.name"
         is-link
         :to="{ path: '/out-order', query: { type: type.name } }"
         size="large"
@@ -138,7 +138,7 @@ onMounted(() => {
 
 <style lang="less" scoped>
 .remark {
-  padding: 15px 20px;
+  padding: 15px 16px;
   color: #666;
   font-size: 12px;
 }
@@ -147,7 +147,7 @@ onMounted(() => {
   position: fixed;
   bottom: 0;
   width: 100%;
-  padding: 10px 20px;
+  padding: 10px 16px;
 
   .submit {
     border: none;

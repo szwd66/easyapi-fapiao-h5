@@ -2,7 +2,7 @@ import type { AxiosRequestConfig, AxiosError } from 'axios';
 import axios, { AxiosResponse } from 'axios';
 import { localStorage } from '@/utils/local-storage';
 import { STORAGE_TOKEN_KEY } from '@/stores/mutation-type';
-import { showNotify } from 'vant';
+import { showNotify, showToast } from 'vant';
 
 // 这里是用于设定请求后端时，所用的 Token KEY
 // 可以根据自己的需要修改，常见的如 Access-Token，Authorization
@@ -43,6 +43,7 @@ const errorHandler = (error: RequestError): Promise<any> => {
       // 如果你需要直接跳转登录页面
       // location.replace(loginRoutePath)
     }
+    showToast(error.response.data.message);
   }
   return Promise.reject(error);
 };

@@ -1,5 +1,6 @@
 <template>
-  <div class="make-merge">
+  <Header headerTitle="开具电子发票" v-if="store.ifShowH5NavBar"></Header>
+  <div class="make-invoice">
     <Invoice
       :isShow="state.isShow"
       :isHide="state.isHide"
@@ -43,12 +44,13 @@
 
 <script setup lang="ts">
 import { mergeMakeInvoiceApi } from '@/api/make';
-import { Invoice, Receive } from '@/components';
+import { Invoice, Receive, Header } from '@/components';
 import { showToast, showLoadingToast, closeToast, showConfirmDialog } from 'vant';
 import makeMixins from '../mixins/make';
 import { localStorage } from '@/utils/local-storage';
 const { common, getInvoiceRemark, ifNeedMobileEmail, checkEmailMobile } = makeMixins();
-
+import { useStore } from '@/stores';
+const store = useStore();
 const router = useRouter();
 
 const state = reactive({
@@ -156,35 +158,5 @@ onMounted(() => {
 </script>
 
 <style lang="less">
-.make-merge {
-  .van-cell__value {
-    min-width: 70%;
-  }
-
-  .merge-order_price .van-field__control {
-    color: red;
-  }
-}
-</style>
-<style lang="less" scoped>
-.make-merge {
-  padding-bottom: 75px;
-
-  .bottom {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    padding: 10px 20px;
-
-    .submit {
-      border: none;
-      height: 40px;
-      border-radius: 5px;
-      font-size: 18px;
-      font-weight: 500;
-      letter-spacing: 2px;
-      text-indent: 2px;
-    }
-  }
-}
+@import '../make.less';
 </style>

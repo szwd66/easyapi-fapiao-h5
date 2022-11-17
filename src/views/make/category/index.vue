@@ -1,5 +1,6 @@
 <template>
-  <div class="make-category">
+  <Header headerTitle="开具电子发票" v-if="store.ifShowH5NavBar"></Header>
+  <div class="make-invoice">
     <Invoice
       :isShow="state.isShow"
       :isHide="state.isHide"
@@ -60,7 +61,7 @@
           v-model="state.imageList"
           multiple
           :max-count="3"
-          :data="{ key: qnKey, token: qnToken }"
+          :data="{ key: state.qnKey, token: state.qnToken }"
           :after-read="onAfterRead"
         ></van-uploader>
       </van-cell>
@@ -84,13 +85,14 @@
 import { getQiniuTokenApi, getQiniuKeyApi, qiniuUploadApi } from '@/api/qiniu';
 import { getCustomCategoryListApi } from '@/api/custom-category';
 import { categoryMakeInvoiceApi } from '@/api/make';
-import { Invoice, Receive } from '@/components';
+import { Invoice, Receive, Header } from '@/components';
 import { showToast, showLoadingToast, closeToast, showConfirmDialog } from 'vant';
 import { validPrice } from '@/utils/validate';
 import makeMixins from '../mixins/make';
 import { localStorage } from '@/utils/local-storage';
 const { common, getInvoiceRemark, ifNeedMobileEmail, checkEmailMobile } = makeMixins();
-
+import { useStore } from '@/stores';
+const store = useStore();
 const router = useRouter();
 const route = useRoute();
 
@@ -269,35 +271,5 @@ onMounted(() => {
 </script>
 
 <style lang="less">
-.make-category {
-  .van-cell__value {
-    min-width: 70%;
-  }
-
-  .merge-order_price .van-field__control {
-    color: red;
-  }
-}
-</style>
-<style lang="less" scoped>
-.make-category {
-  padding-bottom: 75px;
-
-  .bottom {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    padding: 10px 20px;
-
-    .submit {
-      border: none;
-      height: 40px;
-      border-radius: 5px;
-      font-size: 18px;
-      font-weight: 500;
-      letter-spacing: 2px;
-      text-indent: 2px;
-    }
-  }
-}
+@import '../make.less';
 </style>
