@@ -50,6 +50,18 @@ export async function updateCompanyApi(id, data): Promise<any> {
 }
 
 /**
+ * 设置默认公司抬头信息
+ *
+ * @see https://www.easyapi.com
+ */
+
+export async function updateCompanySetDefaultApi(id): Promise<any> {
+  return request.post(`/company/${id}/set-default`, {
+    accessToken: localStorage.get('accessToken'),
+  });
+}
+
+/**
  * 删除公司抬头信息
  *
  * @see https://www.easyapi.com

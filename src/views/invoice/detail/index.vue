@@ -31,8 +31,8 @@
       title="接收方式"
       inset
     >
-      <van-field label="电子邮件" v-model="state.invoiceDetail.email" />
-      <van-field label="手机号码" v-model="state.invoiceDetail.addrMobile" />
+      <van-cell :value="state.invoiceDetail.email" title="电子邮件" />
+      <van-cell :value="state.invoiceDetail.addrMobile" title="手机号码" />
       <van-cell
         @click="goAssociatedOrder"
         v-if="state.outOrderCount > 0"

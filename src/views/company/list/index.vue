@@ -1,43 +1,70 @@
 <template>
   <Header headerTitle="抬头管理" v-if="store.ifShowH5NavBar"></Header>
-  <div class="company" v-if="!state.loading">
-    <div v-if="state.companyList.length == 0">
-      <van-empty image="search" description="暂无数据" />
-    </div>
-    <div class="company-list" v-else>
-      <div class="company-list-item" v-for="(item, index) in state.companyList" :key="index">
-        <div class="company-top fixed-bottom-bgColor">
-          <span class="rise-text">{{ item.name }}</span>
-          <van-tag plain type="warning" size="medium" v-if="item.ifDefault">默认</van-tag>
-          <span class="edit" @click="gotoEditCompany(item.companyId)">编辑</span>
+  <div :class="store.ifShowH5NavBar ? 'search-top' : 'search'">
+    <van-search
+      show-action
+      v-model="state.companyName"
+      placeholder="请输入公司名称"
+      @clear="companyNameSearch"
+    >
+      <template #action>
+        <div @click="companyNameSearch">搜索</div>
+      </template>
+    </van-search>
+  </div>
+  <div class="search-placeholder"></div>
+  <div class="company">
+    <div v-if="!state.loading">
+      <div v-if="state.companyList.length == 0">
+        <van-empty image="search" description="暂无数据" />
+      </div>
+      <div class="company-list" v-else>
+        <div class="company-list-item" v-for="(item, index) in state.companyList" :key="index">
+          <div class="company-top fixed-bottom-bgColor">
+            <span class="rise-text">{{ item.name }}</span>
+            <van-tag plain type="warning" size="medium" v-if="item.ifDefault">默认</van-tag>
+            <span class="edit" @click="gotoEditCompany(item.companyId)">编辑</span>
+          </div>
+          <van-cell-group :border="false" @click="select(item)">
+            <van-cell title="公司税号" :value="item.taxNumber" :border="false" />
+            <van-cell title="注册地址" :value="item.address" :border="false" />
+            <van-cell title="注册电话" :value="item.phone" :border="false" />
+            <van-cell title="开户银行" :value="item.bank" :border="false" />
+            <van-cell title="银行账号" :value="item.bankAccount" :border="false" />
+          </van-cell-group>
         </div>
-        <van-cell-group :border="false" @click="select(item)">
-          <van-cell title="公司税号" :value="item.taxNumber" :border="false" />
-          <van-cell title="注册地址" :value="item.address" :border="false" />
-          <van-cell title="注册电话" :value="item.phone" :border="false" />
-          <van-cell title="开户银行" :value="item.bank" :border="false" />
-          <van-cell title="银行账号" :value="item.bankAccount" :border="false" />
-        </van-cell-group>
       </div>
     </div>
-    <div class="bottom fixed-bottom-bgColor">
-      <van-button type="primary" class="sumbit" block @click="gotoEditCompany()">
-        新增抬头
-      </van-button>
+    <div class="loading" v-if="state.loading">
+      <div>加载中......</div>
     </div>
+    <div class="no-more-data" v-if="state.noMoreData">
+      <div>没有更多数据了</div>
+    </div>
+  </div>
+  <div class="bottom fixed-bottom-bgColor">
+    <van-button type="primary" class="sumbit" block @click="gotoEditCompany()">新增抬头</van-button>
   </div>
 </template>
 <script setup lang="ts">
 import { Header } from '@/components';
 import { showLoadingToast, closeToast } from 'vant';
-import { defaultCompanyApi, getCompanyListApi } from '@/api/company';
+import { updateCompanySetDefaultApi, getCompanyListApi } from '@/api/company';
 import { useStore } from '@/stores';
 const store = useStore();
 const router = useRouter();
 
 const state = reactive({
-  loading: true,
+  noData: false,
+  loading: false,
+  noMoreData: false,
   companyList: [],
+  companyName: '',
+  pagination: {
+    page: 0,
+    size: 3,
+    totalPages: 0,
+  },
 });
 
 const getCompanyList = () => {
@@ -46,18 +73,33 @@ const getCompanyList = () => {
     message: '加载中...',
     forbidClick: true,
   });
-  getCompanyListApi().then(res => {
+  let params = {
+    name: state.companyName,
+    size: state.pagination.size,
+    page: state.pagination.page,
+  };
+  getCompanyListApi(params).then(res => {
     state.loading = false;
     closeToast();
     if (res.code === 1) {
-      state.companyList = res.content;
+      state.companyList = state.companyList.concat(res.content);
+      state.pagination.totalPages = res.totalPages;
+    } else {
+      state.companyList = [];
+      state.pagination.totalPages = 0;
     }
   });
 };
 
+const companyNameSearch = () => {
+  state.companyList = [];
+  state.pagination.page = 0;
+  getCompanyList();
+};
+
 const select = item => {
   //设置为默认抬头
-  defaultCompanyApi(item.companyId).then(res => {
+  updateCompanySetDefaultApi(item.companyId).then(res => {
     if (res.code == 1) {
       history.back();
     }
@@ -71,8 +113,31 @@ const gotoEditCompany = companyId => {
   });
 };
 
+const getPageList = () => {
+  if (state.pagination.page < state.pagination.totalPages - 1) {
+    state.pagination.page = state.pagination.page + 1;
+    getCompanyList();
+  }
+  if (state.pagination.page === state.pagination.totalPages - 1) {
+    state.noMoreData = true;
+  }
+};
+
+const lazyLoading = () => {
+  let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  let clientHeight = document.documentElement.clientHeight;
+  let scrollHeight = document.documentElement.scrollHeight;
+  if (scrollTop + clientHeight >= scrollHeight) {
+    // 滚动到底部，逻辑代码
+    //事件处理
+    getPageList();
+  }
+};
+
 onMounted(() => {
   getCompanyList();
+  // 滚动到底部，再加载的处理事件
+  window.addEventListener('scroll', lazyLoading);
 });
 </script>
 
@@ -89,13 +154,34 @@ onMounted(() => {
 }
 </style>
 <style lang="less" scoped>
+.search-top {
+  position: fixed;
+  top: 46px;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+.search {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+.search-placeholder {
+  width: 100%;
+  height: 54px;
+}
+
 .company {
+  padding-bottom: 64px;
   .company-list {
     padding: 0px 16px;
-    padding-bottom: 80px;
 
     .company-list-item {
-      border-radius: 8px;
+      border-radius: 5px;
       box-shadow: 0px 2px 15px 0px rgba(0, 0, 0, 0.11);
       margin-top: 15px;
       overflow: hidden;
@@ -124,22 +210,33 @@ onMounted(() => {
       }
     }
   }
+}
 
-  .bottom {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    padding: 10px 16px;
+.bottom {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 10px 16px;
 
-    .submit {
-      border: none;
-      height: 40px;
-      border-radius: 5px;
-      font-size: 18px;
-      font-weight: 500;
-      letter-spacing: 2px;
-      text-indent: 2px;
-    }
+  .submit {
+    border: none;
+    height: 40px;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-indent: 2px;
   }
+}
+
+.no-more-data {
+  text-align: center;
+  color: #999;
+  line-height: 40px;
+}
+
+.loading {
+  text-align: center;
+  color: #999;
 }
 </style>

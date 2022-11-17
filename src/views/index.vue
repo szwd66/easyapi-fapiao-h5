@@ -90,10 +90,10 @@ const getOrderTypeList = () => {
   getOrderTypeListApi().then(res => {
     if (res.code === 1) {
       state.orderTypeList = res.content;
-      setTimeout(function () {
-        closeToast();
-      }, 50);
     }
+    setTimeout(function () {
+      closeToast();
+    }, 50);
   });
 };
 
