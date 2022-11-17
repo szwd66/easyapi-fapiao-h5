@@ -92,7 +92,7 @@ const getOrderTypeList = () => {
       state.orderTypeList = res.content;
       setTimeout(function () {
         closeToast();
-      }, 1000);
+      }, 50);
     }
   });
 };
@@ -132,7 +132,7 @@ onMounted(() => {
   getOrderTypeList();
   setTimeout(() => {
     findSetting();
-  }, 1000);
+  }, 50);
 });
 </script>
 

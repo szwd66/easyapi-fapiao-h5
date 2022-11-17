@@ -11,7 +11,6 @@ import vue from '@vitejs/plugin-vue';
 import legacy from '@vitejs/plugin-legacy';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 
-import { viteVConsole } from 'vite-plugin-vconsole';
 import mock from './build/mock/createMockServer';
 
 export default ({ command, mode }: ConfigEnv): UserConfig => {
@@ -55,16 +54,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         dts: true,
         eslintrc: {
           enabled: true,
-        },
-      }),
-
-      viteVConsole({
-        entry: [path.resolve('src/main.ts')],
-        localEnabled: command === 'serve',
-        enabled: false,
-        config: {
-          maxLogNumber: 1000,
-          theme: 'light',
         },
       }),
 
