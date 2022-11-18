@@ -1,5 +1,5 @@
 <template>
-  <Header headerTitle="开具电子发票" v-if="store.ifShowH5NavBar"></Header>
+  <Header headerTitle="开具电子发票" v-if="store.ifShowH5NavBar" />
   <div class="make-invoice">
     <Invoice
       :isShow="state.isShow"
@@ -11,7 +11,7 @@
       @getCompany="receiveCompany"
       @getInvoiceCategory="receiveCategory"
       @getInvoiceProperty="receiveProperty"
-    ></Invoice>
+    />
 
     <van-cell-group title="发票内容" inset>
       <van-field
@@ -73,7 +73,7 @@
       :ifNeedEmail="common.ifNeedEmail"
       :ifNeedMobile="common.ifNeedMobile"
       :address="state.address"
-    ></Receive>
+    />
 
     <div class="bottom fixed-bottom-bgColor">
       <van-button type="primary" class="submit" block @click="makeInvoice">申请开票</van-button>
@@ -85,7 +85,6 @@
 import { getQiniuTokenApi, getQiniuKeyApi, qiniuUploadApi } from '@/api/qiniu';
 import { getCustomCategoryListApi } from '@/api/custom-category';
 import { categoryMakeInvoiceApi } from '@/api/make';
-import { Invoice, Receive, Header } from '@/components';
 import { showToast, showLoadingToast, closeToast, showConfirmDialog } from 'vant';
 import { validPrice } from '@/utils/validate';
 import makeMixins from '../mixins/make';

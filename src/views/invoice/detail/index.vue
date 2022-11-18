@@ -1,5 +1,5 @@
 <template>
-  <Header headerTitle="发票详情" v-if="store.ifShowH5NavBar"></Header>
+  <Header headerTitle="发票详情" v-if="store.ifShowH5NavBar" />
   <div class="invoice-detail">
     <van-cell-group @click="viewPicture" inset>
       <van-cell
@@ -77,7 +77,6 @@
 </template>
 
 <script setup lang="ts">
-import { Header } from '@/components';
 import { showToast, showLoadingToast, closeToast } from 'vant';
 import { getInvoiceApi } from '@/api/invoice';
 import { getOutOrderCountApi } from '@/api/out-order';

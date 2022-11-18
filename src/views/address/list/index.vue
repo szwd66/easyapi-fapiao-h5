@@ -1,5 +1,5 @@
 <template>
-  <Header headerTitle="地址管理" v-if="store.ifShowH5NavBar"></Header>
+  <Header headerTitle="地址管理" v-if="store.ifShowH5NavBar" />
   <div class="address" v-if="!state.loading">
     <div v-if="state.addressList.length == 0">
       <van-empty image="search" description="暂无数据" />
@@ -30,9 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { Header } from '@/components';
 import { getAddressListApi, defaultAddressApi } from '@/api/address';
-import { showLoadingToast, closeToast } from 'vant';
 import { useStore } from '@/stores';
 const store = useStore();
 
@@ -48,6 +46,8 @@ const getAddressList = () => {
     state.loading = false;
     if (res.code === 1) {
       state.addressList = res.content;
+    } else {
+      state.addressList = [];
     }
   });
 };
@@ -96,7 +96,7 @@ onMounted(() => {
     padding-bottom: 80px;
 
     .address-list-item {
-      border-radius: 8px;
+      border-radius: 5px;
       box-shadow: 0px 2px 15px 0px rgba(0, 0, 0, 0.11);
       margin-top: 15px;
       overflow: hidden;

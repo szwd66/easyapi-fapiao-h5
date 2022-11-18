@@ -1,5 +1,5 @@
 <template>
-  <Header headerTitle="抬头管理" v-if="store.ifShowH5NavBar"></Header>
+  <Header headerTitle="抬头管理" v-if="store.ifShowH5NavBar" />
   <div :class="store.ifShowH5NavBar ? 'search-top' : 'search'">
     <van-search
       v-model="state.companyName"
@@ -40,7 +40,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import { Header } from '@/components';
 import { showLoadingToast, closeToast } from 'vant';
 import { updateCompanySetDefaultApi, getCompanyListApi } from '@/api/company';
 import { useStore } from '@/stores';

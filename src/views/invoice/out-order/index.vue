@@ -1,5 +1,5 @@
 <template>
-  <Header headerTitle="关联订单" v-if="store.ifShowH5NavBar"></Header>
+  <Header headerTitle="关联订单" v-if="store.ifShowH5NavBar" />
   <van-list
     v-model:loading="state.loading"
     :finished="state.finished"
@@ -28,7 +28,6 @@
 </template>
 
 <script setup lang="ts">
-import { Header } from '@/components';
 import { getOutOrderListApi } from '@/api/invoice';
 import { useStore } from '@/stores';
 const store = useStore();
