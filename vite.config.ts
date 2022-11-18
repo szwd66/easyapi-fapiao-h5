@@ -72,13 +72,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     server: {
       host: true,
       port: 3000,
-      proxy: env.VITE_HTTP_MOCK && env.VITE_MOCK && process.env.NODE_ENV !== 'production' ? undefined : {
-        '/api': {
-          target: '',
-          ws: false,
-          changeOrigin: true,
-        },
-      },
     },
   };
 };
