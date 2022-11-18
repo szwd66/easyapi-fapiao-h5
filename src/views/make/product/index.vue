@@ -78,7 +78,7 @@
       <van-search
         v-model="state.productKeyword"
         placeholder="请输入搜索关键词"
-        @input="onProductSearch"
+        @update:model-value="onProductSearch"
       />
       <van-list :finished="true" finished-text="没有更多了">
         <van-cell v-for="item in state.productListAll" :key="item.productId">
@@ -206,7 +206,10 @@ const getProductList = params => {
 const appendProduct = () => {
   let obj = {};
 
-  if (state.productListAll.filter(x => x.number > 0 && (!x.price || x.price == 0 || x.price < 0)).length > 0) {
+  if (
+    state.productListAll.filter(x => x.number > 0 && (!x.price || x.price == 0 || x.price < 0))
+      .length > 0
+  ) {
     return showToast('请输入正确的商品金额');
   }
 

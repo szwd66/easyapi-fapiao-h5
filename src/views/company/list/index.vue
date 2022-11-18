@@ -2,15 +2,10 @@
   <Header headerTitle="抬头管理" v-if="store.ifShowH5NavBar"></Header>
   <div :class="store.ifShowH5NavBar ? 'search-top' : 'search'">
     <van-search
-      show-action
       v-model="state.companyName"
       placeholder="请输入公司名称"
-      @clear="companyNameSearch"
-    >
-      <template #action>
-        <div @click="companyNameSearch">搜索</div>
-      </template>
-    </van-search>
+      @update:model-value="companyNameSearch"
+    ></van-search>
   </div>
   <div class="search-placeholder"></div>
   <div class="company">
@@ -54,13 +49,13 @@ const router = useRouter();
 
 const state = reactive({
   noData: false,
-  loading: false,
+  loading: true,
   noMoreData: false,
   companyList: [],
   companyName: '',
   pagination: {
     page: 0,
-    size: 3,
+    size: 10,
     totalPages: 0,
   },
 });
@@ -92,6 +87,9 @@ const getCompanyList = () => {
 const companyNameSearch = () => {
   state.companyList = [];
   state.pagination.page = 0;
+  state.noData = false;
+  state.noMoreData = false;
+  state.loading = true;
   getCompanyList();
 };
 
