@@ -192,11 +192,11 @@ const makeInvoice = () => {
   if (state.invoiceForm.type === '个人' && state.invoiceForm.purchaserName === '') {
     return showToast('请输入发票抬头');
   }
-  if (state.customCategory == null || state.customCategory.customCategoryId == null) {
+  if (state.customCategory === null || state.customCategory.customCategoryId === null) {
     return showToast('请选择发票类别');
   }
 
-  if (state.invoiceForm.price == null || state.invoiceForm.price <= 0) {
+  if (state.invoiceForm.price === null || state.invoiceForm.price <= 0) {
     return showToast('请输入开票金额');
   } else if (!validPrice(state.invoiceForm.price)) {
     return showToast('请输入合法开票金额，最多2位小数');

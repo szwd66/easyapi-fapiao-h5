@@ -207,7 +207,7 @@ const appendProduct = () => {
   let obj = {};
 
   if (
-    state.productListAll.filter(x => x.number > 0 && (!x.price || x.price == 0 || x.price < 0))
+    state.productListAll.filter(x => x.number > 0 && (!x.price || x.price === 0 || x.price < 0))
       .length > 0
   ) {
     return showToast('请输入正确的商品金额');

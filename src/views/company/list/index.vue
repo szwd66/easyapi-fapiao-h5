@@ -10,7 +10,7 @@
   <div class='search-placeholder'></div>
   <div class='company'>
     <div v-if='!state.loading'>
-      <div v-if='state.companyList.length == 0'>
+      <div v-if='state.companyList.length === 0'>
         <van-empty image='search' description='暂无数据' />
       </div>
       <div class='company-list' v-else>
@@ -96,7 +96,7 @@ const companyNameSearch = () => {
 const select = item => {
   //设置为默认抬头
   updateCompanySetDefaultApi(item.companyId).then(res => {
-    if (res.code == 1) {
+    if (res.code === 1) {
       history.back();
     }
   });

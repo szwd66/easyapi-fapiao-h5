@@ -137,7 +137,7 @@ const totalPrice = computed({
 
 const checked = index => {
   state.outOrderList[index].status = !state.outOrderList[index].status;
-  state.selectList = state.outOrderList.filter(x => x.status == true);
+  state.selectList = state.outOrderList.filter(x => x.status === true);
   state.allCheck = state.selectList.length === state.outOrderList.length;
 };
 
@@ -194,7 +194,7 @@ const getOutOrderList = () => {
  * 上拉加载
  */
 const loadMore = () => {
-  if (state.pagination.page == state.pagination.totalPages) {
+  if (state.pagination.page === state.pagination.totalPages) {
     state.finished = true;
     return;
   }

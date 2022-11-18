@@ -109,7 +109,7 @@ const getRecordList = () => {
  * 上拉加载
  */
 const loadMore = () => {
-  if (state.pagination.page == state.pagination.totalPages) {
+  if (state.pagination.page === state.pagination.totalPages) {
     state.finished = true;
     return;
   }

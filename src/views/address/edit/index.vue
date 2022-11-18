@@ -103,7 +103,7 @@ const getAddress = () => {
 const getAreaList = () => {
   const params = {};
   getAreaListApi(params).then(res => {
-    if (res.status == 1) {
+    if (res.status === 1) {
       const provinces = res.provinces;
       const province_list = {};
       const city_list = {};

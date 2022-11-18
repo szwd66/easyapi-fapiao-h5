@@ -27,7 +27,7 @@
     </van-cell-group>
 
     <van-cell-group
-      v-if="state.invoiceDetail.category == '增值税电子普通发票'"
+      v-if="state.invoiceDetail.category === '增值税电子普通发票'"
       title='接收方式'
       inset
     >
@@ -44,8 +44,8 @@
 
     <van-cell-group
       v-if="
-        state.invoiceDetail.category == '增值税普通发票' ||
-        state.invoiceDetail.category == '增值税专用发票'
+        state.invoiceDetail.category === '增值税普通发票' ||
+        state.invoiceDetail.category === '增值税专用发票'
       "
       title='接收方式'
       inset

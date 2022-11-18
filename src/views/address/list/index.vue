@@ -1,7 +1,7 @@
 <template>
   <Header headerTitle='地址管理' v-if='store.ifShowH5NavBar' />
   <div class='address' v-if='!state.loading'>
-    <div v-if='state.addressList.length == 0'>
+    <div v-if='state.addressList.length === 0'>
       <van-empty image='search' description='暂无数据' />
     </div>
     <div class='address-list' v-else>
@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class='bottom fixed-bottom-bgColor'>
-      <van-button type='primary' class='submit' block @click='gotoEditAddress()'>
+      <van-button type='primary' class='submit' block @click="gotoEditAddress('')">
         新增地址
       </van-button>
     </div>
