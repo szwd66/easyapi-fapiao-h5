@@ -88,9 +88,10 @@ const state = reactive({
 const getOrder = () => {
   state.orderType = localStorage.get('orderType') ? localStorage.get('orderType') : '';
   state.invoiceForm.price = localStorage.get('tot') ? localStorage.get('tot') : 0.0;
-  state.seletedOutOrderList = localStorage.get('seleted')
-    ? JSON.parse(localStorage.get('seleted'))
-    : [];
+  state.seletedOutOrderList = [];
+  if (localStorage.get('seleted')) {
+    state.seletedOutOrderList = JSON.parse(localStorage.get('seleted'));
+  }
   for (let i = 0; i < state.seletedOutOrderList.length; i++) {
     state.outOrderIds += state.seletedOutOrderList[i].outOrderId + ',';
     state.invoiceForm.outOrderIds = state.outOrderIds;
