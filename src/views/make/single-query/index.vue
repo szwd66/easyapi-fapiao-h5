@@ -177,8 +177,7 @@ const makeInvoice = () => {
       return showToast('企业发票抬头未选择');
     }
   }
-  checkEmailMobile(state.invoiceForm);
-  if (!common.ifCheckEmailMobile) {
+  if (!checkEmailMobile(state.invoiceForm)) {
     return;
   }
   showConfirmDialog({
@@ -203,7 +202,7 @@ const makeInvoice = () => {
         showToast(res.message);
       }
     });
-  });
+  }).catch(() => {});
 };
 
 /**

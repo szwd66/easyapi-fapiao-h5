@@ -1,67 +1,67 @@
 <template>
-  <Header headerTitle='开具电子发票' v-if='store.ifShowH5NavBar' />
-  <div class='make-invoice'>
+  <Header headerTitle="开具电子发票" v-if="store.ifShowH5NavBar" />
+  <div class="make-invoice">
     <Invoice
-      :isShow='state.isShow'
-      :isHide='state.isHide'
-      :ifElectronic='state.ifElectronic'
-      :invoiceForm='state.invoiceForm'
-      :ifPaper='state.ifPaper'
-      :company='state.company'
-      @getCompany='receiveCompany'
-      @getInvoiceCategory='receiveCategory'
-      @getInvoiceProperty='receiveProperty'
+      :isShow="state.isShow"
+      :isHide="state.isHide"
+      :ifElectronic="state.ifElectronic"
+      :invoiceForm="state.invoiceForm"
+      :ifPaper="state.ifPaper"
+      :company="state.company"
+      @getCompany="receiveCompany"
+      @getInvoiceCategory="receiveCategory"
+      @getInvoiceProperty="receiveProperty"
     />
 
-    <div class='invoice-contents'>
-      <p class='contents-title'>发票内容</p>
-      <div class='contents-product'>
-        <ul class='product-head'>
-          <li style='width: 35%'>商品名称</li>
-          <li style='width: 35%'>规格型号</li>
+    <div class="invoice-contents">
+      <p class="contents-title">发票内容</p>
+      <div class="contents-product">
+        <ul class="product-head">
+          <li style="width: 35%">商品名称</li>
+          <li style="width: 35%">规格型号</li>
           <li>单位</li>
           <li>数量</li>
           <li>单价</li>
           <li>操作</li>
         </ul>
-        <van-cell class='line' />
-        <ul class='contents-content' v-for='(product, index) in state.productList' :key='index'>
-          <li style='width: 35%; line-height: 15px; padding-top: 12px'>
+        <van-cell class="line" />
+        <ul class="contents-content" v-for="(product, index) in state.productList" :key="index">
+          <li style="width: 35%; line-height: 15px; padding-top: 12px">
             {{ product.name }}
           </li>
-          <li style='width: 35%; line-height: 15px; padding-top: 12px'>
+          <li style="width: 35%; line-height: 15px; padding-top: 12px">
             {{ product.specification }}
           </li>
           <li>{{ product.unit }}</li>
           <li>{{ product.number }}</li>
           <li>{{ product.price }}</li>
-          <li style='color: #1989fa' @click='deleteProduct(product.productId)'>删除</li>
+          <li style="color: #1989fa" @click="deleteProduct(product.productId)">删除</li>
         </ul>
-        <van-cell class='line' />
+        <van-cell class="line" />
         <van-field
-          class='merge-order_price'
-          label='发票金额'
-          v-model='state.invoiceForm.price'
+          class="merge-order_price"
+          label="发票金额"
+          v-model="state.invoiceForm.price"
           readonly
         ></van-field>
         <van-field
-          label='发票备注'
-          :placeholder='common.remarkPlaceholder'
-          v-model='state.invoiceForm.remark'
+          label="发票备注"
+          :placeholder="common.remarkPlaceholder"
+          v-model="state.invoiceForm.remark"
         ></van-field>
       </div>
     </div>
 
     <Receive
-      :ifElectronic='state.ifElectronic'
-      :invoiceForm='state.invoiceForm'
-      :ifNeedEmail='common.ifNeedEmail'
-      :ifNeedMobile='common.ifNeedMobile'
-      :address='state.address'
+      :ifElectronic="state.ifElectronic"
+      :invoiceForm="state.invoiceForm"
+      :ifNeedEmail="common.ifNeedEmail"
+      :ifNeedMobile="common.ifNeedMobile"
+      :address="state.address"
     />
 
-    <div class='bottom fixed-bottom-bgColor'>
-      <van-button type='primary' class='submit' block @click='makeInvoice'>提交</van-button>
+    <div class="bottom fixed-bottom-bgColor">
+      <van-button type="primary" class="submit" block @click="makeInvoice">提交</van-button>
     </div>
     <!-- <div>
       <router-view @seletedOrder="seletedOrder"></router-view>
@@ -69,7 +69,7 @@
   </div>
 </template>
 
-<script setup lang='ts'>
+<script setup lang="ts">
 import { mergeMakeInvoiceApi } from '@/api/make';
 import { getOutOrderListApi } from '@/api/out-order';
 import { closeToast, showConfirmDialog, showLoadingToast, showToast } from 'vant';
@@ -161,8 +161,7 @@ const makeInvoice = () => {
       return showToast('请输入发票抬头');
     }
   }
-  checkEmailMobile(state.invoiceForm);
-  if (!common.ifCheckEmailMobile) {
+  if (!checkEmailMobile(state.invoiceForm)) {
     return;
   }
   showConfirmDialog({
@@ -189,7 +188,7 @@ const makeInvoice = () => {
         showToast(res.message);
       }
     });
-  });
+  }).catch(() => {});
 };
 
 /**  计算发票金额 */
@@ -246,6 +245,6 @@ onMounted(() => {
 });
 </script>
 
-<style lang='less'>
+<style lang="less">
 @import '../make.less';
 </style>

@@ -63,6 +63,7 @@
           :max-count="3"
           :data="{ key: state.qnKey, token: state.qnToken }"
           :after-read="onAfterRead"
+          :before-delete="deleteFieldValue"
         ></van-uploader>
       </van-cell>
     </van-cell-group>
@@ -163,12 +164,25 @@ const uploadImgToQiniu = (qnToken, qnKey, file) => {
   data.append('token', qnToken);
   data.append('key', qnKey);
   data.append('file', file['file']);
-  qiniuUploadApi(data).then(res => {
-    state.fieldValue.push('https://qiniu.easyapi.com/' + res.key);
-    //上传成功后，重新更新七牛参数
-    getToken();
-    getKey();
-  });
+  qiniuUploadApi(data)
+    .then(res => {
+      state.fieldValue.push('https://qiniu.easyapi.com/' + res.key);
+      //上传成功后，重新更新七牛参数
+      getToken();
+      getKey();
+    })
+    .catch(() => {
+      showToast('上传失败');
+      let idx = state.imageList.findIndex(item => {
+        return item === file;
+      });
+      state.imageList.splice(idx, 1);
+    });
+};
+
+const deleteFieldValue = (file, { index }) => {
+  state.fieldValue.splice(index, 1);
+  return true;
 };
 
 /**
@@ -186,8 +200,7 @@ const getCustomCategoryList = () => {
 };
 
 const makeInvoice = () => {
-  checkEmailMobile(state.invoiceForm);
-  if (!common.ifCheckEmailMobile) {
+  if (!checkEmailMobile(state.invoiceForm)) {
     return;
   }
   if (state.invoiceForm.type === '个人' && state.invoiceForm.purchaserName === '') {
@@ -202,35 +215,36 @@ const makeInvoice = () => {
   } else if (!validPrice(state.invoiceForm.price)) {
     return showToast('请输入合法开票金额，最多2位小数');
   }
-  if (state.imageList.length === 0) {
+  if (state.fieldValue.length === 0) {
     return showToast('附件一栏请上传付款记录凭证');
   }
   showConfirmDialog({
     title: '提示',
     message: '确认抬头和金额正确并申请开票吗？',
-  }).then(() => {
-    showLoadingToast({
-      message: '开票中...',
-      forbidClick: true,
-      duration: 0,
-    });
-    state.invoiceForm.customCategoryId = state.customCategory.customCategoryId;
-    state.invoiceForm.companyId = state.company.companyId;
-    state.invoiceForm.extends.push({
-      fieldKey: 'attch',
-      fieldName: '附件',
-      fieldValue: state.fieldValue.toString(),
-    });
-
-    categoryMakeInvoiceApi(state.invoiceForm).then(res => {
-      closeToast();
-      if (res.code === 1) {
-        router.push({ path: '/make/success' });
-      } else {
-        showToast(res.message);
-      }
-    });
-  });
+  })
+    .then(() => {
+      showLoadingToast({
+        message: '开票中...',
+        forbidClick: true,
+        duration: 0,
+      });
+      state.invoiceForm.customCategoryId = state.customCategory.customCategoryId;
+      state.invoiceForm.companyId = state.company.companyId;
+      state.invoiceForm.extends.push({
+        fieldKey: 'attch',
+        fieldName: '附件',
+        fieldValue: state.fieldValue.toString(),
+      });
+      categoryMakeInvoiceApi(state.invoiceForm).then(res => {
+        closeToast();
+        if (res.code === 1) {
+          router.push({ path: '/make/success' });
+        } else {
+          showToast(res.message);
+        }
+      });
+    })
+    .catch(() => {});
 };
 
 const receiveCompany = val => {

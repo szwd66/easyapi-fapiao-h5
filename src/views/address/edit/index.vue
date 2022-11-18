@@ -144,7 +144,7 @@ const deleteData = () => {
         history.back();
       }
     });
-  });
+  }).catch(() => {});
 };
 
 const confirm = () => {
@@ -165,7 +165,7 @@ const confirm = () => {
         }
       });
     }
-  });
+  }).catch(() => {});
 };
 const onAddrConfirm = e => {
   state.addressForm.province = e.selectedOptions[0].text;
