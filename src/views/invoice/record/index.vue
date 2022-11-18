@@ -1,52 +1,52 @@
 <template>
-  <Header headerTitle="开票记录" v-if="store.ifShowH5NavBar" />
-  <div class="record-list">
+  <Header headerTitle='开票记录' v-if='store.ifShowH5NavBar' />
+  <div class='record-list'>
     <div>
-      <van-cell title="发票日期" :value="state.date" @click="state.showCalendar = true" center>
+      <van-cell title='发票日期' :value='state.date' @click='state.showCalendar = true' center>
         <template #right-icon>
-          <van-icon v-if="state.showDown" name="arrow-down" />
-          <van-icon v-if="state.showCross" name="cross" @click.stop="clearDate" />
+          <van-icon v-if='state.showDown' name='arrow-down' />
+          <van-icon v-if='state.showCross' name='cross' @click.stop='clearDate' />
         </template>
       </van-cell>
       <van-calendar
-        v-model:show="state.showCalendar"
-        type="range"
-        color="#1989fa"
-        :min-date="state.minDate"
-        @confirm="onConfirm"
+        v-model:show='state.showCalendar'
+        type='range'
+        color='#1989fa'
+        :min-date='state.minDate'
+        @confirm='onConfirm'
       />
     </div>
-    <div v-if="state.empty">
-      <van-empty image="search" description="暂时还没有开票记录" />
+    <div v-if='state.empty'>
+      <van-empty image='search' description='暂时还没有开票记录' />
     </div>
     <van-list
       v-else
-      v-model:loading="state.loading"
-      :finished="state.finished"
-      finished-text="没有更多数据了"
-      @load="loadMore"
+      v-model:loading='state.loading'
+      :finished='state.finished'
+      finished-text='没有更多数据了'
+      @load='loadMore'
       :style="{ height: state.windowHeight + 'px' }"
     >
       <div
-        class="record-list_item"
-        v-for="(item, index) in state.invoiceList"
-        :key="index"
-        @click="gotoDetail(item.invoiceId)"
+        class='record-list_item'
+        v-for='(item, index) in state.invoiceList'
+        :key='index'
+        @click='gotoDetail(item.invoiceId)'
       >
-        <div class="record-list_item_top">
-          <van-tag v-if="item.category === '增值税电子普通发票'" type="danger">电</van-tag>
-          <van-tag v-else-if="item.category === '增值税普通发票'" type="danger">普</van-tag>
-          <van-tag v-else-if="item.category === '增值税专用发票'" type="danger">专</van-tag>
-          <van-tag v-else type="danger">票</van-tag>
-          <span class="status">{{ item.statements }}</span>
+        <div class='record-list_item_top'>
+          <van-tag v-if="item.category === '增值税电子普通发票'" type='danger'>电</van-tag>
+          <van-tag v-else-if="item.category === '增值税普通发票'" type='danger'>普</van-tag>
+          <van-tag v-else-if="item.category === '增值税专用发票'" type='danger'>专</van-tag>
+          <van-tag v-else type='danger'>票</van-tag>
+          <span class='status'>{{ item.statements }}</span>
         </div>
-        <div class="record-list_item_bottom">
-          <p class="text">
+        <div class='record-list_item_bottom'>
+          <p class='text'>
             <span>{{ item.purchaserName }}</span>
           </p>
-          <p class="record-list_item_bottom_time">
+          <p class='record-list_item_bottom_time'>
             <span>{{ item.addTime }}</span>
-            <span class="price">￥{{ item.price }}</span>
+            <span class='price'>￥{{ item.price }}</span>
           </p>
         </div>
       </div>
@@ -54,10 +54,11 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang='ts'>
 import { getRecordListApi } from '@/api/record';
 import moment from 'moment';
 import { useStore } from '@/stores';
+
 const store = useStore();
 const router = useRouter();
 
@@ -85,7 +86,7 @@ const state = reactive({
  * 获取发票类型
  */
 const getRecordList = () => {
-  let params = {
+  const params = {
     size: state.pagination.size,
     page: state.pagination.page - 1,
     startAddTime: state.startAddTime,
@@ -94,7 +95,7 @@ const getRecordList = () => {
   getRecordListApi(params).then(res => {
     state.loading = false;
     if (res.code === 1) {
-      let data = res.content;
+      const data = res.content;
       state.pagination.totalPages = res.totalPages;
       state.invoiceList = state.invoiceList.concat(data);
     } else {
@@ -155,7 +156,7 @@ const clearDate = () => {
 };
 
 const getWindowHeight = () => {
-  let clientHeight = document.documentElement.clientHeight;
+  const clientHeight = document.documentElement.clientHeight;
   state.windowHeight = clientHeight - 69 - (store.ifShowH5NavBar ? 46 : 0);
 };
 
@@ -165,11 +166,12 @@ onMounted(() => {
 });
 </script>
 
-<style lang="less">
+<style lang='less'>
 .record-list {
   .van-cell__value {
     min-width: 60%;
     margin-right: 8px;
+
     span {
       display: inline-block;
       text-align: left;
@@ -178,7 +180,7 @@ onMounted(() => {
   }
 }
 </style>
-<style lang="less" scoped>
+<style lang='less' scoped>
 .record-list {
   padding: 15px 16px 0px 16px;
 
@@ -192,6 +194,7 @@ onMounted(() => {
       display: flex;
       justify-content: space-between;
       align-items: center;
+
       .status {
         color: #1989fa;
       }

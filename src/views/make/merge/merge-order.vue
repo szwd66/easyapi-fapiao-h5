@@ -1,54 +1,55 @@
 <template>
-  <Header headerTitle="开具电子发票" v-if="store.ifShowH5NavBar" />
-  <div class="make-invoice">
+  <Header headerTitle='开具电子发票' v-if='store.ifShowH5NavBar' />
+  <div class='make-invoice'>
     <Invoice
-      :isShow="state.isShow"
-      :isHide="state.isHide"
-      :ifElectronic="state.ifElectronic"
-      :invoiceForm="state.invoiceForm"
-      :ifPaper="state.ifPaper"
-      :company="state.company"
-      @getCompany="receiveCompany"
-      @getInvoiceCategory="receiveCategory"
-      @getInvoiceProperty="receiveProperty"
+      :isShow='state.isShow'
+      :isHide='state.isHide'
+      :ifElectronic='state.ifElectronic'
+      :invoiceForm='state.invoiceForm'
+      :ifPaper='state.ifPaper'
+      :company='state.company'
+      @getCompany='receiveCompany'
+      @getInvoiceCategory='receiveCategory'
+      @getInvoiceProperty='receiveProperty'
     />
 
-    <van-cell-group title="发票内容" inset>
-      <van-field label="发票内容" v-model="state.orderType" readonly></van-field>
+    <van-cell-group title='发票内容' inset>
+      <van-field label='发票内容' v-model='state.orderType' readonly></van-field>
       <van-field
-        class="merge-order_price"
-        label="发票金额"
-        v-model="state.invoiceForm.price"
+        class='merge-order_price'
+        label='发票金额'
+        v-model='state.invoiceForm.price'
         readonly
       ></van-field>
       <van-field
-        label="发票备注"
-        v-model="state.invoiceForm.remark"
-        :placeholder="common.remarkPlaceholder"
+        label='发票备注'
+        v-model='state.invoiceForm.remark'
+        :placeholder='common.remarkPlaceholder'
       ></van-field>
     </van-cell-group>
 
     <Receive
-      :ifElectronic="state.ifElectronic"
-      :invoiceForm="state.invoiceForm"
-      :ifNeedEmail="common.ifNeedEmail"
-      :ifNeedMobile="common.ifNeedMobile"
-      :address="state.address"
+      :ifElectronic='state.ifElectronic'
+      :invoiceForm='state.invoiceForm'
+      :ifNeedEmail='common.ifNeedEmail'
+      :ifNeedMobile='common.ifNeedMobile'
+      :address='state.address'
     />
 
-    <div class="bottom fixed-bottom-bgColor">
-      <van-button type="primary" class="submit" block @click="makeInvoice">提交</van-button>
+    <div class='bottom fixed-bottom-bgColor'>
+      <van-button type='primary' class='submit' block @click='makeInvoice'>提交</van-button>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang='ts'>
 import { mergeMakeInvoiceApi } from '@/api/make';
-import { showToast, showLoadingToast, closeToast, showConfirmDialog } from 'vant';
+import { closeToast, showConfirmDialog, showLoadingToast, showToast } from 'vant';
 import makeMixins from '../mixins/make';
 import { localStorage } from '@/utils/local-storage';
-const { common, getInvoiceRemark, ifNeedMobileEmail, checkEmailMobile } = makeMixins();
 import { useStore } from '@/stores';
+
+const { common, getInvoiceRemark, ifNeedMobileEmail, checkEmailMobile } = makeMixins();
 const store = useStore();
 const router = useRouter();
 
@@ -156,6 +157,6 @@ onMounted(() => {
 });
 </script>
 
-<style lang="less">
+<style lang='less'>
 @import '../make.less';
 </style>

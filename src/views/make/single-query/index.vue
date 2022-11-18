@@ -1,97 +1,98 @@
 <template>
-  <Header headerTitle="开具电子发票" v-if="store.ifShowH5NavBar" />
-  <div class="make-invoice">
+  <Header headerTitle='开具电子发票' v-if='store.ifShowH5NavBar' />
+  <div class='make-invoice'>
     <Invoice
-      :isShow="state.isShow"
-      :isHide="state.isHide"
-      :ifElectronic="state.ifElectronic"
-      :invoiceForm="state.invoiceForm"
-      :ifPaper="state.ifPaper"
-      :company="state.company"
-      @getCompany="receiveCompany"
-      @getInvoiceCategory="receiveCategory"
-      @getInvoiceProperty="receiveProperty"
+      :isShow='state.isShow'
+      :isHide='state.isHide'
+      :ifElectronic='state.ifElectronic'
+      :invoiceForm='state.invoiceForm'
+      :ifPaper='state.ifPaper'
+      :company='state.company'
+      @getCompany='receiveCompany'
+      @getInvoiceCategory='receiveCategory'
+      @getInvoiceProperty='receiveProperty'
     />
 
-    <div class="invoice-contents">
-      <p class="contents-title">发票内容</p>
-      <div class="contents-product">
-        <van-field name="rate" label="发票内容">
+    <div class='invoice-contents'>
+      <p class='contents-title'>发票内容</p>
+      <div class='contents-product'>
+        <van-field name='rate' label='发票内容'>
           <template #input>
             <van-tag
-              type="primary"
+              type='primary'
               :plain="state.active !== '商品明细'"
-              size="medium"
+              size='medium'
               @click="showDetail('商品明细')"
             >
               商品明细
             </van-tag>
             <van-tag
-              type="primary"
+              type='primary'
               :plain="state.active !== '商品类别'"
-              size="medium"
+              size='medium'
               @click="showDetail('商品类别')"
-              style="margin-left: 5px"
+              style='margin-left: 5px'
             >
               商品类别
             </van-tag>
           </template>
         </van-field>
-        <ul class="product-head">
-          <li style="width: 35%">商品名称</li>
-          <li style="width: 35%">规格型号</li>
+        <ul class='product-head'>
+          <li style='width: 35%'>商品名称</li>
+          <li style='width: 35%'>规格型号</li>
           <li>单位</li>
           <li>数量</li>
           <li>单价</li>
         </ul>
-        <van-cell class="line" />
-        <ul class="product-content" v-for="(item, index) in state.outOrder.items" :key="index">
-          <li style="width: 35%; line-height: 15px; padding-top: 12px">
+        <van-cell class='line' />
+        <ul class='product-content' v-for='(item, index) in state.outOrder.items' :key='index'>
+          <li style='width: 35%; line-height: 15px; padding-top: 12px'>
             {{ item.name }}
           </li>
-          <li style="width: 35%; line-height: 15px; padding-top: 12px">{{ item.model }}</li>
+          <li style='width: 35%; line-height: 15px; padding-top: 12px'>{{ item.model }}</li>
           <li>{{ item.unit }}</li>
           <li>{{ item.number }}</li>
           <li>{{ item.price }}</li>
         </ul>
-        <van-cell class="line" />
+        <van-cell class='line' />
         <van-field
-          class="merge-order_price"
-          label="发票金额"
-          v-model="state.invoiceForm.price"
+          class='merge-order_price'
+          label='发票金额'
+          v-model='state.invoiceForm.price'
           readonly
         ></van-field>
         <van-field
-          label="发票备注"
-          :placeholder="common.remarkPlaceholder"
-          v-model="state.invoiceForm.remark"
+          label='发票备注'
+          :placeholder='common.remarkPlaceholder'
+          v-model='state.invoiceForm.remark'
         ></van-field>
       </div>
     </div>
 
     <Receive
-      :ifElectronic="state.ifElectronic"
-      :invoiceForm="state.invoiceForm"
-      :ifNeedEmail="common.ifNeedEmail"
-      :ifNeedMobile="common.ifNeedMobile"
-      :address="state.address"
+      :ifElectronic='state.ifElectronic'
+      :invoiceForm='state.invoiceForm'
+      :ifNeedEmail='common.ifNeedEmail'
+      :ifNeedMobile='common.ifNeedMobile'
+      :address='state.address'
     />
 
-    <div class="bottom fixed-bottom-bgColor">
-      <van-button type="primary" class="submit" block @click="makeInvoice">提交</van-button>
+    <div class='bottom fixed-bottom-bgColor'>
+      <van-button type='primary' class='submit' block @click='makeInvoice'>提交</van-button>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang='ts'>
 import { getStateApi, queryShopOrderApi } from '@/api/query';
 import { makeInvoiceApi } from '@/api/make';
 import { getShopApi } from '@/api/shop';
-import { showToast, showLoadingToast, closeToast, showConfirmDialog } from 'vant';
+import { closeToast, showConfirmDialog, showLoadingToast, showToast } from 'vant';
 import { localStorage } from '@/utils/local-storage';
 import makeMixins from '../mixins/make';
-const { common, getInvoiceRemark, ifNeedMobileEmail, checkEmailMobile } = makeMixins();
 import { useStore } from '@/stores';
+
+const { common, getInvoiceRemark, ifNeedMobileEmail, checkEmailMobile } = makeMixins();
 const store = useStore();
 const router = useRouter();
 const route = useRoute();
@@ -241,6 +242,6 @@ onMounted(() => {
 });
 </script>
 
-<style lang="less">
+<style lang='less'>
 @import '../make.less';
 </style>

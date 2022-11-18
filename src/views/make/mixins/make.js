@@ -6,7 +6,7 @@ import { showToast } from 'vant';
 import { validEmail, validMobile } from '@/utils/validate';
 import { reactive } from 'vue';
 
-export default function () {
+export default function() {
   const common = reactive({
     remarkPlaceholder: '可输入发票备注信息', //发票备注填写说明
     ifNeedMobile: false, //手机号码是否必填
@@ -29,12 +29,12 @@ export default function () {
    * 获取手机和邮箱是否必填
    */
   const ifNeedMobileEmail = () => {
-    let params = {
+    const params = {
       fieldKeys: 'if_need_mobile' + ',' + 'if_need_email',
     };
     findSettingApi(params).then(res => {
       if (res.code === 1) {
-        for (let setting of res.content) {
+        for (const setting of res.content) {
           if (setting.fieldKey === 'if_need_mobile') {
             common.ifNeedMobile = setting.fieldValue == 'true';
           } else if (setting.fieldKey === 'if_need_email') {

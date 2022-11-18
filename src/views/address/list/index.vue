@@ -1,37 +1,38 @@
 <template>
-  <Header headerTitle="地址管理" v-if="store.ifShowH5NavBar" />
-  <div class="address" v-if="!state.loading">
-    <div v-if="state.addressList.length == 0">
-      <van-empty image="search" description="暂无数据" />
+  <Header headerTitle='地址管理' v-if='store.ifShowH5NavBar' />
+  <div class='address' v-if='!state.loading'>
+    <div v-if='state.addressList.length == 0'>
+      <van-empty image='search' description='暂无数据' />
     </div>
-    <div class="address-list" v-else>
-      <div class="address-list-item" v-for="(item, index) in state.addressList" :key="index">
-        <div class="address-top fixed-bottom-bgColor">
-          <span class="rise-text">{{ item.name }}</span>
-          <van-tag plain type="warning" v-if="item.ifDefault">默认</van-tag>
-          <span class="edit" @click="gotoEditAddress(item.addressId)">编辑</span>
+    <div class='address-list' v-else>
+      <div class='address-list-item' v-for='(item, index) in state.addressList' :key='index'>
+        <div class='address-top fixed-bottom-bgColor'>
+          <span class='rise-text'>{{ item.name }}</span>
+          <van-tag plain type='warning' v-if='item.ifDefault'>默认</van-tag>
+          <span class='edit' @click='gotoEditAddress(item.addressId)'>编辑</span>
         </div>
-        <van-cell-group @click="select(item)" :border="false">
-          <van-cell title="联系电话" :value="item.mobile" :border="false" />
+        <van-cell-group @click='select(item)' :border='false'>
+          <van-cell title='联系电话' :value='item.mobile' :border='false' />
           <van-cell
-            title="收票地址"
-            :value="item.province + item.city + item.district + item.addr"
-            :border="false"
+            title='收票地址'
+            :value='item.province + item.city + item.district + item.addr'
+            :border='false'
           />
         </van-cell-group>
       </div>
     </div>
-    <div class="bottom fixed-bottom-bgColor">
-      <van-button type="primary" class="submit" block @click="gotoEditAddress()">
+    <div class='bottom fixed-bottom-bgColor'>
+      <van-button type='primary' class='submit' block @click='gotoEditAddress()'>
         新增地址
       </van-button>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import { getAddressListApi, defaultAddressApi } from '@/api/address';
+<script setup lang='ts'>
+import { defaultAddressApi, getAddressListApi } from '@/api/address';
 import { useStore } from '@/stores';
+
 const store = useStore();
 
 const router = useRouter();
@@ -77,11 +78,12 @@ onMounted(() => {
 });
 </script>
 
-<style lang="less">
+<style lang='less'>
 .address {
   .van-cell__value {
     min-width: 70%;
     text-align: left;
+
     span {
       display: inline-block;
       word-break: break-all;
@@ -89,7 +91,7 @@ onMounted(() => {
   }
 }
 </style>
-<style lang="less" scoped>
+<style lang='less' scoped>
 .address {
   .address-list {
     padding: 0px 16px;

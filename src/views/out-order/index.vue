@@ -1,67 +1,67 @@
 <template>
-  <Header headerTitle="选择订单" v-if="store.ifShowH5NavBar"></Header>
+  <header headerTitle='选择订单' v-if='store.ifShowH5NavBar'></header>
 
-  <div v-if="state.empty">
-    <van-empty image="search" description="暂无订单数据" />
+  <div v-if='state.empty'>
+    <van-empty image='search' description='暂无订单数据' />
   </div>
 
   <van-list
     v-else
-    v-model:loading="state.loading"
-    :finished="state.finished"
-    finished-text="没有更多数据了"
-    @load="loadMore"
-    class="page-checklist"
+    v-model:loading='state.loading'
+    :finished='state.finished'
+    finished-text='没有更多数据了'
+    @load='loadMore'
+    class='page-checklist'
     :style="{ height: state.windowHeight + 'px' }"
   >
-    <div style="margin-bottom: 30px" v-if="state.minusOutOrderList.length > 0">
-      <p class="pd-left">
+    <div style='margin-bottom: 30px' v-if='state.minusOutOrderList.length > 0'>
+      <p class='pd-left'>
         有{{ minusOutOrderList.length }}笔欠费金额，欠费金额小计：¥{{ minusAmount }}元
       </p>
-      <div class="mint-checklist" v-for="(item, index) in state.minusOutOrderList" :key="index">
-        <div class="mint-cell-wrapper">
+      <div class='mint-checklist' v-for='(item, index) in state.minusOutOrderList' :key='index'>
+        <div class='mint-cell-wrapper'>
           <div>
-            <van-checkbox icon-size="15px" v-model="item.status" shape="square"></van-checkbox>
+            <van-checkbox icon-size='15px' v-model='item.status' shape='square'></van-checkbox>
           </div>
-          <div class="order-right" @click="checked(index)">
-            <van-cell-group :border="false">
-              <van-cell :title="'订单号：' + item.no" :border="false" class="orderNum" />
+          <div class='order-right' @click='checked(index)'>
+            <van-cell-group :border='false'>
+              <van-cell :title="'订单号：' + item.no" :border='false' class='orderNum' />
               <van-cell
-                v-if="item.fields"
-                :title="Object.values(JSON.parse(item.fields))[0]"
-                :value="item.noY"
-                :border="false"
+                v-if='item.fields'
+                :title='Object.values(JSON.parse(item.fields))[0]'
+                :value='item.noY'
+                :border='false'
               />
               <van-cell
-                :title="item.orderTime"
-                class="price"
+                :title='item.orderTime'
+                class='price'
                 :value="'￥' + item.price"
-                :border="false"
+                :border='false'
               />
             </van-cell-group>
           </div>
         </div>
       </div>
     </div>
-    <div class="mint-checklist" v-for="(item, index) in state.outOrderList" :key="index">
-      <div class="mint-cell-wrapper">
-        <div style="margin-top: 7px">
-          <van-checkbox icon-size="15px" v-model="item.status" shape="square"></van-checkbox>
+    <div class='mint-checklist' v-for='(item, index) in state.outOrderList' :key='index'>
+      <div class='mint-cell-wrapper'>
+        <div style='margin-top: 7px'>
+          <van-checkbox icon-size='15px' v-model='item.status' shape='square'></van-checkbox>
         </div>
-        <div class="order-right" @click="checked(index)">
-          <van-cell-group :border="false">
-            <van-cell :title="'订单号：' + item.no" :border="false" class="orderNum" />
+        <div class='order-right' @click='checked(index)'>
+          <van-cell-group :border='false'>
+            <van-cell :title="'订单号：' + item.no" :border='false' class='orderNum' />
             <van-cell
-              v-if="item.fields"
-              :title="Object.values(JSON.parse(item.fields))[0]"
-              :value="item.noY"
-              :border="false"
+              v-if='item.fields'
+              :title='Object.values(JSON.parse(item.fields))[0]'
+              :value='item.noY'
+              :border='false'
             />
             <van-cell
-              :title="item.orderTime"
-              class="price"
+              :title='item.orderTime'
+              class='price'
               :value="'￥' + item.price"
-              :border="false"
+              :border='false'
             />
           </van-cell-group>
         </div>
@@ -69,27 +69,27 @@
     </div>
   </van-list>
 
-  <div v-if="state.outOrderList.length > 0">
+  <div v-if='state.outOrderList.length > 0'>
     <van-submit-bar
-      :price="totalPrice * 100"
-      button-text="下一步"
-      :disabled="state.selectList.length < 1"
-      button-color="#1989fa"
-      @submit="goElectronicInvoice"
+      :price='totalPrice * 100'
+      button-text='下一步'
+      :disabled='state.selectList.length < 1'
+      button-color='#1989fa'
+      @submit='goElectronicInvoice'
     >
-      <van-checkbox @click="change()" v-model="state.allCheck">本页全选</van-checkbox>
+      <van-checkbox @click='change()' v-model='state.allCheck'>本页全选</van-checkbox>
       <template #tip>最低开票金额{{ state.minPrice }}元</template>
     </van-submit-bar>
   </div>
 </template>
 
-<script setup lang="ts">
-import { Header } from '@/components';
+<script setup lang='ts'>
 import { getOutOrderListApi } from '@/api/out-order';
 import { getShopApi } from '@/api/shop';
 import { useStore } from '@/stores';
 import { computed } from 'vue';
 import { localStorage } from '@/utils/local-storage';
+
 const store = useStore();
 const route = useRoute();
 const router = useRouter();
@@ -131,7 +131,8 @@ const totalPrice = computed({
     }
     return (totalPrice - state.minusAmount).toFixed(2);
   },
-  set() {},
+  set() {
+  },
 });
 
 const checked = index => {
@@ -205,7 +206,7 @@ const loadMore = () => {
  * 全选
  */
 const change = () => {
-  state.outOrderList.forEach(function (v) {
+  state.outOrderList.forEach(function(v) {
     return (v.status = state.allCheck);
   });
   if (state.allCheck === true) {
@@ -246,7 +247,7 @@ onMounted(() => {
   getWindowHeight();
 });
 </script>
-<style lang="less">
+<style lang='less'>
 .page-checklist {
   .price {
     .van-cell__value {
@@ -255,7 +256,7 @@ onMounted(() => {
   }
 }
 </style>
-<style lang="less" scoped>
+<style lang='less' scoped>
 .page-checklist {
   margin-bottom: 87px;
   height: 100%;
@@ -273,6 +274,7 @@ onMounted(() => {
   .order-right {
     margin-left: 12px;
     width: 100%;
+
     .van-cell {
       padding: 3px 10px;
     }

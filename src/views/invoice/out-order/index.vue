@@ -1,35 +1,36 @@
 <template>
-  <Header headerTitle="关联订单" v-if="store.ifShowH5NavBar" />
+  <Header headerTitle='关联订单' v-if='store.ifShowH5NavBar' />
   <van-list
-    v-model:loading="state.loading"
-    :finished="state.finished"
-    finished-text="没有更多数据了"
-    @load="loadMore"
-    class="invoice-out-order"
+    v-model:loading='state.loading'
+    :finished='state.finished'
+    finished-text='没有更多数据了'
+    @load='loadMore'
+    class='invoice-out-order'
     :style="{ height: state.windowHeight + 'px' }"
   >
-    <div class="order-con" v-for="(item, index) in state.outOrders" :key="index">
-      <van-cell-group :border="false">
-        <van-cell title="订单编号：" :value="item.no" :border="false" />
+    <div class='order-con' v-for='(item, index) in state.outOrders' :key='index'>
+      <van-cell-group :border='false'>
+        <van-cell title='订单编号：' :value='item.no' :border='false' />
         <van-cell
-          v-if="item.fields"
-          :title="Object.values(JSON.parse(item.fields))[0]"
-          :value="item.noY"
-          :border="false"
+          v-if='item.fields'
+          :title='Object.values(JSON.parse(item.fields))[0]'
+          :value='item.noY'
+          :border='false'
         />
-        <van-cell title="" :value="item.model" :border="false" />
-        <div class="subtotal">
+        <van-cell title='' :value='item.model' :border='false' />
+        <div class='subtotal'>
           <span>小计</span>
-          <span class="price">￥{{ item.price }}</span>
+          <span class='price'>￥{{ item.price }}</span>
         </div>
       </van-cell-group>
     </div>
   </van-list>
 </template>
 
-<script setup lang="ts">
+<script setup lang='ts'>
 import { getOutOrderListApi } from '@/api/invoice';
 import { useStore } from '@/stores';
+
 const store = useStore();
 const route = useRoute();
 
@@ -46,7 +47,7 @@ const state = reactive({
 });
 
 const getOutOrderList = () => {
-  let params = {
+  const params = {
     invoiceId: route.query.id,
     page: state.pagination.page - 1,
     size: state.pagination.size,
@@ -76,7 +77,7 @@ const loadMore = () => {
 };
 
 const getWindowHeight = () => {
-  let clientHeight = document.documentElement.clientHeight;
+  const clientHeight = document.documentElement.clientHeight;
   state.windowHeight = clientHeight - 15 - (store.ifShowH5NavBar ? 46 : 0);
 };
 
@@ -86,11 +87,12 @@ onMounted(() => {
 });
 </script>
 
-<style lang="less">
+<style lang='less'>
 .invoice-out-order {
   .van-cell__value {
     min-width: 70%;
     text-align: left;
+
     span {
       display: inline-block;
       word-break: break-all;
@@ -99,7 +101,7 @@ onMounted(() => {
 }
 </style>
 
-<style lang="less" scoped>
+<style lang='less' scoped>
 .invoice-out-order {
   padding: 0 16px;
 

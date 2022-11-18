@@ -1,96 +1,97 @@
 <template>
-  <Header headerTitle="开具电子发票" v-if="store.ifShowH5NavBar" />
-  <div class="make-invoice">
+  <Header headerTitle='开具电子发票' v-if='store.ifShowH5NavBar' />
+  <div class='make-invoice'>
     <Invoice
-      :isShow="state.isShow"
-      :isHide="state.isHide"
-      :ifElectronic="state.ifElectronic"
-      :invoiceForm="state.invoiceForm"
-      :ifPaper="state.ifPaper"
-      :company="state.company"
-      @getCompany="receiveCompany"
-      @getInvoiceCategory="receiveCategory"
-      @getInvoiceProperty="receiveProperty"
+      :isShow='state.isShow'
+      :isHide='state.isHide'
+      :ifElectronic='state.ifElectronic'
+      :invoiceForm='state.invoiceForm'
+      :ifPaper='state.ifPaper'
+      :company='state.company'
+      @getCompany='receiveCompany'
+      @getInvoiceCategory='receiveCategory'
+      @getInvoiceProperty='receiveProperty'
     />
 
-    <van-cell-group title="发票内容" inset>
+    <van-cell-group title='发票内容' inset>
       <van-field
         readonly
         clickable
-        label="发票类别"
-        :value="state.customCategory.name"
-        placeholder="选择发票类别"
-        @click="state.showCustomCategory = true"
+        label='发票类别'
+        :value='state.customCategory.name'
+        placeholder='选择发票类别'
+        @click='state.showCustomCategory = true'
         required
       />
-      <van-popup v-model:show="state.showCustomCategory" round position="bottom">
+      <van-popup v-model:show='state.showCustomCategory' round position='bottom'>
         <van-picker
           show-toolbar
-          :columns="state.customCategoryList"
-          value-key="name"
-          @cancel="state.showCustomCategory = false"
-          @confirm="onConfirm"
+          :columns='state.customCategoryList'
+          value-key='name'
+          @cancel='state.showCustomCategory = false'
+          @confirm='onConfirm'
         />
       </van-popup>
 
       <van-field
-        class="merge-order_price"
+        class='merge-order_price'
         readonly
         clickable
-        label="发票金额"
-        placeholder="请准确输入开票金额"
-        v-model="state.invoiceForm.price"
-        @touchstart.stop="state.keyboardShow = true"
+        label='发票金额'
+        placeholder='请准确输入开票金额'
+        v-model='state.invoiceForm.price'
+        @touchstart.stop='state.keyboardShow = true'
         required
       ></van-field>
       <van-number-keyboard
-        :show="state.keyboardShow"
-        v-model="state.invoiceForm.price"
-        theme="custom"
-        extra-key="."
-        close-button-text="完成"
-        @blur="state.keyboardShow = false"
+        :show='state.keyboardShow'
+        v-model='state.invoiceForm.price'
+        theme='custom'
+        extra-key='.'
+        close-button-text='完成'
+        @blur='state.keyboardShow = false'
       />
       <van-field
-        label="发票备注"
-        :placeholder="common.remarkPlaceholder"
-        v-model="state.invoiceForm.remark"
+        label='发票备注'
+        :placeholder='common.remarkPlaceholder'
+        v-model='state.invoiceForm.remark'
       ></van-field>
-      <van-cell title="附件" required>
+      <van-cell title='附件' required>
         <van-uploader
-          v-model="state.imageList"
+          v-model='state.imageList'
           multiple
-          :max-count="3"
-          :data="{ key: state.qnKey, token: state.qnToken }"
-          :after-read="onAfterRead"
+          :max-count='3'
+          :data='{ key: state.qnKey, token: state.qnToken }'
+          :after-read='onAfterRead'
         ></van-uploader>
       </van-cell>
     </van-cell-group>
 
     <Receive
-      :ifElectronic="state.ifElectronic"
-      :invoiceForm="state.invoiceForm"
-      :ifNeedEmail="common.ifNeedEmail"
-      :ifNeedMobile="common.ifNeedMobile"
-      :address="state.address"
+      :ifElectronic='state.ifElectronic'
+      :invoiceForm='state.invoiceForm'
+      :ifNeedEmail='common.ifNeedEmail'
+      :ifNeedMobile='common.ifNeedMobile'
+      :address='state.address'
     />
 
-    <div class="bottom fixed-bottom-bgColor">
-      <van-button type="primary" class="submit" block @click="makeInvoice">申请开票</van-button>
+    <div class='bottom fixed-bottom-bgColor'>
+      <van-button type='primary' class='submit' block @click='makeInvoice'>申请开票</van-button>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import { getQiniuTokenApi, getQiniuKeyApi, qiniuUploadApi } from '@/api/qiniu';
+<script setup lang='ts'>
+import { getQiniuKeyApi, getQiniuTokenApi, qiniuUploadApi } from '@/api/qiniu';
 import { getCustomCategoryListApi } from '@/api/custom-category';
 import { categoryMakeInvoiceApi } from '@/api/make';
-import { showToast, showLoadingToast, closeToast, showConfirmDialog } from 'vant';
+import { closeToast, showConfirmDialog, showLoadingToast, showToast } from 'vant';
 import { validPrice } from '@/utils/validate';
 import makeMixins from '../mixins/make';
 import { localStorage } from '@/utils/local-storage';
-const { common, getInvoiceRemark, ifNeedMobileEmail, checkEmailMobile } = makeMixins();
 import { useStore } from '@/stores';
+
+const { common, getInvoiceRemark, ifNeedMobileEmail, checkEmailMobile } = makeMixins();
 const store = useStore();
 const router = useRouter();
 const route = useRoute();
@@ -157,7 +158,7 @@ const onAfterRead = file => {
  * 上传图片到七牛
  */
 const uploadImgToQiniu = (qnToken, qnKey, file) => {
-  let data = new FormData();
+  const data = new FormData();
   //七牛需要的token，后台获取
   data.append('token', qnToken);
   data.append('key', qnKey);
@@ -269,6 +270,6 @@ onMounted(() => {
 });
 </script>
 
-<style lang="less">
+<style lang='less'>
 @import '../make.less';
 </style>

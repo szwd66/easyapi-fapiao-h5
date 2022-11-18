@@ -1,37 +1,37 @@
 <template>
   <div>
-    <van-cell-group v-if="state.ifOrderMake === true" title="订单开票" inset>
+    <van-cell-group v-if='state.ifOrderMake === true' title='订单开票' inset>
       <van-cell
-        v-for="type in state.orderTypeList"
-        :key="type.orderTypeId"
-        :title="type.name"
+        v-for='type in state.orderTypeList'
+        :key='type.orderTypeId'
+        :title='type.name'
         is-link
         :to="{ path: '/out-order', query: { type: type.name } }"
-        size="large"
+        size='large'
       />
     </van-cell-group>
-    <van-cell-group title="发票管理" inset>
-      <van-cell title="开票记录" is-link to="/invoice/record" />
-      <van-cell title="开票规则" is-link to="/rule" />
+    <van-cell-group title='发票管理' inset>
+      <van-cell title='开票记录' is-link to='/invoice/record' />
+      <van-cell title='开票规则' is-link to='/rule' />
       <van-cell
-        title="抬头管理"
+        title='抬头管理'
         is-link
         :to="{ path: '/company/list', params: { from: state.index } }"
       />
       <van-cell
-        title="地址管理"
+        title='地址管理'
         is-link
         :to="{ path: '/address/list', params: { from: state.index } }"
       />
     </van-cell-group>
-    <div class="remark">如果无法提交开票申请，请联系客服13656171020</div>
-    <div v-if="state.ifProductMake || state.ifMoneyMake" class="bottom fixed-bottom-bgColor">
-      <van-button type="primary" class="submit" block @click="gotoMake">我要开票</van-button>
+    <div class='remark'>如果无法提交开票申请，请联系客服13656171020</div>
+    <div v-if='state.ifProductMake || state.ifMoneyMake' class='bottom fixed-bottom-bgColor'>
+      <van-button type='primary' class='submit' block @click='gotoMake'>我要开票</van-button>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang='ts'>
 import { localStorage } from '@/utils/local-storage';
 import { getShopApi } from '@/api/shop';
 import { findSettingApi } from '@/api/setting';
@@ -101,7 +101,7 @@ const findSetting = () => {
     fieldKeys: 'if_product' + ',' + 'if_money' + ',' + 'if_order',
   }).then(res => {
     if (res.code === 1) {
-      for (let setting of res.content) {
+      for (const setting of res.content) {
         if (setting.fieldKey === 'if_product') {
           state.ifProductMake = setting.fieldValue == 'true';
           localStorage.set('ifProductMake', state.ifProductMake);
@@ -127,7 +127,7 @@ onMounted(() => {
 });
 </script>
 
-<style lang="less" scoped>
+<style lang='less' scoped>
 .remark {
   padding: 15px 16px;
   color: #666;

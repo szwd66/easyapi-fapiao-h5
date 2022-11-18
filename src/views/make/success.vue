@@ -1,15 +1,15 @@
 <template>
-  <div class="success">
-    <van-icon name="checked" color="#19be6b" size="120" />
-    <div class="success-button">
-      <van-button type="default" plain block round @click="gotoIndex">返回首页</van-button>
+  <div class='success'>
+    <van-icon name='checked' color='#19be6b' size='120' />
+    <div class='success-button'>
+      <van-button type='default' plain block round @click='gotoIndex'>返回首页</van-button>
       <van-divider hairline />
-      <van-button type="default" plain block round @click="gotoInvoiceList">开票记录</van-button>
+      <van-button type='default' plain block round @click='gotoInvoiceList'>开票记录</van-button>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang='ts'>
 const router = useRouter();
 
 const gotoInvoiceList = () => {
@@ -20,6 +20,6 @@ const gotoIndex = () => {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang='less' scoped>
 @import './success.less';
 </style>

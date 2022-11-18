@@ -1,48 +1,49 @@
 <template>
-  <Header headerTitle="抬头管理" v-if="store.ifShowH5NavBar" />
+  <Header headerTitle='抬头管理' v-if='store.ifShowH5NavBar' />
   <div :class="store.ifShowH5NavBar ? 'search-top' : 'search'">
     <van-search
-      v-model="state.companyName"
-      placeholder="请输入公司名称"
-      @update:model-value="companyNameSearch"
+      v-model='state.companyName'
+      placeholder='请输入公司名称'
+      @update:model-value='companyNameSearch'
     ></van-search>
   </div>
-  <div class="search-placeholder"></div>
-  <div class="company">
-    <div v-if="!state.loading">
-      <div v-if="state.companyList.length == 0">
-        <van-empty image="search" description="暂无数据" />
+  <div class='search-placeholder'></div>
+  <div class='company'>
+    <div v-if='!state.loading'>
+      <div v-if='state.companyList.length == 0'>
+        <van-empty image='search' description='暂无数据' />
       </div>
-      <div class="company-list" v-else>
-        <div class="company-list-item" v-for="(item, index) in state.companyList" :key="index">
-          <div class="company-top fixed-bottom-bgColor">
-            <span class="rise-text">{{ item.name }}</span>
-            <van-tag plain type="warning" size="medium" v-if="item.ifDefault">默认</van-tag>
-            <span class="edit" @click="gotoEditCompany(item.companyId)">编辑</span>
+      <div class='company-list' v-else>
+        <div class='company-list-item' v-for='(item, index) in state.companyList' :key='index'>
+          <div class='company-top fixed-bottom-bgColor'>
+            <span class='rise-text'>{{ item.name }}</span>
+            <van-tag plain type='warning' size='medium' v-if='item.ifDefault'>默认</van-tag>
+            <span class='edit' @click='gotoEditCompany(item.companyId)'>编辑</span>
           </div>
-          <van-cell-group :border="false" @click="select(item)">
-            <van-cell title="公司税号" :value="item.taxNumber" :border="false" />
-            <van-cell title="地址、电话" :value="item.address + item.phone" :border="false" />
-            <van-cell title="开户行及账号" :value="item.bank + item.bankAccount" :border="false" />
+          <van-cell-group :border='false' @click='select(item)'>
+            <van-cell title='公司税号' :value='item.taxNumber' :border='false' />
+            <van-cell title='地址、电话' :value='item.address + item.phone' :border='false' />
+            <van-cell title='开户行及账号' :value='item.bank + item.bankAccount' :border='false' />
           </van-cell-group>
         </div>
       </div>
     </div>
-    <div class="loading" v-if="state.loading">
+    <div class='loading' v-if='state.loading'>
       <div>加载中......</div>
     </div>
-    <div class="no-more-data" v-if="state.noMoreData">
+    <div class='no-more-data' v-if='state.noMoreData'>
       <div>没有更多数据了</div>
     </div>
   </div>
-  <div class="bottom fixed-bottom-bgColor">
-    <van-button type="primary" class="sumbit" block @click="gotoEditCompany()">新增抬头</van-button>
+  <div class='bottom fixed-bottom-bgColor'>
+    <van-button type='primary' class='sumbit' block @click='gotoEditCompany()'>新增抬头</van-button>
   </div>
 </template>
-<script setup lang="ts">
+<script setup lang='ts'>
 import { showLoadingToast, closeToast } from 'vant';
 import { updateCompanySetDefaultApi, getCompanyListApi } from '@/api/company';
 import { useStore } from '@/stores';
+
 const store = useStore();
 const router = useRouter();
 
@@ -65,7 +66,7 @@ const getCompanyList = () => {
     message: '加载中...',
     forbidClick: true,
   });
-  let params = {
+  const params = {
     name: state.companyName,
     size: state.pagination.size,
     page: state.pagination.page,
@@ -119,9 +120,9 @@ const getPageList = () => {
 };
 
 const lazyLoading = () => {
-  let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-  let clientHeight = document.documentElement.clientHeight;
-  let scrollHeight = document.documentElement.scrollHeight;
+  const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  const clientHeight = document.documentElement.clientHeight;
+  const scrollHeight = document.documentElement.scrollHeight;
   if (scrollTop + clientHeight >= scrollHeight) {
     // 滚动到底部，逻辑代码
     //事件处理
@@ -136,11 +137,12 @@ onMounted(() => {
 });
 </script>
 
-<style lang="less">
+<style lang='less'>
 .company {
   .van-cell__value {
     min-width: 70%;
     text-align: left;
+
     span {
       display: inline-block;
       word-break: break-all;
@@ -148,7 +150,7 @@ onMounted(() => {
   }
 }
 </style>
-<style lang="less" scoped>
+<style lang='less' scoped>
 .search-top {
   position: fixed;
   top: 46px;
@@ -172,6 +174,7 @@ onMounted(() => {
 
 .company {
   padding-bottom: 64px;
+
   .company-list {
     padding: 0 16px;
 
