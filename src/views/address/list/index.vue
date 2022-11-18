@@ -44,14 +44,8 @@ const state = reactive({
 });
 
 const getAddressList = () => {
-  showLoadingToast({
-    duration: 0,
-    message: '加载中...',
-    forbidClick: true,
-  });
   getAddressListApi({}).then(res => {
     state.loading = false;
-    closeToast();
     if (res.code === 1) {
       state.addressList = res.content;
     }
@@ -63,7 +57,10 @@ const select = item => {
   history.back();
 };
 
-//设置默认值
+/**
+ * 设置默认值
+ * @param addressId
+ */
 const defaultAddress = addressId => {
   defaultAddressApi(addressId).then();
 };
