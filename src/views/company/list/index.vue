@@ -27,10 +27,8 @@
           </div>
           <van-cell-group :border="false" @click="select(item)">
             <van-cell title="公司税号" :value="item.taxNumber" :border="false" />
-            <van-cell title="注册地址" :value="item.address" :border="false" />
-            <van-cell title="注册电话" :value="item.phone" :border="false" />
-            <van-cell title="开户银行" :value="item.bank" :border="false" />
-            <van-cell title="银行账号" :value="item.bankAccount" :border="false" />
+            <van-cell title="地址、电话" :value="item.address + item.phone" :border="false" />
+            <van-cell title="开户行及账号" :value="item.bank + item.bankAccount" :border="false" />
           </van-cell-group>
         </div>
       </div>
@@ -178,11 +176,11 @@ onMounted(() => {
 .company {
   padding-bottom: 64px;
   .company-list {
-    padding: 0px 16px;
+    padding: 0 16px;
 
     .company-list-item {
       border-radius: 5px;
-      box-shadow: 0px 2px 15px 0px rgba(0, 0, 0, 0.11);
+      box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.11);
       margin-top: 15px;
       overflow: hidden;
 
