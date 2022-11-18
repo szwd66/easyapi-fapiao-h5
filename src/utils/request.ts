@@ -1,14 +1,6 @@
 import type { AxiosRequestConfig, AxiosError } from 'axios';
 import axios, { AxiosResponse } from 'axios';
-import { localStorage } from '@/utils/local-storage';
-import { STORAGE_TOKEN_KEY } from '@/stores/mutation-type';
 import { showNotify, showToast } from 'vant';
-
-// 这里是用于设定请求后端时，所用的 Token KEY
-// 可以根据自己的需要修改，常见的如 Access-Token，Authorization
-// 需要注意的是，请尽量保证使用中横线`-` 来作为分隔符，
-// 避免被 nginx 等负载均衡器丢弃了自定义的请求头
-export const REQUEST_TOKEN_KEY = 'Access-Token';
 
 // 创建 axios 实例
 const request = axios.create({
@@ -52,12 +44,6 @@ const errorHandler = (error: RequestError): Promise<any> => {
 const requestHandler = (
   config: AxiosRequestConfig,
 ): AxiosRequestConfig | Promise<AxiosRequestConfig> => {
-  const savedToken = localStorage.get(STORAGE_TOKEN_KEY);
-  // 如果 token 存在
-  // 让每个请求携带自定义 token, 请根据实际情况修改
-  if (savedToken) {
-    config.headers[REQUEST_TOKEN_KEY] = savedToken;
-  }
   return config;
 };
 
