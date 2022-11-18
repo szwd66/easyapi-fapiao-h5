@@ -1,5 +1,5 @@
 <template>
-  <Header headerTitle="编辑抬头" v-if="store.ifShowH5NavBar"></Header>
+  <header headerTitle="编辑抬头" v-if="store.ifShowH5NavBar"></header>
   <div class="company-edit">
     <van-cell-group inset>
       <van-field
@@ -81,7 +81,7 @@ import {
   deleteCompanyApi,
   getCompanyCodeListApi,
 } from '@/api/company';
-import { showToast, showLoadingToast, closeToast, showConfirmDialog } from 'vant';
+import { showToast, showConfirmDialog } from 'vant';
 import { useStore } from '@/stores';
 const store = useStore();
 const route = useRoute();
@@ -170,13 +170,7 @@ const inputBlur = () => {
 };
 
 const getCompany = () => {
-  showLoadingToast({
-    duration: 0,
-    message: '加载中...',
-    forbidClick: true,
-  });
   getCompanyApi(route.query.id).then(res => {
-    closeToast();
     if (res.code === 1) {
       state.companyForm = res.content;
       state.name = res.content.name;

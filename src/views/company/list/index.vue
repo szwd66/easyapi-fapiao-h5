@@ -46,7 +46,6 @@
 </template>
 <script setup lang="ts">
 import { Header } from '@/components';
-import { showLoadingToast, closeToast } from 'vant';
 import { updateCompanySetDefaultApi, getCompanyListApi } from '@/api/company';
 import { useStore } from '@/stores';
 const store = useStore();
@@ -66,19 +65,13 @@ const state = reactive({
 });
 
 const getCompanyList = () => {
-  showLoadingToast({
-    duration: 0,
-    message: '加载中...',
-    forbidClick: true,
-  });
-  let params = {
+  const params = {
     name: state.companyName,
     size: state.pagination.size,
     page: state.pagination.page,
   };
   getCompanyListApi(params).then(res => {
     state.loading = false;
-    closeToast();
     if (res.code === 1) {
       state.companyList = state.companyList.concat(res.content);
       state.pagination.totalPages = res.totalPages;
@@ -122,9 +115,9 @@ const getPageList = () => {
 };
 
 const lazyLoading = () => {
-  let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-  let clientHeight = document.documentElement.clientHeight;
-  let scrollHeight = document.documentElement.scrollHeight;
+  const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  const clientHeight = document.documentElement.clientHeight;
+  const scrollHeight = document.documentElement.scrollHeight;
   if (scrollTop + clientHeight >= scrollHeight) {
     // 滚动到底部，逻辑代码
     //事件处理

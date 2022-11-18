@@ -1,5 +1,5 @@
 <template>
-  <Header headerTitle="开票记录" v-if="store.ifShowH5NavBar"></Header>
+  <header headerTitle="开票记录" v-if="store.ifShowH5NavBar"></header>
   <div class="record-list">
     <div>
       <van-cell title="发票日期" :value="state.date" @click="state.showCalendar = true" center>
@@ -86,7 +86,7 @@ const state = reactive({
  * 获取发票类型
  */
 const getRecordList = () => {
-  let params = {
+  const params = {
     size: state.pagination.size,
     page: state.pagination.page - 1,
     startAddTime: state.startAddTime,
@@ -95,9 +95,8 @@ const getRecordList = () => {
   getRecordListApi(params).then(res => {
     state.loading = false;
     if (res.code === 1) {
-      let data = res.content;
       state.pagination.totalPages = res.totalPages;
-      state.invoiceList = state.invoiceList.concat(data);
+      state.invoiceList = state.invoiceList.concat(res.content);
     } else {
       state.empty = true;
       state.invoiceList = [];
@@ -156,7 +155,7 @@ const clearDate = () => {
 };
 
 const getWindowHeight = () => {
-  let clientHeight = document.documentElement.clientHeight;
+  const clientHeight = document.documentElement.clientHeight;
   state.windowHeight = clientHeight - 69 - (store.ifShowH5NavBar ? 46 : 0);
 };
 

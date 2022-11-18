@@ -1,5 +1,5 @@
 <template>
-  <Header headerTitle="关联订单" v-if="store.ifShowH5NavBar"></Header>
+  <header headerTitle="关联订单" v-if="store.ifShowH5NavBar"></header>
   <van-list
     v-model:loading="state.loading"
     :finished="state.finished"
@@ -47,7 +47,7 @@ const state = reactive({
 });
 
 const getOutOrderList = () => {
-  let params = {
+  const params = {
     invoiceId: route.query.id,
     page: state.pagination.page - 1,
     size: state.pagination.size,
@@ -77,7 +77,7 @@ const loadMore = () => {
 };
 
 const getWindowHeight = () => {
-  let clientHeight = document.documentElement.clientHeight;
+  const clientHeight = document.documentElement.clientHeight;
   state.windowHeight = clientHeight - 15 - (store.ifShowH5NavBar ? 46 : 0);
 };
 
@@ -106,13 +106,12 @@ onMounted(() => {
 
   .order-con {
     margin-top: 15px;
-    border-radius: 5px;
     background: #fff;
     background-size: 100% 100%;
     padding: 10px 15px 20px;
     border-bottom: 1px solid #f4f4f4;
     border-radius: 8px;
-    box-shadow: 0px 2px 15px 0px rgba(0, 0, 0, 0.11);
+    box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.11);
 
     .subtotal {
       color: #a1a1a1;

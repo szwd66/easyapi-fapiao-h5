@@ -27,7 +27,7 @@
     </van-cell-group>
 
     <van-cell-group
-      v-if="state.invoiceDetail.category == '增值税电子普通发票'"
+      v-if="state.invoiceDetail.category === '增值税电子普通发票'"
       title="接收方式"
       inset
     >
@@ -44,8 +44,8 @@
 
     <van-cell-group
       v-if="
-        state.invoiceDetail.category == '增值税普通发票' ||
-        state.invoiceDetail.category == '增值税专用发票'
+        state.invoiceDetail.category === '增值税普通发票' ||
+        state.invoiceDetail.category === '增值税专用发票'
       "
       title="接收方式"
       inset
@@ -78,7 +78,7 @@
 
 <script setup lang="ts">
 import { Header } from '@/components';
-import { showToast, showLoadingToast, closeToast } from 'vant';
+import { showToast } from 'vant';
 import { getInvoiceApi } from '@/api/invoice';
 import { getOutOrderCountApi } from '@/api/out-order';
 import { useStore } from '@/stores';
@@ -112,7 +112,9 @@ const state = reactive({
   },
 });
 
-//查看发票
+/**
+ * 查看发票
+ */
 const viewPicture = () => {
   if (state.invoiceDetail.state === 1) {
     state.popupVisible = true;
@@ -135,11 +137,11 @@ const goAssociatedOrder = () => {
 };
 
 const copyLink = () => {
-  let newclipboard = new clipboard('.copyPdfUrl');
-  newclipboard.on('success', function () {
+  const newClipboard = new clipboard('.copyPdfUrl');
+  newClipboard.on('success', function () {
     showToast('复制成功');
   });
-  newclipboard.on('error', function () {
+  newClipboard.on('error', function () {
     showToast('复制失败');
   });
 };
@@ -148,13 +150,7 @@ const copyLink = () => {
  * 获取发票详情
  */
 const getInvoiceDetail = () => {
-  showLoadingToast({
-    duration: 0,
-    message: '加载中...',
-    forbidClick: true,
-  });
   getInvoiceApi(route.query.id).then(res => {
-    closeToast();
     if (res.code === 1) {
       state.invoiceDetail = res.content;
     }

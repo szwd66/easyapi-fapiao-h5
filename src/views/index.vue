@@ -32,7 +32,6 @@
 </template>
 
 <script setup lang="ts">
-import { showLoadingToast, closeToast } from 'vant';
 import { localStorage } from '@/utils/local-storage';
 import { getShopApi } from '@/api/shop';
 import { findSettingApi } from '@/api/setting';
@@ -91,9 +90,6 @@ const getOrderTypeList = () => {
     if (res.code === 1) {
       state.orderTypeList = res.content;
     }
-    setTimeout(function () {
-      closeToast();
-    }, 50);
   });
 };
 
@@ -123,11 +119,6 @@ const findSetting = () => {
 
 onMounted(() => {
   initialization();
-  showLoadingToast({
-    duration: 0,
-    message: '加载中...',
-    forbidClick: true,
-  });
   getShop();
   getOrderTypeList();
   setTimeout(() => {

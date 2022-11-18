@@ -1,8 +1,8 @@
 <template>
-  <div class="invoice-rule" v-html="state.content"></div>
+  <div class='invoice-rule' v-html='state.content'></div>
 </template>
 
-<script setup lang="ts">
+<script setup lang='ts'>
 import { findSettingApi } from '@/api/setting';
 
 const state = shallowReactive({
@@ -24,7 +24,7 @@ onMounted(() => {
 });
 </script>
 
-<style lang="less" scoped>
+<style lang='less' scoped>
 .invoice-rule {
   padding: 15px 16px;
   line-height: 24px;

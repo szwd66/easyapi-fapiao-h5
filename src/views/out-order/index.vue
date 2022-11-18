@@ -124,7 +124,7 @@ const totalPrice = computed({
       return totalPrice;
     }
     for (let i = 0; i < state.outOrderList.length; i++) {
-      let item = state.outOrderList[i];
+      const item = state.outOrderList[i];
       if (item.status === true) {
         totalPrice += item.price;
       }
@@ -137,18 +137,14 @@ const totalPrice = computed({
 const checked = index => {
   state.outOrderList[index].status = !state.outOrderList[index].status;
   state.selectList = state.outOrderList.filter(x => x.status == true);
-  if (state.selectList.length === state.outOrderList.length) {
-    state.allCheck = true;
-  } else {
-    state.allCheck = false;
-  }
+  state.allCheck = state.selectList.length === state.outOrderList.length;
 };
 
 /**
  * 获取全部负数（欠费）外部订单列表
  */
 const getMinusOutOrderList = () => {
-  let params = {
+  const params = {
     maxPrice: -0.01,
     type: state.orderType,
     page: 0,
@@ -171,7 +167,7 @@ const getMinusOutOrderList = () => {
  * 获取外部订单列表
  */
 const getOutOrderList = () => {
-  let params = {
+  const params = {
     type: state.orderType,
     page: state.pagination.page - 1,
     size: state.pagination.size,
@@ -179,9 +175,9 @@ const getOutOrderList = () => {
   getOutOrderListApi(params).then(res => {
     state.loading = false;
     if (res.code === 1) {
-      let data = res.content;
+      const data = res.content;
       state.pagination.totalPages = res.totalPages;
-      for (let v of data) {
+      for (const v of data) {
         v.status = false;
       }
       state.outOrderList = state.outOrderList.concat(data);
@@ -196,7 +192,6 @@ const getOutOrderList = () => {
 /**
  * 上拉加载
  */
-
 const loadMore = () => {
   if (state.pagination.page == state.pagination.totalPages) {
     state.finished = true;
@@ -206,7 +201,9 @@ const loadMore = () => {
   getOutOrderList();
 };
 
-//全选
+/**
+ * 全选
+ */
 const change = () => {
   state.outOrderList.forEach(function (v) {
     return (v.status = state.allCheck);
@@ -235,7 +232,7 @@ const getShop = () => {
 };
 
 const getWindowHeight = () => {
-  let clientHeight = document.documentElement.clientHeight;
+  const clientHeight = document.documentElement.clientHeight;
   state.windowHeight = clientHeight - 87 - (store.ifShowH5NavBar ? 46 : 0);
 };
 
