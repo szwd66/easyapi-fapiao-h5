@@ -15,7 +15,6 @@
     "@vant/use": "^1.4.1",
     "axios": "^0.27.2",
     "clipboard": "^2.0.11",
-    "echarts": "^5.4.0",
     "lodash-es": "^4.17.21",
     "moment": "^2.29.4",
     "nprogress": "^0.2.0",
@@ -49,7 +48,6 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^9.1.0",
-    "husky": "^8.0.1",
     "less": "^4.1.2",
     "lint-staged": "^13.0.3",
     "path-to-regexp": "^6.2.1",
@@ -73,20 +71,5 @@
     "vite": "^3.0.0",
     "vite-plugin-vconsole": "^1.2.2",
     "vue-tsc": "^0.39.5"
-  },
-  "lint-staged": {
-    "*.{js,jsx,vue,ts,tsx}": [
-      "yarn run lint:script",
-      "git add ."
-    ],
-    "**/*.{css,less}": [
-      "yarn run lint:style",
-      "git add ."
-    ]
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-emoji-chinese"
-    }
   }
 }
