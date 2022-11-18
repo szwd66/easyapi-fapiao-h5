@@ -1,16 +1,11 @@
 <template>
-  <Header headerTitle="抬头管理" v-if="store.ifShowH5NavBar"></Header>
+  <Header headerTitle="抬头管理" v-if="store.ifShowH5NavBar" />
   <div :class="store.ifShowH5NavBar ? 'search-top' : 'search'">
     <van-search
-      show-action
       v-model="state.companyName"
       placeholder="请输入公司名称"
-      @clear="companyNameSearch"
-    >
-      <template #action>
-        <div @click="companyNameSearch">搜索</div>
-      </template>
-    </van-search>
+      @update:model-value="companyNameSearch"
+    ></van-search>
   </div>
   <div class="search-placeholder"></div>
   <div class="company">
@@ -45,7 +40,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { Header } from '@/components';
+import { showLoadingToast, closeToast } from 'vant';
 import { updateCompanySetDefaultApi, getCompanyListApi } from '@/api/company';
 import { useStore } from '@/stores';
 const store = useStore();
@@ -53,25 +48,31 @@ const router = useRouter();
 
 const state = reactive({
   noData: false,
-  loading: false,
+  loading: true,
   noMoreData: false,
   companyList: [],
   companyName: '',
   pagination: {
     page: 0,
-    size: 3,
+    size: 10,
     totalPages: 0,
   },
 });
 
 const getCompanyList = () => {
-  const params = {
+  showLoadingToast({
+    duration: 0,
+    message: '加载中...',
+    forbidClick: true,
+  });
+  let params = {
     name: state.companyName,
     size: state.pagination.size,
     page: state.pagination.page,
   };
   getCompanyListApi(params).then(res => {
     state.loading = false;
+    closeToast();
     if (res.code === 1) {
       state.companyList = state.companyList.concat(res.content);
       state.pagination.totalPages = res.totalPages;
@@ -85,6 +86,9 @@ const getCompanyList = () => {
 const companyNameSearch = () => {
   state.companyList = [];
   state.pagination.page = 0;
+  state.noData = false;
+  state.noMoreData = false;
+  state.loading = true;
   getCompanyList();
 };
 
@@ -115,9 +119,9 @@ const getPageList = () => {
 };
 
 const lazyLoading = () => {
-  const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-  const clientHeight = document.documentElement.clientHeight;
-  const scrollHeight = document.documentElement.scrollHeight;
+  let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  let clientHeight = document.documentElement.clientHeight;
+  let scrollHeight = document.documentElement.scrollHeight;
   if (scrollTop + clientHeight >= scrollHeight) {
     // 滚动到底部，逻辑代码
     //事件处理

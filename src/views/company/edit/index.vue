@@ -1,79 +1,82 @@
 <template>
-  <header headerTitle="编辑抬头" v-if="store.ifShowH5NavBar"></header>
+  <Header headerTitle="编辑抬头" v-if="store.ifShowH5NavBar" />
   <div class="company-edit">
-    <van-cell-group inset>
-      <van-field
-        label="公司名称"
-        v-model="state.name"
-        placeholder="请输入公司名称"
-        border
-        required
-        @keyup="searchCompanyList"
-        @focus="state.listShow = true"
-        @blur="inputBlur"
-      ></van-field>
-      <div class="rise-list" v-if="state.listShow && state.searchList !== ''">
-        <ul>
-          <li
-            v-for="(item, index) in state.searchList"
-            :key="index"
-            @mousedown="chooseCompany(index)"
-          >
-            {{ item.name }}
-          </li>
-        </ul>
+    <van-form @submit="confirm">
+      <van-cell-group inset>
+        <van-field
+          label="公司名称"
+          v-model="state.name"
+          placeholder="请输入公司名称"
+          border
+          required
+          @keyup="searchCompanyList"
+          @focus="state.listShow = true"
+          @blur="inputBlur"
+          :rules="[{ required: true, message: '请输入公司名称' }]"
+        ></van-field>
+        <div class="rise-list" v-if="state.listShow && state.searchList !== ''">
+          <ul>
+            <li
+              v-for="(item, index) in state.searchList"
+              :key="index"
+              @mousedown="chooseCompany(index)"
+            >
+              {{ item.name }}
+            </li>
+          </ul>
+        </div>
+        <van-field
+          label="公司税号"
+          v-model="state.companyForm.taxNumber"
+          placeholder="请输入纳税人识别号"
+          border
+          required
+          :rules="[{ required: true, message: '请输入纳税人识别号' }]"
+        />
+        <van-field
+          label="注册地址"
+          v-model="state.companyForm.address"
+          placeholder="请输入地址"
+          border
+        />
+        <van-field
+          label="注册电话"
+          v-model="state.companyForm.phone"
+          placeholder="请输入电话"
+          border
+        />
+        <van-field
+          label="开户银行"
+          v-model="state.companyForm.bank"
+          placeholder="请输入开户行"
+          border
+        />
+        <van-field
+          label="银行账号"
+          v-model="state.companyForm.bankAccount"
+          placeholder="请输入开户行账号"
+          border
+        />
+      </van-cell-group>
+
+      <van-cell-group class="default" inset>
+        <van-cell center title="设置为默认抬头">
+          <template #right-icon>
+            <van-switch v-model="state.companyForm.ifDefault" active-color="#FFC2A8" />
+          </template>
+        </van-cell>
+      </van-cell-group>
+
+      <div class="bottom fixed-bottom-bgColor">
+        <van-button type="primary" block class="save" native-type="submit">保存</van-button>
+        <van-button type="danger" v-if="route.query.id" class="delete" block @click="deleteData">
+          删除
+        </van-button>
       </div>
-      <van-field
-        label="公司税号"
-        v-model="state.companyForm.taxNumber"
-        placeholder="请输入纳税人识别号（必填）"
-        border
-        required
-      />
-      <van-field
-        label="注册地址"
-        v-model="state.companyForm.address"
-        placeholder="请输入地址（非必填信息）"
-        border
-      />
-      <van-field
-        label="注册电话"
-        v-model="state.companyForm.phone"
-        placeholder="请输入电话（非必填信息）"
-        border
-      />
-      <van-field
-        label="开户银行"
-        v-model="state.companyForm.bank"
-        placeholder="请输入开户行（非必填信息）"
-        border
-      />
-      <van-field
-        label="银行账号"
-        v-model="state.companyForm.bankAccount"
-        placeholder="请输入开户行账号（非必填信息）"
-        border
-      />
-    </van-cell-group>
-
-    <van-cell-group class="default" inset>
-      <van-cell center title="设置为默认抬头">
-        <template #right-icon>
-          <van-switch v-model="state.companyForm.ifDefault" active-color="#FFC2A8" />
-        </template>
-      </van-cell>
-    </van-cell-group>
-
-    <div class="bottom fixed-bottom-bgColor">
-      <van-button type="primary" block class="save" @click="confirm">保存</van-button>
-      <van-button type="danger" v-if="route.query.id" class="delete" block @click="deleteData">
-        删除
-      </van-button>
-    </div>
+    </van-form>
   </div>
 </template>
 <script setup lang="ts">
-import { Header } from '@/components';
 import {
   getCompanyApi,
   createCompanyApi,
@@ -81,7 +84,7 @@ import {
   deleteCompanyApi,
   getCompanyCodeListApi,
 } from '@/api/company';
-import { showToast, showConfirmDialog } from 'vant';
+import { showToast, showLoadingToast, closeToast, showConfirmDialog } from 'vant';
 import { useStore } from '@/stores';
 const store = useStore();
 const route = useRoute();
@@ -170,7 +173,13 @@ const inputBlur = () => {
 };
 
 const getCompany = () => {
+  showLoadingToast({
+    duration: 0,
+    message: '加载中...',
+    forbidClick: true,
+  });
   getCompanyApi(route.query.id).then(res => {
+    closeToast();
     if (res.code === 1) {
       state.companyForm = res.content;
       state.name = res.content.name;

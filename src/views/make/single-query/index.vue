@@ -1,5 +1,5 @@
 <template>
-  <Header headerTitle="开具电子发票" v-if="store.ifShowH5NavBar"></Header>
+  <Header headerTitle="开具电子发票" v-if="store.ifShowH5NavBar" />
   <div class="make-invoice">
     <Invoice
       :isShow="state.isShow"
@@ -11,7 +11,7 @@
       @getCompany="receiveCompany"
       @getInvoiceCategory="receiveCategory"
       @getInvoiceProperty="receiveProperty"
-    ></Invoice>
+    />
 
     <div class="invoice-contents">
       <p class="contents-title">发票内容</p>
@@ -75,7 +75,7 @@
       :ifNeedEmail="common.ifNeedEmail"
       :ifNeedMobile="common.ifNeedMobile"
       :address="state.address"
-    ></Receive>
+    />
 
     <div class="bottom fixed-bottom-bgColor">
       <van-button type="primary" class="submit" block @click="makeInvoice">提交</van-button>
@@ -87,7 +87,6 @@
 import { getStateApi, queryShopOrderApi } from '@/api/query';
 import { makeInvoiceApi } from '@/api/make';
 import { getShopApi } from '@/api/shop';
-import { Invoice, Receive, Header } from '@/components';
 import { showToast, showLoadingToast, closeToast, showConfirmDialog } from 'vant';
 import { localStorage } from '@/utils/local-storage';
 import makeMixins from '../mixins/make';

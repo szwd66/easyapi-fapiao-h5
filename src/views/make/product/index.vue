@@ -1,136 +1,134 @@
 <template>
-  <Header headerTitle='开具电子发票' v-if='store.ifShowH5NavBar'></Header>
-  <div class='make-invoice'>
+  <Header headerTitle="开具电子发票" v-if="store.ifShowH5NavBar" />
+  <div class="make-invoice">
     <Invoice
-      :isShow='state.isShow'
-      :isHide='state.isHide'
-      :ifElectronic='state.ifElectronic'
-      :invoiceForm='state.invoiceForm'
-      :ifPaper='state.ifPaper'
-      :company='state.company'
-      @getCompany='receiveCompany'
-      @getInvoiceCategory='receiveCategory'
-      @getInvoiceProperty='receiveProperty'
-    ></Invoice>
+      :isShow="state.isShow"
+      :isHide="state.isHide"
+      :ifElectronic="state.ifElectronic"
+      :invoiceForm="state.invoiceForm"
+      :ifPaper="state.ifPaper"
+      :company="state.company"
+      @getCompany="receiveCompany"
+      @getInvoiceCategory="receiveCategory"
+      @getInvoiceProperty="receiveProperty"
+    />
 
-    <div class='invoice-contents'>
-      <p class='contents-title'>发票内容</p>
-      <div class='contents-product'>
-        <ul class='product-head'>
-          <li style='width: 30%'>商品名称</li>
-          <li style='width: 30%'>规格型号</li>
+    <div class="invoice-contents">
+      <p class="contents-title">发票内容</p>
+      <div class="contents-product">
+        <ul class="product-head">
+          <li style="width: 30%">商品名称</li>
+          <li style="width: 30%">规格型号</li>
           <li>单位</li>
           <li>数量</li>
           <li>单价</li>
           <li>操作</li>
         </ul>
-        <van-cell class='line' />
-        <ul class='product-content' v-for='(product, index) in state.productList' :key='index'>
-          <li style='width: 30%; line-height: 15px; padding-top: 12px'>
+        <van-cell class="line" />
+        <ul class="product-content" v-for="(product, index) in state.productList" :key="index">
+          <li style="width: 30%; line-height: 15px; padding-top: 12px">
             {{ product.name }}
           </li>
-          <li style='width: 30%; line-height: 15px; padding-top: 12px'>
+          <li style="width: 30%; line-height: 15px; padding-top: 12px">
             {{ product.specification }}
           </li>
           <li>{{ product.unit }}</li>
           <li>{{ product.number }}</li>
           <li>{{ product.price }}</li>
-          <li style='color: #1989fa' @click='deleteProduct(product.productId)'>删除</li>
+          <li style="color: #1989fa" @click="deleteProduct(product.productId)">删除</li>
         </ul>
-        <van-cell class='line' />
-        <div class='btn'>
-          <van-button class='submit-btn' @click='showProductSearchPopup'>+添加发票内容</van-button>
+        <van-cell class="line" />
+        <div class="btn">
+          <van-button class="submit-btn" @click="showProductSearchPopup">+添加发票内容</van-button>
         </div>
-        <van-cell class='line' />
+        <van-cell class="line" />
         <van-field
-          class='merge-order_price'
-          label='发票金额'
-          v-model='state.invoiceForm.price'
+          class="merge-order_price"
+          label="发票金额"
+          v-model="state.invoiceForm.price"
           readonly
         ></van-field>
         <van-field
-          label='发票备注'
-          :placeholder='common.remarkPlaceholder'
-          v-model='state.invoiceForm.remark'
+          label="发票备注"
+          :placeholder="common.remarkPlaceholder"
+          v-model="state.invoiceForm.remark"
         ></van-field>
       </div>
     </div>
 
-    <receive
-      :ifElectronic='state.ifElectronic'
-      :invoiceForm='state.invoiceForm'
-      :ifNeedEmail='common.ifNeedEmail'
-      :ifNeedMobile='common.ifNeedMobile'
-      :address='state.address'
-    ></receive>
+    <Receive
+      :ifElectronic="state.ifElectronic"
+      :invoiceForm="state.invoiceForm"
+      :ifNeedEmail="common.ifNeedEmail"
+      :ifNeedMobile="common.ifNeedMobile"
+      :address="state.address"
+    />
 
-    <div class='bottom fixed-bottom-bgColor'>
-      <van-button type='primary' class='submit' block @click='makeInvoice'>提交</van-button>
+    <div class="bottom fixed-bottom-bgColor">
+      <van-button type="primary" class="submit" block @click="makeInvoice">提交</van-button>
     </div>
 
     <van-dialog />
     <van-popup
-      class='popupClass'
-      v-model:show='state.showPopup'
-      position='bottom'
-      style='height: 75%; padding-top: 4px'
+      class="popupClass"
+      v-model:show="state.showPopup"
+      position="bottom"
+      style="height: 75%; padding-top: 4px"
     >
       <van-search
-        v-model='state.productKeyword'
-        placeholder='请输入搜索关键词'
-        @input='onProductSearch'
+        v-model="state.productKeyword"
+        placeholder="请输入搜索关键词"
+        @update:model-value="onProductSearch"
       />
-      <van-list :finished='true' finished-text='没有更多了'>
-        <van-cell v-for='item in state.productListAll' :key='item.productId'>
-          <van-row type='flex' align='center'>
-            <van-col span='6'>
-              <van-image width='60' height='60' :src='item.img' />
+      <van-list :finished="true" finished-text="没有更多了">
+        <van-cell v-for="item in state.productListAll" :key="item.productId">
+          <van-row type="flex" align="center">
+            <van-col span="6">
+              <van-image width="60" height="60" :src="item.img" />
             </van-col>
-            <van-col span='11'>
+            <van-col span="11">
               <div>{{ item.name }}</div>
               <div>
                 {{ item.specification }}
               </div>
               <span>￥</span>
               <input
-                style='width: 40px; text-align: center; border: none'
-                v-model='item.price'
-                @change='calcTotalPrice'
+                style="width: 40px; text-align: center; border: none"
+                v-model="item.price"
+                @change="calcTotalPrice"
               />
               <span>元 / {{ item.unit }}</span>
             </van-col>
-            <van-col span='7'>
+            <van-col span="7">
               <van-stepper
-                v-model='item.number'
+                v-model="item.number"
                 integer
-                min='0'
-                default-value='0'
-                @change='calcTotalPrice'
+                min="0"
+                default-value="0"
+                @change="calcTotalPrice"
               />
             </van-col>
           </van-row>
         </van-cell>
       </van-list>
       <van-submit-bar
-        :price='state.productPrice * 100'
-        button-text='添加商品'
-        @submit='appendProduct'
-        button-color='#1989fa'
+        :price="state.productPrice * 100"
+        button-text="添加商品"
+        @submit="appendProduct"
+        button-color="#1989fa"
       />
     </van-popup>
   </div>
 </template>
 
-<script setup lang='ts'>
+<script setup lang="ts">
 import { getProductListApi } from '@/api/product';
 import { productMakeInvoiceApi } from '@/api/make';
-import { Receive } from '@/components';
 import makeMixins from '../mixins/make';
 import { localStorage } from '@/utils/local-storage';
-import { closeToast, showConfirmDialog, showLoadingToast, showToast } from 'vant';
-import { useStore } from '@/stores';
-
+import { showToast, showLoadingToast, closeToast, showConfirmDialog } from 'vant';
 const { common, getInvoiceRemark, ifNeedMobileEmail, checkEmailMobile } = makeMixins();
+import { useStore } from '@/stores';
 const store = useStore();
 const router = useRouter();
 
@@ -141,14 +139,11 @@ const state = reactive({
   ifElectronic: localStorage.get('ifElectronic'),
   ifPaper: localStorage.get('ifPaper'),
   showPopup: false,
-  //商品列表
-  productList: [],
-  //公司抬头
+  productList: [], //商品列表
   company: {
     companyId: '',
-  },
-  //地址对象
-  address: {},
+  }, //公司抬头
+  address: {}, //地址对象
   invoiceForm: {
     outOrderNo: 'H5' + new Date().getTime(),
     type: '企业',
@@ -210,7 +205,10 @@ const getProductList = params => {
 const appendProduct = () => {
   let obj = {};
 
-  if (state.productListAll.filter(x => x.number > 0 && (!x.price || x.price == 0 || x.price < 0)).length > 0) {
+  if (
+    state.productListAll.filter(x => x.number > 0 && (!x.price || x.price == 0 || x.price < 0))
+      .length > 0
+  ) {
     return showToast('请输入正确的商品金额');
   }
 
@@ -224,7 +222,7 @@ const appendProduct = () => {
         name: state.productListAll[i].name,
         number: state.productListAll[i].number,
       };
-      const oldList = localStorage.get('productList')
+      let oldList = localStorage.get('productList')
         ? JSON.parse(localStorage.get('productList'))
         : [];
       oldList.push(obj);
@@ -305,8 +303,7 @@ const makeInvoice = () => {
       });
       localStorage.remove('productList');
     })
-    .catch(() => {
-    });
+    .catch(() => {});
 };
 
 onMounted(() => {
@@ -323,6 +320,6 @@ onMounted(() => {
 });
 </script>
 
-<style lang='less'>
+<style lang="less">
 @import '../make.less';
 </style>
