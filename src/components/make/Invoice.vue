@@ -244,7 +244,8 @@ const getDefaultCompany = () => {
 };
 
 const getDefaultAddress = () => {
-  getDefaultAddressApi().then(res => {
+  //todo username更换
+  getDefaultAddressApi('').then(res => {
     if (res.code === 1) {
       state.address = res.content;
       state.childInvoiceForm.addressId = state.address.addressId;
@@ -265,7 +266,7 @@ const findSetting = () => {
 
 onMounted(() => {
   findSetting();
-  state.childInvoiceForm = props.invoiceForm;
+  state.childInvoiceForm = props.invoiceForm as any;
 });
 </script>
 

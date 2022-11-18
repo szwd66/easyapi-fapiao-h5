@@ -172,7 +172,7 @@ const uploadImgToQiniu = (qnToken, qnKey, file) => {
     })
     .catch(() => {
       showToast('上传失败');
-      let idx = state.imageList.findIndex(item => {
+      const idx = state.imageList.findIndex(item => {
         return item === file;
       });
       state.imageList.splice(idx, 1);

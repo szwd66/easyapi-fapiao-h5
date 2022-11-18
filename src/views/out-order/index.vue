@@ -54,7 +54,7 @@
             <van-cell
               v-if='item.fields'
               :title='Object.values(JSON.parse(item.fields))[0]'
-              :value='item.noY'
+              :value='item.no'
               :border='false'
             />
             <van-cell
@@ -239,7 +239,7 @@ const getWindowHeight = () => {
 
 onMounted(() => {
   state.accessToken = localStorage.get('accessToken');
-  state.orderType = route.query.type;
+  state.orderType = route.query.type as string;
   localStorage.set('orderType', state.orderType);
   getShop();
   getMinusOutOrderList();

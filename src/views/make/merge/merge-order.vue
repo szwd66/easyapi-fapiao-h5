@@ -137,16 +137,6 @@ const receiveCompany = val => {
   state.company = val;
 };
 
-const changeElectronic = () => {
-  state.invoiceForm.category = '增值税电子普通发票';
-  state.invoiceForm.property = '电子';
-};
-
-const changePaper = () => {
-  state.invoiceForm.property = '纸质';
-  state.invoiceForm.category = '增值税普通发票';
-};
-
 onMounted(() => {
   if (localStorage.get('type')) {
     state.invoiceForm.type = localStorage.get('type');

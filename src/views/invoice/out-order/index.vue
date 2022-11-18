@@ -14,7 +14,7 @@
         <van-cell
           v-if='item.fields'
           :title='Object.values(JSON.parse(item.fields))[0]'
-          :value='item.noY'
+          :value='item.no'
           :border='false'
         />
         <van-cell title='' :value='item.model' :border='false' />

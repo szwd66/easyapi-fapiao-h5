@@ -176,7 +176,7 @@ const calcAmount = () => {
     for (let i = 0; i < state.productList.length; i++) {
       money += state.productList[i].price * state.productList[i].number;
     }
-    state.invoiceForm.price = money.toFixed(2);
+    state.invoiceForm.price = Number.parseFloat(money.toFixed(2));
   }
 };
 

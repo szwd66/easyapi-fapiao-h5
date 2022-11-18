@@ -108,6 +108,7 @@ const state = reactive({
     addrMobile: '',
     updateTime: '',
     electronicInvoiceImg: '',
+    electronicInvoiceUrl: '',
     url: '',
   },
 });
