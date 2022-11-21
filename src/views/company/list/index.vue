@@ -95,14 +95,13 @@ const companyNameSearch = () => {
 };
 
 const select = item => {
+  if (route.query.from) {
+    return;
+  }
   //设置为默认抬头
   updateCompanySetDefaultApi(item.companyId).then(res => {
     if (res.code === 1) {
-      if (!route.query.from) {
-        history.back();
-      } else {
-        companyNameSearch();
-      }
+      history.back();
     }
   });
 };

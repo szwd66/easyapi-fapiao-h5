@@ -54,13 +54,12 @@ const getAddressList = () => {
 };
 
 const select = item => {
+  if (route.query.from) {
+    return;
+  }
   defaultAddressApi(item.addressId).then(res => {
     if (res.code === 1) {
-      if (!route.query.from) {
-        history.back();
-      } else {
-        getAddressList();
-      }
+      history.back();
     }
   });
 };
