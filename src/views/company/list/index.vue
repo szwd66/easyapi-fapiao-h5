@@ -1,51 +1,52 @@
 <template>
-  <Header headerTitle='抬头管理' v-if='store.ifShowH5NavBar' />
+  <Header headerTitle="抬头管理" v-if="store.ifShowH5NavBar" />
   <div :class="store.ifShowH5NavBar ? 'search-top' : 'search'">
     <van-search
-      v-model='state.companyName'
-      placeholder='请输入公司名称'
-      @update:model-value='companyNameSearch'
+      v-model="state.companyName"
+      placeholder="请输入公司名称"
+      @update:model-value="companyNameSearch"
     ></van-search>
   </div>
-  <div class='search-placeholder'></div>
-  <div class='company'>
-    <div v-if='!state.loading'>
-      <div v-if='state.companyList.length === 0'>
-        <van-empty image='search' description='暂无数据' />
+  <div class="search-placeholder"></div>
+  <div class="company">
+    <div v-if="!state.loading">
+      <div v-if="state.companyList.length === 0">
+        <van-empty image="search" description="暂无数据" />
       </div>
-      <div class='company-list' v-else>
-        <div class='company-list-item' v-for='(item, index) in state.companyList' :key='index'>
-          <div class='company-top fixed-bottom-bgColor'>
-            <span class='rise-text'>{{ item.name }}</span>
-            <van-tag plain type='warning' size='medium' v-if='item.ifDefault'>默认</van-tag>
-            <span class='edit' @click='gotoEditCompany(item.companyId)'>编辑</span>
+      <div class="company-list" v-else>
+        <div class="company-list-item" v-for="(item, index) in state.companyList" :key="index">
+          <div class="company-top fixed-bottom-bgColor">
+            <span class="rise-text">{{ item.name }}</span>
+            <van-tag plain type="warning" size="medium" v-if="item.ifDefault">默认</van-tag>
+            <span class="edit" @click="gotoEditCompany(item.companyId)">编辑</span>
           </div>
-          <van-cell-group :border='false' @click='select(item)'>
-            <van-cell title='公司税号' :value='item.taxNumber' :border='false' />
-            <van-cell title='地址、电话' :value='item.address + item.phone' :border='false' />
-            <van-cell title='开户行及账号' :value='item.bank + item.bankAccount' :border='false' />
+          <van-cell-group :border="false" @click="select(item)">
+            <van-cell title="公司税号" :value="item.taxNumber" :border="false" />
+            <van-cell title="地址、电话" :value="item.address + item.phone" :border="false" />
+            <van-cell title="开户行及账号" :value="item.bank + item.bankAccount" :border="false" />
           </van-cell-group>
         </div>
       </div>
     </div>
-    <div class='loading' v-if='state.loading'>
+    <div class="loading" v-if="state.loading">
       <div>加载中......</div>
     </div>
-    <div class='no-more-data' v-if='state.noMoreData'>
+    <div class="no-more-data" v-if="state.noMoreData">
       <div>没有更多数据了</div>
     </div>
   </div>
-  <div class='bottom fixed-bottom-bgColor'>
-    <van-button type='primary' class='sumbit' block @click='gotoEditCompany()'>新增抬头</van-button>
+  <div class="bottom fixed-bottom-bgColor">
+    <van-button type="primary" class="sumbit" block @click="gotoEditCompany()">新增抬头</van-button>
   </div>
 </template>
-<script setup lang='ts'>
+<script setup lang="ts">
 import { showLoadingToast, closeToast } from 'vant';
 import { updateCompanySetDefaultApi, getCompanyListApi } from '@/api/company';
 import { useStore } from '@/stores';
 
 const store = useStore();
 const router = useRouter();
+const route = useRoute();
 
 const state = reactive({
   noData: false,
@@ -97,7 +98,11 @@ const select = item => {
   //设置为默认抬头
   updateCompanySetDefaultApi(item.companyId).then(res => {
     if (res.code === 1) {
-      history.back();
+      if (!route.query.from) {
+        history.back();
+      } else {
+        companyNameSearch();
+      }
     }
   });
 };
@@ -137,7 +142,7 @@ onMounted(() => {
 });
 </script>
 
-<style lang='less'>
+<style lang="less">
 .company {
   .van-cell__value {
     min-width: 70%;
@@ -150,7 +155,7 @@ onMounted(() => {
   }
 }
 </style>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .search-top {
   position: fixed;
   top: 46px;

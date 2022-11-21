@@ -33,7 +33,13 @@
     </div>
 
     <van-cell-group title="发票详情" inset>
-      <van-cell title="抬头类型" required>
+      <van-cell>
+        <template #title>
+          <div>
+            <span style="margin-right: 3px; color: #ee0a24;">*</span>
+            <span class="custom-title">抬头类型</span>
+          </div>
+        </template>
         <van-radio-group
           v-model="state.childInvoiceForm.type"
           direction="horizontal"
