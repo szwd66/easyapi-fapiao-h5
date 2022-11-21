@@ -48,6 +48,8 @@ export default function () {
    * 检查邮箱和手机号码
    */
   const checkEmailMobile = data => {
+    console.log(common);
+
     //验证邮箱
     if (common.ifNeedEmail === true) {
       if (data.email === '') {
@@ -62,6 +64,8 @@ export default function () {
         if (!validEmail(data.email)) {
           showToast('邮箱格式不正确');
           return false;
+        } else {
+          return true;
         }
       }
     }
@@ -86,6 +90,7 @@ export default function () {
         }
       }
     }
+    return true;
   };
 
   return {
