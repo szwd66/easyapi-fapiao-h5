@@ -251,7 +251,7 @@ const getDefaultCompany = () => {
 
 const getDefaultAddress = () => {
   //todo username更换
-  getDefaultAddressApi('').then(res => {
+  getDefaultAddressApi('test').then(res => {
     if (res.code === 1) {
       state.address = res.content;
       state.childInvoiceForm.addressId = state.address.addressId;

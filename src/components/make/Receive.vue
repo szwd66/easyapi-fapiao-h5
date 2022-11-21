@@ -105,7 +105,7 @@ const gotoAddress = () => {
  * 获取默认地址
  */
 const getDefaultAddress = () => {
-  getDefaultAddressApi('').then(res => {
+  getDefaultAddressApi('test').then(res => {
     if (res.code === 1) {
       state.childAddress = res.content;
       state.childForm.addressId = state.childAddress.addressId;
