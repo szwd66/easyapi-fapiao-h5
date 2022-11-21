@@ -128,7 +128,7 @@ const lazyLoading = () => {
   const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
   const clientHeight = document.documentElement.clientHeight;
   const scrollHeight = document.documentElement.scrollHeight;
-  if (scrollTop + clientHeight >= scrollHeight) {
+  if (scrollTop + clientHeight >= scrollHeight - 10) {
     // 滚动到底部，逻辑代码
     //事件处理
     getPageList();
