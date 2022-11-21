@@ -97,7 +97,7 @@ const state = reactive({
     phone: '',
     bank: '',
     bankAccount: '',
-    ifDefault: false,
+    ifDefault: true,
     name: '',
   },
   id: '',
