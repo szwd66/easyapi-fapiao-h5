@@ -14,18 +14,37 @@
         <van-empty image="search" description="暂无数据" />
       </div>
       <div class="company-list" v-else>
-        <div class="company-list-item" v-for="(item, index) in state.companyList" :key="index">
-          <div class="company-top fixed-bottom-bgColor">
-            <span class="rise-text">{{ item.name }}</span>
-            <van-tag plain type="warning" size="medium" v-if="item.ifDefault">默认</van-tag>
-            <span class="edit" @click="gotoEditCompany(item.companyId)">编辑</span>
+        <van-radio-group v-model="state.checked">
+          <div
+            class="company-list-item"
+            v-for="(item, index) in state.companyList"
+            :key="index"
+            @click="select(item)"
+          >
+            <div class="company-list-item_content">
+              <van-radio
+                class="company-list-item_radio"
+                v-if="!route.query.from"
+                :name="item.companyId"
+              />
+              <div class="company-list-item_name">
+                <div class="company-list-item_tag">
+                  <van-tag type="primary" size="medium" v-if="item.ifDefault" class="tag">
+                    默认
+                  </van-tag>
+                  <span class="rise-text">{{ item.name }}</span>
+                </div>
+                <div class="company-list-item_taxNumber">{{ item.taxNumber }}</div>
+              </div>
+            </div>
+            <van-icon
+              name="edit"
+              color="#999"
+              size="22"
+              @click.stop="gotoEditCompany(item.companyId)"
+            />
           </div>
-          <van-cell-group :border="false" @click="select(item)">
-            <van-cell title="公司税号" :value="item.taxNumber" :border="false" />
-            <van-cell title="地址、电话" :value="item.address + item.phone" :border="false" />
-            <van-cell title="开户行及账号" :value="item.bank + item.bankAccount" :border="false" />
-          </van-cell-group>
-        </div>
+        </van-radio-group>
       </div>
     </div>
     <div class="loading" v-if="state.loading">
@@ -59,6 +78,7 @@ const state = reactive({
     size: 10,
     totalPages: 0,
   },
+  checked: '',
 });
 
 const getCompanyList = () => {
@@ -78,6 +98,11 @@ const getCompanyList = () => {
     if (res.code === 1) {
       state.companyList = state.companyList.concat(res.content);
       state.pagination.totalPages = res.totalPages;
+      state.companyList.forEach(item => {
+        if (item.ifDefault) {
+          state.checked = item.companyId;
+        }
+      });
     } else {
       state.companyList = [];
       state.pagination.totalPages = 0;
@@ -98,7 +123,8 @@ const select = item => {
   if (route.query.from) {
     return;
   }
-  //设置为默认抬头
+  state.checked = item.companyId;
+  // 设置为默认抬头
   updateCompanySetDefaultApi(item.companyId).then(res => {
     if (res.code === 1) {
       history.back();
@@ -187,27 +213,45 @@ onMounted(() => {
       box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.11);
       margin-top: 15px;
       overflow: hidden;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 10px;
 
-      .company-top {
-        border-bottom: 1px solid #f4f4f4;
-        height: 40px;
-        line-height: 40px;
-        padding: 0 16px;
+      .company-list-item_content {
+        display: flex;
+        align-items: center;
 
-        .rise-text {
-          float: left;
-          max-width: 200px;
-          display: block;
-          overflow: hidden; /*内容超出后隐藏*/
-          text-overflow: ellipsis; /* 超出内容显示为省略号*/
-          white-space: nowrap; /*文本不进行换行*/
-          font-size: 14px;
-          margin-right: 10px;
+        .company-list-item_radio {
+          margin-right: 20px;
         }
 
-        .edit {
-          float: right;
-          color: #1989fa;
+        .company-list-item_name {
+          .company-list-item_tag {
+            display: flex;
+            align-items: center;
+
+            .tag {
+              margin-right: 5px;
+            }
+
+            .rise-text {
+              max-width: 200px;
+              display: block;
+              overflow: hidden; /*内容超出后隐藏*/
+              text-overflow: ellipsis; /* 超出内容显示为省略号*/
+              white-space: nowrap; /*文本不进行换行*/
+              font-size: 16px;
+              font-weight: 550;
+            }
+          }
+
+          .company-list-item_taxNumber {
+            margin-top: 10px;
+            color: #999;
+            font-size: 13px;
+          }
         }
       }
     }
