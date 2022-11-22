@@ -25,3 +25,10 @@ export async function getStateApi(outOrderNo): Promise<any> {
     },
   });
 }
+
+/**
+ * 根据税号批量获取税收编码简称
+ */
+export async function getShortNameByTaxCodeApi(data): Promise<any> {
+  return request.post(`/tax-code/short-name`, data);
+}

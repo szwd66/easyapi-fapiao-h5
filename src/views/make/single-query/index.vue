@@ -47,8 +47,9 @@
           </ul>
           <van-cell class="line" />
           <ul class="product-content" v-for="(item, index) in state.outOrder.items" :key="index">
-            <li style="width: 35%; line-height: 15px; padding-top: 12px">
-              {{ item.name }}
+            <li style="width: 35%; line-height: 15px; padding-top: 12px; word-wrap: break-word">
+              <span v-if="state.active == '商品明细'">{{ item.name }}</span>
+              <span v-else>{{ item.shortName }}</span>
             </li>
             <li style="width: 35%; line-height: 15px; padding-top: 12px">{{ item.model }}</li>
             <li>{{ item.unit }}</li>
@@ -86,13 +87,14 @@
 </template>
 
 <script setup lang="ts">
-import { getStateApi, queryShopOrderApi } from '@/api/query';
+import { getStateApi, queryShopOrderApi, getShortNameByTaxCodeApi } from '@/api/query';
 import { makeInvoiceApi } from '@/api/make';
 import { getShopApi } from '@/api/shop';
 import { closeToast, showConfirmDialog, showLoadingToast, showToast } from 'vant';
 import { localStorage } from '@/utils/local-storage';
 import makeMixins from '../mixins/make';
 import { useStore } from '@/stores';
+import { json } from 'stream/consumers';
 
 const { common, getInvoiceRemark, ifNeedMobileEmail, checkEmailMobile } = makeMixins();
 const store = useStore();
@@ -117,6 +119,7 @@ const state = reactive({
     outOrderNo: '',
     items: [],
   },
+  taxNumbers: [],
   outOrderNo: '', //商户外部订单号
   address: {},
   company: {
@@ -159,6 +162,30 @@ const getShopOrder = () => {
     if (res.code === 1) {
       state.outOrder = res.content;
       state.invoiceForm.price = res.content.price;
+      getShortNameByTaxCode();
+    }
+  });
+};
+
+const getShortNameByTaxCode = () => {
+  let nos = [];
+  state.outOrder.items.forEach(item => {
+    nos.push(item.no);
+  });
+  let data = {
+    nos: nos,
+    accessToken: localStorage.get('accessToken'),
+  };
+  getShortNameByTaxCodeApi(data).then(res => {
+    if (res.code == 1) {
+      state.taxNumbers = res.data.content;
+      state.outOrder.items.forEach(item => {
+        res.data.content.forEach(citem => {
+          if (item.no == citem.no) {
+            item.shortName = citem.shortName;
+          }
+        });
+      });
     }
   });
 };
@@ -195,7 +222,13 @@ const makeInvoice = () => {
       state.invoiceForm.category = '增值税电子普通发票';
       state.invoiceForm.property = '电子';
       state.invoiceForm.outOrderNo = state.outOrder.outOrderNo;
-      state.invoiceForm.items = state.outOrder.items;
+      let items = JSON.parse(JSON.stringify(state.outOrder.items));
+      items.forEach(item => {
+        if (state.active == '商品类别') {
+          item.name = item.shortName;
+        }
+      });
+      state.invoiceForm.items = items;
       state.invoiceForm.companyId = state.company.companyId;
       makeInvoiceApi(state.invoiceForm).then(res => {
         closeToast();
