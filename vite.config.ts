@@ -11,10 +11,10 @@ import vue from '@vitejs/plugin-vue';
 import legacy from '@vitejs/plugin-legacy';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 
-export default ({ command, mode }: ConfigEnv): UserConfig => {
+export default ({ mode }: ConfigEnv): UserConfig => {
   const root = process.cwd();
   const env = loadEnv(mode, root);
-  
+
   return {
     base: env.VITE_APP_PUBLIC_PATH,
 
@@ -60,7 +60,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       cssCodeSplit: false,
       chunkSizeWarningLimit: 2048,
     },
-    
+
     resolve: {
       alias: {
         '~@': path.join(__dirname, './src'),

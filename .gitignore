@@ -14,12 +14,13 @@ dist-ssr
 stats.html
 
 # Editor directories and files
-.vscode
-!.vscode/extensions.json
+.vscode/extensions.json
 .idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Misc
+.DS_Store

@@ -3,6 +3,8 @@
 // Read more: https://github.com/vuejs/core/pull/3399
 import '@vue/runtime-core'
 
+export {}
+
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Header: typeof import('./src/components/header/index.vue')['default']
@@ -39,5 +41,3 @@ declare module '@vue/runtime-core' {
     VanUploader: typeof import('vant/es')['Uploader']
   }
 }
-
-export {}

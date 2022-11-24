@@ -1,4 +1,3 @@
-// postcss.config.js
 module.exports = {
   plugins: {
     'autoprefixer': {},
@@ -6,4 +5,4 @@ module.exports = {
       viewportWidth: 375,
     },
   },
-};
+}

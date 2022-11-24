@@ -119,7 +119,8 @@ const deleteData = () => {
         history.back();
       }
     });
-  }).catch(() => {});
+  }).catch(() => {
+  });
 };
 
 const searchCompanyList = () => {
@@ -166,7 +167,8 @@ const confirm = () => {
         }
       });
     }
-  }).catch(() => {});
+  }).catch(() => {
+  });
 };
 
 const inputBlur = () => {
