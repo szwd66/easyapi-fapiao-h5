@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia';
+import { defineStore } from 'pinia'
 
 export const useStore = defineStore({
   id: 'index',
@@ -6,6 +6,6 @@ export const useStore = defineStore({
   state: () => ({
     // light || dark
     mode: '',
-    ifShowH5NavBar: false, //是否显示顶部
+    ifShowH5NavBar: false, // 是否显示顶部
   }),
-});
+})

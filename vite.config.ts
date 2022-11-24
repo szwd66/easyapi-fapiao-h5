@@ -1,19 +1,19 @@
-import path from 'path';
-import { loadEnv } from 'vite';
-import type { ConfigEnv, UserConfig } from 'vite';
+import path from 'path'
+import { loadEnv } from 'vite'
+import type { ConfigEnv, UserConfig } from 'vite'
 
-import { visualizer } from 'rollup-plugin-visualizer';
-import Components from 'unplugin-vue-components/vite';
-import AutoImport from 'unplugin-auto-import/vite';
-import { VantResolver } from 'unplugin-vue-components/resolvers';
+import { visualizer } from 'rollup-plugin-visualizer'
+import Components from 'unplugin-vue-components/vite'
+import AutoImport from 'unplugin-auto-import/vite'
+import { VantResolver } from 'unplugin-vue-components/resolvers'
 
-import vue from '@vitejs/plugin-vue';
-import legacy from '@vitejs/plugin-legacy';
-import vueJsx from '@vitejs/plugin-vue-jsx';
+import vue from '@vitejs/plugin-vue'
+import legacy from '@vitejs/plugin-legacy'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 
 export default ({ mode }: ConfigEnv): UserConfig => {
-  const root = process.cwd();
-  const env = loadEnv(mode, root);
+  const root = process.cwd()
+  const env = loadEnv(mode, root)
 
   return {
     base: env.VITE_APP_PUBLIC_PATH,
@@ -73,5 +73,5 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       host: true,
       port: 3000,
     },
-  };
-};
+  }
+}

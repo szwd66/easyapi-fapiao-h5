@@ -1,5 +1,5 @@
-import request from '@/utils/request';
-import { localStorage } from '@/utils/local-storage';
+import request from '@/utils/request'
+import { localStorage } from '@/utils/local-storage'
 
 /**
  * 获取地址列表
@@ -8,12 +8,12 @@ import { localStorage } from '@/utils/local-storage';
  */
 
 export async function getAddressListApi(params): Promise<any> {
-  return request.get(`/addresses`, {
+  return request.get('/addresses', {
     params: {
       accessToken: localStorage.get('accessToken'),
       ...params,
     },
-  });
+  })
 }
 
 /**
@@ -26,7 +26,7 @@ export async function getAddressApi(id): Promise<any> {
     params: {
       accessToken: localStorage.get('accessToken'),
     },
-  });
+  })
 }
 
 /**
@@ -36,8 +36,8 @@ export async function getAddressApi(id): Promise<any> {
  */
 
 export async function createAddressApi(data): Promise<any> {
-  data.accessToken = localStorage.get('accessToken');
-  return request.post(`/address`, data);
+  data.accessToken = localStorage.get('accessToken')
+  return request.post('/address', data)
 }
 
 /**
@@ -47,8 +47,8 @@ export async function createAddressApi(data): Promise<any> {
  */
 
 export async function updateAddressApi(id, data): Promise<any> {
-  data.accessToken = localStorage.get('accessToken');
-  return request.put(`/address/${id}`, data);
+  data.accessToken = localStorage.get('accessToken')
+  return request.put(`/address/${id}`, data)
 }
 
 /**
@@ -61,7 +61,7 @@ export async function deleteAddressApi(id): Promise<any> {
     params: {
       accessToken: localStorage.get('accessToken'),
     },
-  });
+  })
 }
 
 /**
@@ -72,7 +72,7 @@ export async function getDefaultAddressApi(username): Promise<any> {
     params: {
       accessToken: localStorage.get('accessToken'),
     },
-  });
+  })
 }
 
 /**
@@ -84,5 +84,5 @@ export async function defaultAddressApi(id): Promise<any> {
   return request.put(`/address/${id}`, {
     accessToken: localStorage.get('accessToken'),
     ifDefault: true,
-  });
+  })
 }

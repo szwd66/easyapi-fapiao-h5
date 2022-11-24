@@ -1,21 +1,21 @@
-<template>
-  <header class="header">
-    <van-nav-bar :title="headerTitle" left-arrow @click-left="goBack()" />
-  </header>
-  <div class="header-placeholder"></div>
-</template>
-
 <script setup lang="ts">
 defineProps({
   headerTitle: {
     type: String,
   },
-});
+})
 
 const goBack = () => {
-  history.go(-1);
-};
+  history.go(-1)
+}
 </script>
+
+<template>
+  <header class="header">
+    <van-nav-bar :title="headerTitle" left-arrow @click-left="goBack()" />
+  </header>
+  <div class="header-placeholder" />
+</template>
 
 <style lang="less" scoped>
 .header {

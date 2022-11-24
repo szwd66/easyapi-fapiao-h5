@@ -1,4 +1,4 @@
-import request from '@/utils/request';
+import request from '@/utils/request'
 
 /**
  * 获取七牛KEY
@@ -6,7 +6,7 @@ import request from '@/utils/request';
  * @see https://www.easyapi.com
  */
 export async function getQiniuKeyApi(): Promise<any> {
-  return request.get(`https://api.easyapi.com/qiniu/key`);
+  return request.get('https://api.easyapi.com/qiniu/key')
 }
 
 /**
@@ -15,12 +15,12 @@ export async function getQiniuKeyApi(): Promise<any> {
  * @see https://www.easyapi.com
  */
 export async function getQiniuTokenApi(): Promise<any> {
-  return request.get(`https://api.easyapi.com/qiniu/upToken`);
+  return request.get('https://api.easyapi.com/qiniu/upToken')
 }
 
 /**
  * 七牛上传
  */
-export const qiniuUploadApi = data => {
-  return request.post(`https://upload.qiniup.com/`, data);
-};
+export const qiniuUploadApi = (data) => {
+  return request.post('https://upload.qiniup.com/', data)
+}

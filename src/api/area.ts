@@ -1,4 +1,4 @@
-import request from '@/utils/request';
+import request from '@/utils/request'
 
 /**
  * 获取省市区
@@ -7,9 +7,9 @@ import request from '@/utils/request';
  */
 
 export async function getAreaListApi(params): Promise<any> {
-  return request.get(`https://qiniu.easyapi.com/area.json`, {
+  return request.get('https://qiniu.easyapi.com/area.json', {
     params: {
       ...params,
     },
-  });
+  })
 }

@@ -1,5 +1,5 @@
-import request from '@/utils/request';
-import { localStorage } from '@/utils/local-storage';
+import request from '@/utils/request'
+import { localStorage } from '@/utils/local-storage'
 
 /**
  * 获取公司抬头列表
@@ -7,12 +7,12 @@ import { localStorage } from '@/utils/local-storage';
  * @see https://www.easyapi.com
  */
 export async function getCompanyListApi(params): Promise<any> {
-  return request.get(`/companies`, {
+  return request.get('/companies', {
     params: {
       accessToken: localStorage.get('accessToken'),
       ...params,
     },
-  });
+  })
 }
 
 /**
@@ -25,7 +25,7 @@ export async function getCompanyApi(id): Promise<any> {
     params: {
       accessToken: localStorage.get('accessToken'),
     },
-  });
+  })
 }
 
 /**
@@ -34,8 +34,8 @@ export async function getCompanyApi(id): Promise<any> {
  * @see https://www.easyapi.com
  */
 export async function createCompanyApi(data): Promise<any> {
-  data.accessToken = localStorage.get('accessToken');
-  return request.post(`/company`, data);
+  data.accessToken = localStorage.get('accessToken')
+  return request.post('/company', data)
 }
 
 /**
@@ -45,8 +45,8 @@ export async function createCompanyApi(data): Promise<any> {
  */
 
 export async function updateCompanyApi(id, data): Promise<any> {
-  data.accessToken = localStorage.get('accessToken');
-  return request.put(`/company/${id}`, data);
+  data.accessToken = localStorage.get('accessToken')
+  return request.put(`/company/${id}`, data)
 }
 
 /**
@@ -58,7 +58,7 @@ export async function updateCompanyApi(id, data): Promise<any> {
 export async function updateCompanySetDefaultApi(id): Promise<any> {
   return request.post(`/company/${id}/set-default`, {
     accessToken: localStorage.get('accessToken'),
-  });
+  })
 }
 
 /**
@@ -71,7 +71,7 @@ export async function deleteCompanyApi(id): Promise<any> {
     params: {
       accessToken: localStorage.get('accessToken'),
     },
-  });
+  })
 }
 
 /**
@@ -83,7 +83,7 @@ export async function defaultCompanyApi(id): Promise<any> {
   return request.put(`/company/${id}`, {
     accessToken: localStorage.get('accessToken'),
     ifDefault: true,
-  });
+  })
 }
 
 /**
@@ -92,11 +92,11 @@ export async function defaultCompanyApi(id): Promise<any> {
  * @see https://www.easyapi.com
  */
 export async function getDefaultCompanyApi(): Promise<any> {
-  return request.get(`/company/default`, {
+  return request.get('/company/default', {
     params: {
       accessToken: localStorage.get('accessToken'),
     },
-  });
+  })
 }
 
 /**
@@ -105,10 +105,10 @@ export async function getDefaultCompanyApi(): Promise<any> {
  * @see https://www.easyapi.com
  */
 export async function getCompanyCodeListApi(params): Promise<any> {
-  return request.get(`/company/codes`, {
+  return request.get('/company/codes', {
     params: {
       accessToken: localStorage.get('accessToken'),
       ...params,
     },
-  });
+  })
 }

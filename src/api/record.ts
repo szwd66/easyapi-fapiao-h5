@@ -1,5 +1,5 @@
-import request from '@/utils/request';
-import { localStorage } from '@/utils/local-storage';
+import request from '@/utils/request'
+import { localStorage } from '@/utils/local-storage'
 
 /**
  * 获取开票记录
@@ -13,5 +13,5 @@ export async function getRecordListApi(params): Promise<any> {
       accessToken: localStorage.get('accessToken'),
       ...params,
     },
-  });
+  })
 }

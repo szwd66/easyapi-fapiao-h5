@@ -1,5 +1,5 @@
-import request from '@/utils/request';
-import { localStorage } from '@/utils/local-storage';
+import request from '@/utils/request'
+import { localStorage } from '@/utils/local-storage'
 
 /**
  * 查询设置信息
@@ -13,5 +13,5 @@ export async function findSettingApi(params): Promise<any> {
       accessToken: localStorage.get('accessToken'),
       ...params,
     },
-  });
+  })
 }

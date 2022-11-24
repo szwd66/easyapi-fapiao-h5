@@ -1,5 +1,5 @@
-import request from '@/utils/request';
-import { localStorage } from '@/utils/local-storage';
+import request from '@/utils/request'
+import { localStorage } from '@/utils/local-storage'
 
 /**
  * 获取未开票外部订单列表
@@ -13,7 +13,7 @@ export async function getOutOrderListApi(params): Promise<any> {
       state: 0,
       ...params,
     },
-  });
+  })
 }
 
 /**
@@ -27,5 +27,5 @@ export async function getOutOrderCountApi(params): Promise<any> {
       accessToken: localStorage.get('accessToken'),
       ...params,
     },
-  });
+  })
 }

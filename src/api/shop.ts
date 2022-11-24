@@ -1,5 +1,5 @@
-import request from '@/utils/request';
-import { localStorage } from '@/utils/local-storage';
+import request from '@/utils/request'
+import { localStorage } from '@/utils/local-storage'
 
 /**
  * 获取商户详情信息
@@ -10,5 +10,5 @@ export async function getShopApi(): Promise<any> {
     params: {
       accessToken: localStorage.get('accessToken'),
     },
-  });
+  })
 }

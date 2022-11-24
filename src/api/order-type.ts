@@ -1,5 +1,5 @@
-import request from '@/utils/request';
-import { localStorage } from '@/utils/local-storage';
+import request from '@/utils/request'
+import { localStorage } from '@/utils/local-storage'
 
 /**
  * 获取订单类型列表
@@ -9,5 +9,5 @@ export async function getOrderTypeListApi(): Promise<any> {
     params: {
       accessToken: localStorage.get('accessToken'),
     },
-  });
+  })
 }
