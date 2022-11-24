@@ -1,38 +1,9 @@
-<template>
-  <Header headerTitle='关联订单' v-if='store.ifShowH5NavBar' />
-  <van-list
-    v-model:loading='state.loading'
-    :finished='state.finished'
-    finished-text='没有更多数据了'
-    @load='loadMore'
-    class='invoice-out-order'
-    :style="{ height: state.windowHeight + 'px' }"
-  >
-    <div class='order-con' v-for='(item, index) in state.outOrders' :key='index'>
-      <van-cell-group :border='false'>
-        <van-cell title='订单编号：' :value='item.no' :border='false' />
-        <van-cell
-          v-if='item.fields'
-          :title='Object.values(JSON.parse(item.fields))[0]'
-          :value='item.no'
-          :border='false'
-        />
-        <van-cell title='' :value='item.model' :border='false' />
-        <div class='subtotal'>
-          <span>小计</span>
-          <span class='price'>￥{{ item.price }}</span>
-        </div>
-      </van-cell-group>
-    </div>
-  </van-list>
-</template>
-
 <script setup lang='ts'>
-import { getOutOrderListApi } from '@/api/invoice';
-import { useStore } from '@/stores';
+import { getOutOrderListApi } from '@/api/invoice'
+import { useStore } from '@/stores'
 
-const store = useStore();
-const route = useRoute();
+const store = useStore()
+const route = useRoute()
 
 const state = reactive({
   outOrders: [],
@@ -44,48 +15,77 @@ const state = reactive({
     totalPages: 0,
   },
   windowHeight: 0,
-});
+})
 
 const getOutOrderList = () => {
   const params = {
     invoiceId: route.query.id,
     page: state.pagination.page - 1,
     size: state.pagination.size,
-  };
-  getOutOrderListApi(params).then(res => {
-    state.loading = false;
+  }
+  getOutOrderListApi(params).then((res) => {
+    state.loading = false
     if (res.code === 1) {
-      state.outOrders = state.outOrders.concat(res.content);
-      state.pagination.totalPages = res.totalPages;
+      state.outOrders = state.outOrders.concat(res.content)
+      state.pagination.totalPages = res.totalPages
     } else {
-      state.outOrders = [];
-      state.pagination.totalPages = 0;
+      state.outOrders = []
+      state.pagination.totalPages = 0
     }
-  });
-};
+  })
+}
 
 /**
  * 上拉加载
  */
 const loadMore = () => {
   if (state.pagination.page === state.pagination.totalPages) {
-    state.finished = true;
-    return;
+    state.finished = true
+    return
   }
-  state.pagination.page++;
-  getOutOrderList();
-};
+  state.pagination.page++
+  getOutOrderList()
+}
 
 const getWindowHeight = () => {
-  const clientHeight = document.documentElement.clientHeight;
-  state.windowHeight = clientHeight - 15 - (store.ifShowH5NavBar ? 46 : 0);
-};
+  const clientHeight = document.documentElement.clientHeight
+  state.windowHeight = clientHeight - 15 - (store.ifShowH5NavBar ? 46 : 0)
+}
 
 onMounted(() => {
-  getWindowHeight();
-  getOutOrderList();
-});
+  getWindowHeight()
+  getOutOrderList()
+})
 </script>
+
+<template>
+  <Header v-if="store.ifShowH5NavBar" header-title="关联订单" />
+  <van-list
+    v-model:loading="state.loading"
+    :finished="state.finished"
+    finished-text="没有更多数据了"
+    class="invoice-out-order"
+    :style="{ height: `${state.windowHeight}px` }"
+    @load="loadMore"
+  >
+    <div v-for="(item, index) in state.outOrders" :key="index" class="order-con">
+      <van-cell-group :border="false">
+        <van-cell title="订单编号：" :value="item.no" :border="false" />
+        <van-cell
+          v-if="item.fields"
+          :title="Object.values(JSON.parse(item.fields))[0]"
+          :value="item.no"
+          :border="false"
+        />
+        <van-cell title="" :value="item.model" :border="false" />
+        <div class="subtotal">
+          <span>小计</span>
+          <span class="price">￥{{ item.price }}</span>
+        </div>
+      </van-cell-group>
+    </div>
+  </van-list>
+</template>
 
 <style lang='less'>
 .invoice-out-order {

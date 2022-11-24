@@ -1,57 +1,13 @@
-<template>
-  <Header headerTitle="开具电子发票" v-if="store.ifShowH5NavBar" />
-  <div class="make-invoice">
-    <Invoice
-      :isShow="state.isShow"
-      :isHide="state.isHide"
-      :ifElectronic="state.ifElectronic"
-      :invoiceForm="state.invoiceForm"
-      :ifPaper="state.ifPaper"
-      :company="state.company"
-      @getCompany="receiveCompany"
-      @getInvoiceCategory="receiveCategory"
-      @getInvoiceProperty="receiveProperty"
-    />
-
-    <van-cell-group title="发票内容" inset>
-      <van-field label="发票内容" v-model="state.orderType" readonly></van-field>
-      <van-field
-        class="merge-order_price"
-        label="发票金额"
-        v-model="state.invoiceForm.price"
-        readonly
-      ></van-field>
-      <van-field
-        label="发票备注"
-        v-model="state.invoiceForm.remark"
-        :placeholder="common.remarkPlaceholder"
-      ></van-field>
-    </van-cell-group>
-
-    <Receive
-      :ifElectronic="state.ifElectronic"
-      :invoiceForm="state.invoiceForm"
-      :ifNeedEmail="common.ifNeedEmail"
-      :ifNeedMobile="common.ifNeedMobile"
-      :address="state.address"
-    />
-
-    <div class="bottom fixed-bottom-bgColor">
-      <van-button type="primary" class="submit" block @click="makeInvoice">提交</van-button>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
-import { mergeMakeInvoiceApi } from '@/api/make';
-import { closeToast, showConfirmDialog, showLoadingToast, showToast } from 'vant';
-import makeMixins from '../mixins/make';
-import { localStorage } from '@/utils/local-storage';
-import { useStore } from '@/stores';
+import { closeToast, showConfirmDialog, showLoadingToast, showToast } from 'vant'
+import makeMixins from '../mixins/make'
+import { mergeMakeInvoiceApi } from '@/api/make'
+import { localStorage } from '@/utils/local-storage'
+import { useStore } from '@/stores'
 
-const { common, getInvoiceRemark, ifNeedMobileEmail, checkEmailMobile } = makeMixins();
-const store = useStore();
-const router = useRouter();
+const { common, getInvoiceRemark, ifNeedMobileEmail, checkEmailMobile } = makeMixins()
+const store = useStore()
+const router = useRouter()
 
 const state = reactive({
   ifElectronic: localStorage.get('ifElectronic'),
@@ -65,7 +21,7 @@ const state = reactive({
   address: {},
   outOrderIds: '',
   invoiceForm: {
-    outOrderNo: 'H5' + new Date().getTime(),
+    outOrderNo: `H5${new Date().getTime()}`,
     type: '企业',
     category: '增值税电子普通发票',
     property: localStorage.get('ifElectronic') ? '纸质' : '电子',
@@ -83,33 +39,33 @@ const state = reactive({
     outOrderIds: '',
   },
   seletedOutOrderList: [],
-});
+})
 
 const getOrder = () => {
-  state.orderType = localStorage.get('orderType') ? localStorage.get('orderType') : '';
-  state.invoiceForm.price = localStorage.get('tot') ? localStorage.get('tot') : 0.0;
-  state.seletedOutOrderList = [];
-  if (localStorage.get('seleted')) {
-    state.seletedOutOrderList = JSON.parse(localStorage.get('seleted'));
-  }
+  state.orderType = localStorage.get('orderType') ? localStorage.get('orderType') : ''
+  state.invoiceForm.price = localStorage.get('tot') ? localStorage.get('tot') : 0.0
+  state.seletedOutOrderList = []
+  if (localStorage.get('seleted'))
+    state.seletedOutOrderList = JSON.parse(localStorage.get('seleted'))
+
   for (let i = 0; i < state.seletedOutOrderList.length; i++) {
-    state.outOrderIds += state.seletedOutOrderList[i].outOrderId + ',';
-    state.invoiceForm.outOrderIds = state.outOrderIds;
-    state.invoiceForm.category = '增值税电子普通发票';
-    state.invoiceForm.property = localStorage.get('ifElectronic') ? '电子' : '纸质';
+    state.outOrderIds += `${state.seletedOutOrderList[i].outOrderId},`
+    state.invoiceForm.outOrderIds = state.outOrderIds
+    state.invoiceForm.category = '增值税电子普通发票'
+    state.invoiceForm.property = localStorage.get('ifElectronic') ? '电子' : '纸质'
   }
-};
+}
 
 /**
  * 提交开票信息
  */
 const makeInvoice = () => {
-  if (state.invoiceForm.type === '个人' && state.invoiceForm.purchaserName === '') {
-    return showToast('请输入发票抬头');
-  }
-  if (!checkEmailMobile(state.invoiceForm)) {
-    return;
-  }
+  if (state.invoiceForm.type === '个人' && state.invoiceForm.purchaserName === '')
+    return showToast('请输入发票抬头')
+
+  if (!checkEmailMobile(state.invoiceForm))
+    return
+
   showConfirmDialog({
     title: '提示',
     message: '确认抬头和金额正确并申请开票吗？',
@@ -118,34 +74,80 @@ const makeInvoice = () => {
       message: '开票中...',
       forbidClick: true,
       duration: 0,
-    });
-    state.invoiceForm.companyId = state.company.companyId;
-    mergeMakeInvoiceApi(state.invoiceForm).then(res => {
-      closeToast();
+    })
+    state.invoiceForm.companyId = state.company.companyId
+    mergeMakeInvoiceApi(state.invoiceForm).then((res) => {
+      closeToast()
       if (res.code === 1) {
         router.push({
           path: '/make/success',
-        });
+        })
       } else {
-        showToast(res.message);
+        showToast(res.message)
       }
-    });
-  }).catch(() => {});
-};
+    })
+  }).catch(() => {})
+}
 
-const receiveCompany = val => {
-  state.company = val;
-};
+const receiveCompany = (val) => {
+  state.company = val
+}
 
 onMounted(() => {
-  if (localStorage.get('type')) {
-    state.invoiceForm.type = localStorage.get('type');
-  }
-  getOrder();
-  getInvoiceRemark();
-  ifNeedMobileEmail();
-});
+  if (localStorage.get('type'))
+    state.invoiceForm.type = localStorage.get('type')
+
+  getOrder()
+  getInvoiceRemark()
+  ifNeedMobileEmail()
+})
 </script>
+
+<template>
+  <Header v-if="store.ifShowH5NavBar" header-title="开具电子发票" />
+  <div class="make-invoice">
+    <Invoice
+      :is-show="state.isShow"
+      :is-hide="state.isHide"
+      :if-electronic="state.ifElectronic"
+      :invoice-form="state.invoiceForm"
+      :if-paper="state.ifPaper"
+      :company="state.company"
+      @getCompany="receiveCompany"
+      @getInvoiceCategory="receiveCategory"
+      @getInvoiceProperty="receiveProperty"
+    />
+
+    <van-cell-group title="发票内容" inset>
+      <van-field v-model="state.orderType" label="发票内容" readonly />
+      <van-field
+        v-model="state.invoiceForm.price"
+        class="merge-order_price"
+        label="发票金额"
+        readonly
+      />
+      <van-field
+        v-model="state.invoiceForm.remark"
+        label="发票备注"
+        :placeholder="common.remarkPlaceholder"
+      />
+    </van-cell-group>
+
+    <Receive
+      :if-electronic="state.ifElectronic"
+      :invoice-form="state.invoiceForm"
+      :if-need-email="common.ifNeedEmail"
+      :if-need-mobile="common.ifNeedMobile"
+      :address="state.address"
+    />
+
+    <div class="bottom fixed-bottom-bgColor">
+      <van-button type="primary" class="submit" block @click="makeInvoice">
+        提交
+      </van-button>
+    </div>
+  </div>
+</template>
 
 <style lang="less">
 @import '../make.less';

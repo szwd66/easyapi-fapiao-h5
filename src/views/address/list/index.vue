@@ -1,17 +1,64 @@
+<script setup lang='ts'>
+import { defaultAddressApi, getAddressListApi } from '@/api/address'
+import { useStore } from '@/stores'
+
+const store = useStore()
+const router = useRouter()
+const route = useRoute()
+
+const state = reactive({
+  loading: true,
+  addressList: [],
+})
+
+const getAddressList = () => {
+  getAddressListApi({}).then((res) => {
+    state.loading = false
+    if (res.code === 1)
+      state.addressList = res.content
+    else
+      state.addressList = []
+  })
+}
+
+const select = (item) => {
+  if (route.query.from)
+    return
+
+  defaultAddressApi(item.addressId).then((res) => {
+    if (res.code === 1)
+      history.back()
+  })
+}
+
+const gotoEditAddress = (addressId) => {
+  router.push({
+    path: '/address/edit',
+    query: { id: addressId },
+  })
+}
+
+onMounted(() => {
+  getAddressList()
+})
+</script>
+
 <template>
-  <Header headerTitle="地址管理" v-if="store.ifShowH5NavBar" />
-  <div class="address" v-if="!state.loading">
+  <Header v-if="store.ifShowH5NavBar" header-title="地址管理" />
+  <div v-if="!state.loading" class="address">
     <div v-if="state.addressList.length === 0">
       <van-empty image="search" description="暂无数据" />
     </div>
-    <div class="address-list" v-else>
-      <div class="address-list-item" v-for="(item, index) in state.addressList" :key="index">
+    <div v-else class="address-list">
+      <div v-for="(item, index) in state.addressList" :key="index" class="address-list-item">
         <div class="address-top fixed-bottom-bgColor">
           <span class="rise-text">{{ item.name }}</span>
-          <van-tag plain type="warning" v-if="item.ifDefault">默认</van-tag>
+          <van-tag v-if="item.ifDefault" plain type="warning">
+            默认
+          </van-tag>
           <span class="edit" @click="gotoEditAddress(item.addressId)">编辑</span>
         </div>
-        <van-cell-group @click="select(item)" :border="false">
+        <van-cell-group :border="false" @click="select(item)">
           <van-cell title="联系电话" :value="item.mobile" :border="false" />
           <van-cell
             title="收票地址"
@@ -29,54 +76,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
-import { defaultAddressApi, getAddressListApi } from '@/api/address';
-import { useStore } from '@/stores';
-
-const store = useStore();
-const router = useRouter();
-const route = useRoute();
-
-const state = reactive({
-  loading: true,
-  addressList: [],
-});
-
-const getAddressList = () => {
-  getAddressListApi({}).then(res => {
-    state.loading = false;
-    if (res.code === 1) {
-      state.addressList = res.content;
-    } else {
-      state.addressList = [];
-    }
-  });
-};
-
-const select = item => {
-  if (route.query.from) {
-    return;
-  }
-  defaultAddressApi(item.addressId).then(res => {
-    if (res.code === 1) {
-      history.back();
-    }
-  });
-};
-
-const gotoEditAddress = addressId => {
-  router.push({
-    path: '/address/edit',
-    query: { id: addressId },
-  });
-};
-
-onMounted(() => {
-  getAddressList();
-});
-</script>
-
-<style lang="less">
+<style lang='less'>
 .address {
   .van-cell__value {
     min-width: 70%;
@@ -89,7 +89,8 @@ onMounted(() => {
   }
 }
 </style>
-<style lang="less" scoped>
+
+<style lang='less' scoped>
 .address {
   .address-list {
     padding: 0px 16px;

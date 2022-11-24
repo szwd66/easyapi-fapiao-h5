@@ -1,83 +1,15 @@
-<template>
-  <Header headerTitle='开具电子发票' v-if='store.ifShowH5NavBar' />
-  <div class='make-invoice'>
-    <Invoice
-      :isShow='state.isShow'
-      :isHide='state.isHide'
-      :ifElectronic='state.ifElectronic'
-      :invoiceForm='state.invoiceForm'
-      :ifPaper='state.ifPaper'
-      :company='state.company'
-      @getCompany='receiveCompany'
-      @getInvoiceCategory='receiveCategory'
-      @getInvoiceProperty='receiveProperty'
-    />
-
-    <div class='invoice-contents'>
-      <p class='contents-title'>发票内容</p>
-      <div class='contents-product'>
-        <ul class='product-head'>
-          <li style='width: 35%'>商品名称</li>
-          <li style='width: 35%'>规格型号</li>
-          <li>单位</li>
-          <li>数量</li>
-          <li>单价</li>
-          <li>操作</li>
-        </ul>
-        <van-cell class='line' />
-        <ul class='contents-content' v-for='(product, index) in state.productList' :key='index'>
-          <li style='width: 35%; line-height: 15px; padding-top: 12px'>
-            {{ product.name }}
-          </li>
-          <li style='width: 35%; line-height: 15px; padding-top: 12px'>
-            {{ product.specification }}
-          </li>
-          <li>{{ product.unit }}</li>
-          <li>{{ product.number }}</li>
-          <li>{{ product.price }}</li>
-          <li style='color: #1989fa' @click='deleteProduct(product.productId)'>删除</li>
-        </ul>
-        <van-cell class='line' />
-        <van-field
-          class='merge-order_price'
-          label='发票金额'
-          v-model='state.invoiceForm.price'
-          readonly
-        ></van-field>
-        <van-field
-          label='发票备注'
-          :placeholder='common.remarkPlaceholder'
-          v-model='state.invoiceForm.remark'
-        ></van-field>
-      </div>
-    </div>
-
-    <Receive
-      :ifElectronic='state.ifElectronic'
-      :invoiceForm='state.invoiceForm'
-      :ifNeedEmail='common.ifNeedEmail'
-      :ifNeedMobile='common.ifNeedMobile'
-      :address='state.address'
-    />
-
-    <div class='bottom fixed-bottom-bgColor'>
-      <van-button type='primary' class='submit' block @click='makeInvoice'>提交</van-button>
-    </div>
-  </div>
-</template>
-
 <script setup lang='ts'>
-import { mergeMakeInvoiceApi } from '@/api/make';
-import { getOutOrderListApi } from '@/api/out-order';
-import { closeToast, showConfirmDialog, showLoadingToast, showToast } from 'vant';
-import makeMixins from '../mixins/make';
-import { localStorage } from '@/utils/local-storage';
-import { useStore } from '@/stores';
+import { closeToast, showConfirmDialog, showLoadingToast, showToast } from 'vant'
+import makeMixins from '../mixins/make'
+import { mergeMakeInvoiceApi } from '@/api/make'
+import { getOutOrderListApi } from '@/api/out-order'
+import { localStorage } from '@/utils/local-storage'
+import { useStore } from '@/stores'
 
-const { common, getInvoiceRemark, ifNeedMobileEmail, checkEmailMobile } = makeMixins();
-const store = useStore();
-const router = useRouter();
-const route = useRoute();
+const { common, getInvoiceRemark, ifNeedMobileEmail, checkEmailMobile } = makeMixins()
+const store = useStore()
+const router = useRouter()
+const route = useRoute()
 
 const state = reactive({
   taxNumber: '',
@@ -86,7 +18,7 @@ const state = reactive({
   isShow: false,
   isHide: true,
   amountOfMoney: '0',
-  productList: [], //商品列表
+  productList: [], // 商品列表
   address: {},
   outOrder: {
     outOrderId: '',
@@ -123,41 +55,40 @@ const state = reactive({
     outOrderIds: '',
     companyId: '',
   },
-});
+})
 
 const getOutOrder = () => {
-  const outOrderNo = state.outOrderNo;
+  const outOrderNo = state.outOrderNo
   const params = {
     accessToken: state.accessToken,
     taxNumber: state.taxNumber,
     state: 0,
     no: outOrderNo,
-  };
-  getOutOrderListApi(params).then(res => {
+  }
+  getOutOrderListApi(params).then((res) => {
     if (res.code === 1) {
       router.push({
         path: '/invoice/detail',
         query: { id: res.content.invoice.invoiceId },
-      });
+      })
     }
-    state.outOrder = res.content[0];
-    calculatedAmount();
-  });
-};
+    state.outOrder = res.content[0]
+    calculatedAmount()
+  })
+}
 
-const receiveCompany = val => {
-  state.company = val;
-};
+const receiveCompany = (val) => {
+  state.company = val
+}
 
 const makeInvoice = () => {
   if (state.invoiceForm.type === '个人') {
-    if (state.invoiceForm.purchaserName === '') {
-      return showToast('请输入发票抬头');
-    }
+    if (state.invoiceForm.purchaserName === '')
+      return showToast('请输入发票抬头')
   }
-  if (!checkEmailMobile(state.invoiceForm)) {
-    return;
-  }
+  if (!checkEmailMobile(state.invoiceForm))
+    return
+
   showConfirmDialog({
     title: '提示',
     message: '确认抬头和金额正确并申请开票吗？',
@@ -166,79 +97,156 @@ const makeInvoice = () => {
       message: '开票中...',
       forbidClick: true,
       duration: 0,
-    });
-    state.invoiceForm.category = '增值税电子普通发票';
-    state.invoiceForm.property = '电子';
-    state.invoiceForm.outOrderIds = state.outOrder.outOrderId;
-    state.invoiceForm.companyId = state.company.companyId;
-    mergeMakeInvoiceApi(state.invoiceForm).then(res => {
-      closeToast();
+    })
+    state.invoiceForm.category = '增值税电子普通发票'
+    state.invoiceForm.property = '电子'
+    state.invoiceForm.outOrderIds = state.outOrder.outOrderId
+    state.invoiceForm.companyId = state.company.companyId
+    mergeMakeInvoiceApi(state.invoiceForm).then((res) => {
+      closeToast()
       if (res.code === 1) {
         router.push({
           path: '/single-order-success',
           query: { returnUrl: state.returnUrl },
-        });
+        })
       } else {
-        showToast(res.message);
+        showToast(res.message)
       }
-    });
+    })
   }).catch(() => {
-  });
-};
+  })
+}
 
 /**  计算发票金额 */
 const calculatedAmount = () => {
-  if (state.outOrder !== null) {
-    state.amountOfMoney = state.outOrder.price.toFixed(2);
-  }
-};
+  if (state.outOrder !== null)
+    state.amountOfMoney = state.outOrder.price.toFixed(2)
+}
 
 /** 删除商品 */
-const deleteProduct = id => {
+const deleteProduct = (id) => {
   for (let i = 0; i < state.productList.length; i++) {
-    if (id === state.productList[i].productId) {
-      state.productList.splice(i, 1);
-    }
-    localStorage.set('productList', JSON.stringify(state.productList));
-    state.productList = JSON.parse(localStorage.get('productList'));
+    if (id === state.productList[i].productId)
+      state.productList.splice(i, 1)
+
+    localStorage.set('productList', JSON.stringify(state.productList))
+    state.productList = JSON.parse(localStorage.get('productList'))
   }
-  state.invoiceForm.price = 0;
-  calculatedAmount();
-};
+  state.invoiceForm.price = 0
+  calculatedAmount()
+}
 
 onMounted(() => {
   if (route.query.accessToken) {
-    localStorage.set('accessToken', route.query.accessToken);
-    state.accessToken = localStorage.get('accessToken');
+    localStorage.set('accessToken', route.query.accessToken)
+    state.accessToken = localStorage.get('accessToken')
   } else if (state.accessToken === '') {
-    showToast('accessToken不能为空！');
+    showToast('accessToken不能为空！')
   }
   if (route.query.outOrderNo) {
-    localStorage.set('outOrderNo', route.query.outOrderNo);
-    state.outOrderNo = localStorage.get('outOrderNo');
+    localStorage.set('outOrderNo', route.query.outOrderNo)
+    state.outOrderNo = localStorage.get('outOrderNo')
   } else if (state.outOrderNo === '') {
-    showToast('outOrderNo不能为空！');
+    showToast('outOrderNo不能为空！')
   }
   if (route.query.returnUrl) {
-    localStorage.set('returnUrl', route.query.returnUrl);
-    state.accessToken = localStorage.get('returnUrl');
+    localStorage.set('returnUrl', route.query.returnUrl)
+    state.accessToken = localStorage.get('returnUrl')
   } else if (state.returnUrl === '') {
-    showToast('returnUrl不能为空！');
+    showToast('returnUrl不能为空！')
   }
-  state.accessToken = localStorage.get('accessToken');
-  state.taxNumber = localStorage.get('taxNumber');
-  state.outOrderNo = localStorage.get('outOrderNo');
-  state.invoiceForm.type = localStorage.get('type');
-  if (state.invoiceForm.type) {
-    state.invoiceForm.type = localStorage.get('type');
-  } else {
-    state.invoiceForm.type = '企业';
-  }
-  getOutOrder();
-  getInvoiceRemark();
-  ifNeedMobileEmail();
-});
+  state.accessToken = localStorage.get('accessToken')
+  state.taxNumber = localStorage.get('taxNumber')
+  state.outOrderNo = localStorage.get('outOrderNo')
+  state.invoiceForm.type = localStorage.get('type')
+  if (state.invoiceForm.type)
+    state.invoiceForm.type = localStorage.get('type')
+  else
+    state.invoiceForm.type = '企业'
+
+  getOutOrder()
+  getInvoiceRemark()
+  ifNeedMobileEmail()
+})
 </script>
+
+<template>
+  <Header v-if="store.ifShowH5NavBar" header-title="开具电子发票" />
+  <div class="make-invoice">
+    <Invoice
+      :is-show="state.isShow"
+      :is-hide="state.isHide"
+      :if-electronic="state.ifElectronic"
+      :invoice-form="state.invoiceForm"
+      :if-paper="state.ifPaper"
+      :company="state.company"
+      @getCompany="receiveCompany"
+      @getInvoiceCategory="receiveCategory"
+      @getInvoiceProperty="receiveProperty"
+    />
+
+    <div class="invoice-contents">
+      <p class="contents-title">
+        发票内容
+      </p>
+      <div class="contents-product">
+        <ul class="product-head">
+          <li style="width: 35%">
+            商品名称
+          </li>
+          <li style="width: 35%">
+            规格型号
+          </li>
+          <li>单位</li>
+          <li>数量</li>
+          <li>单价</li>
+          <li>操作</li>
+        </ul>
+        <van-cell class="line" />
+        <ul v-for="(product, index) in state.productList" :key="index" class="contents-content">
+          <li style="width: 35%; line-height: 15px; padding-top: 12px">
+            {{ product.name }}
+          </li>
+          <li style="width: 35%; line-height: 15px; padding-top: 12px">
+            {{ product.specification }}
+          </li>
+          <li>{{ product.unit }}</li>
+          <li>{{ product.number }}</li>
+          <li>{{ product.price }}</li>
+          <li style="color: #1989fa" @click="deleteProduct(product.productId)">
+            删除
+          </li>
+        </ul>
+        <van-cell class="line" />
+        <van-field
+          v-model="state.invoiceForm.price"
+          class="merge-order_price"
+          label="发票金额"
+          readonly
+        />
+        <van-field
+          v-model="state.invoiceForm.remark"
+          label="发票备注"
+          :placeholder="common.remarkPlaceholder"
+        />
+      </div>
+    </div>
+
+    <Receive
+      :if-electronic="state.ifElectronic"
+      :invoice-form="state.invoiceForm"
+      :if-need-email="common.ifNeedEmail"
+      :if-need-mobile="common.ifNeedMobile"
+      :address="state.address"
+    />
+
+    <div class="bottom fixed-bottom-bgColor">
+      <van-button type="primary" class="submit" block @click="makeInvoice">
+        提交
+      </van-button>
+    </div>
+  </div>
+</template>
 
 <style lang='less'>
 @import '../make.less';

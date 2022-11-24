@@ -1,78 +1,12 @@
-<template>
-  <Header headerTitle='编辑地址' v-if='store.ifShowH5NavBar' />
-  <div class='address-edit'>
-    <van-form @submit='confirm'>
-      <van-cell-group inset>
-        <van-field
-          label='收件人'
-          v-model='state.addressForm.name'
-          placeholder='请输入收货人姓名'
-          border
-          required
-          :rules="[{ required: true, message: '请输入收货人姓名' }]"
-        />
-        <van-field
-          label='联系电话'
-          v-model='state.addressForm.mobile'
-          placeholder='请输入收货人手机号'
-          border
-          required
-          :rules="[{ required: true, message: '请输入收货人手机号' }]"
-        />
-        <van-field
-          label='所在地区'
-          v-model='state.addressForm.area'
-          placeholder='请选择省市区县'
-          border
-          readonly
-          @click='state.showPopup = true'
-          required
-          :rules="[{ required: true, message: '请选择省市区县' }]"
-        />
-        <van-field
-          label='详细地址'
-          v-model='state.addressForm.addr'
-          placeholder='请输入街道、小区门牌号'
-          border
-          required
-          :rules="[{ required: true, message: '请输入街道、小区门牌号' }]"
-        />
-      </van-cell-group>
-
-      <van-cell-group class='default' inset>
-        <van-cell center title='设置为默认地址'>
-          <template #right-icon>
-            <van-switch v-model='state.addressForm.ifDefault' active-color='#FFC2A8' />
-          </template>
-        </van-cell>
-      </van-cell-group>
-
-      <van-popup v-model:show='state.showPopup' position='bottom' :style="{ height: '50%' }">
-        <van-area
-          title='请选择所在地区'
-          :area-list='state.areaList'
-          @confirm='onAddrConfirm'
-          @cancel='state.showPopup = false'
-        />
-      </van-popup>
-      <div class='bottom fixed-bottom-bgColor'>
-        <van-button type='primary' class='save' block native-type='submit'>保存</van-button>
-        <van-button type='danger' v-if='route.query.id' class='delete' block @click='deleteData'>
-          删除
-        </van-button>
-      </div>
-    </van-form>
-  </div>
-</template>
 <script setup lang='ts'>
-import { createAddressApi, deleteAddressApi, getAddressApi, updateAddressApi } from '@/api/address';
-import { showConfirmDialog } from 'vant';
-import { getAreaListApi } from '@/api/area';
-import { useStore } from '@/stores';
+import { showConfirmDialog } from 'vant'
+import { createAddressApi, deleteAddressApi, getAddressApi, updateAddressApi } from '@/api/address'
+import { getAreaListApi } from '@/api/area'
+import { useStore } from '@/stores'
 
-const store = useStore();
+const store = useStore()
 
-const route = useRoute();
+const route = useRoute()
 
 const state = reactive({
   addressForm: {
@@ -88,47 +22,47 @@ const state = reactive({
   name: '',
   showPopup: false,
   areaList: {},
-});
+})
 
 const getAddress = () => {
-  getAddressApi(route.query.id).then(res => {
+  getAddressApi(route.query.id).then((res) => {
     if (res.code === 1) {
-      state.addressForm = res.content;
-      state.addressForm.area =
-        state.addressForm.province + state.addressForm.city + state.addressForm.district;
+      state.addressForm = res.content
+      state.addressForm.area
+        = state.addressForm.province + state.addressForm.city + state.addressForm.district
     }
-  });
-};
+  })
+}
 
 const getAreaList = () => {
-  getAreaListApi({ } ).then(res => {
+  getAreaListApi({ }).then((res) => {
     if (res.status === 1) {
-      const provinces = res.provinces;
-      const province_list = {};
-      const city_list = {};
-      const county_list = {};
+      const provinces = res.provinces
+      const province_list = {}
+      const city_list = {}
+      const county_list = {}
       for (const a of provinces) {
-        const provinceKey = a.code.toString();
-        province_list[provinceKey] = a.name;
+        const provinceKey = a.code.toString()
+        province_list[provinceKey] = a.name
         for (const i of a.cities) {
-          const cityKey = i.code.toString();
-          city_list[cityKey] = i.name;
+          const cityKey = i.code.toString()
+          city_list[cityKey] = i.name
           if (i.districts.length > 0) {
             for (const k of i.districts) {
-              const districtsKey = k.id.toString();
-              county_list[districtsKey] = k.name;
+              const districtsKey = k.id.toString()
+              county_list[districtsKey] = k.name
             }
           } else {
-            county_list[cityKey] = i.name;
+            county_list[cityKey] = i.name
           }
         }
       }
-      state.areaList['province_list'] = province_list;
-      state.areaList['city_list'] = city_list;
-      state.areaList['county_list'] = county_list;
+      state.areaList.province_list = province_list
+      state.areaList.city_list = city_list
+      state.areaList.county_list = county_list
     }
-  });
-};
+  })
+}
 
 /**
  * 删除地址
@@ -138,13 +72,12 @@ const deleteData = () => {
     title: '提示',
     message: '确定删除?',
   }).then(() => {
-    deleteAddressApi(route.query.id).then(res => {
-      if (res.code === 1) {
-        history.back();
-      }
-    });
-  }).catch(() => {});
-};
+    deleteAddressApi(route.query.id).then((res) => {
+      if (res.code === 1)
+        history.back()
+    })
+  }).catch(() => {})
+}
 
 const confirm = () => {
   showConfirmDialog({
@@ -152,36 +85,103 @@ const confirm = () => {
     message: '确定提交吗？',
   }).then(() => {
     if (route.query.id) {
-      updateAddressApi(route.query.id, state.addressForm).then(res => {
-        if (res.code === 1) {
-          history.back();
-        }
-      });
+      updateAddressApi(route.query.id, state.addressForm).then((res) => {
+        if (res.code === 1)
+          history.back()
+      })
     } else {
-      createAddressApi(state.addressForm).then(res => {
-        if (res.code === 1) {
-          history.back();
-        }
-      });
+      createAddressApi(state.addressForm).then((res) => {
+        if (res.code === 1)
+          history.back()
+      })
     }
-  }).catch(() => {});
-};
-const onAddrConfirm = e => {
-  state.addressForm.province = e.selectedOptions[0].text;
-  state.addressForm.city = e.selectedOptions[1].text;
-  state.addressForm.district = e.selectedOptions[2].text;
-  state.addressForm.area =
-    state.addressForm.province + state.addressForm.city + state.addressForm.district;
-  state.showPopup = false;
-};
+  }).catch(() => {})
+}
+const onAddrConfirm = (e) => {
+  state.addressForm.province = e.selectedOptions[0].text
+  state.addressForm.city = e.selectedOptions[1].text
+  state.addressForm.district = e.selectedOptions[2].text
+  state.addressForm.area
+    = state.addressForm.province + state.addressForm.city + state.addressForm.district
+  state.showPopup = false
+}
 
 onMounted(() => {
-  if (route.query.id) {
-    getAddress();
-  }
-  getAreaList();
-});
+  if (route.query.id)
+    getAddress()
+
+  getAreaList()
+})
 </script>
+
+<template>
+  <Header v-if="store.ifShowH5NavBar" header-title="编辑地址" />
+  <div class="address-edit">
+    <van-form @submit="confirm">
+      <van-cell-group inset>
+        <van-field
+          v-model="state.addressForm.name"
+          label="收件人"
+          placeholder="请输入收货人姓名"
+          border
+          required
+          :rules="[{ required: true, message: '请输入收货人姓名' }]"
+        />
+        <van-field
+          v-model="state.addressForm.mobile"
+          label="联系电话"
+          placeholder="请输入收货人手机号"
+          border
+          required
+          :rules="[{ required: true, message: '请输入收货人手机号' }]"
+        />
+        <van-field
+          v-model="state.addressForm.area"
+          label="所在地区"
+          placeholder="请选择省市区县"
+          border
+          readonly
+          required
+          :rules="[{ required: true, message: '请选择省市区县' }]"
+          @click="state.showPopup = true"
+        />
+        <van-field
+          v-model="state.addressForm.addr"
+          label="详细地址"
+          placeholder="请输入街道、小区门牌号"
+          border
+          required
+          :rules="[{ required: true, message: '请输入街道、小区门牌号' }]"
+        />
+      </van-cell-group>
+
+      <van-cell-group class="default" inset>
+        <van-cell center title="设置为默认地址">
+          <template #right-icon>
+            <van-switch v-model="state.addressForm.ifDefault" active-color="#FFC2A8" />
+          </template>
+        </van-cell>
+      </van-cell-group>
+
+      <van-popup v-model:show="state.showPopup" position="bottom" :style="{ height: '50%' }">
+        <van-area
+          title="请选择所在地区"
+          :area-list="state.areaList"
+          @confirm="onAddrConfirm"
+          @cancel="state.showPopup = false"
+        />
+      </van-popup>
+      <div class="bottom fixed-bottom-bgColor">
+        <van-button type="primary" class="save" block native-type="submit">
+          保存
+        </van-button>
+        <van-button v-if="route.query.id" type="danger" class="delete" block @click="deleteData">
+          删除
+        </van-button>
+      </div>
+    </van-form>
+  </div>
+</template>
 
 <style lang='less' scoped>
 .address-edit {

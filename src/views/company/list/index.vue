@@ -1,71 +1,11 @@
-<template>
-  <Header headerTitle="抬头管理" v-if="store.ifShowH5NavBar" />
-  <div :class="store.ifShowH5NavBar ? 'search-top' : 'search'">
-    <van-search
-      v-model="state.companyName"
-      placeholder="请输入公司名称"
-      @update:model-value="companyNameSearch"
-    ></van-search>
-  </div>
-  <div class="search-placeholder"></div>
-  <div class="company">
-    <div v-if="!state.loading">
-      <div v-if="state.companyList.length === 0">
-        <van-empty image="search" description="暂无数据" />
-      </div>
-      <div class="company-list" v-else>
-        <van-radio-group v-model="state.checked">
-          <div
-            class="company-list-item"
-            v-for="(item, index) in state.companyList"
-            :key="index"
-            @click="select(item)"
-          >
-            <div class="company-list-item_content">
-              <van-radio
-                class="company-list-item_radio"
-                v-if="!route.query.from"
-                :name="item.companyId"
-              />
-              <div class="company-list-item_name">
-                <div class="company-list-item_tag">
-                  <van-tag type="primary" size="medium" v-if="item.ifDefault" class="tag">
-                    默认
-                  </van-tag>
-                  <span class="rise-text">{{ item.name }}</span>
-                </div>
-                <div class="company-list-item_taxNumber">{{ item.taxNumber }}</div>
-              </div>
-            </div>
-            <van-icon
-              name="edit"
-              color="#999"
-              size="22"
-              @click.stop="gotoEditCompany(item.companyId)"
-            />
-          </div>
-        </van-radio-group>
-      </div>
-    </div>
-    <div class="loading" v-if="state.loading">
-      <div>加载中......</div>
-    </div>
-    <div class="no-more-data" v-if="state.noMoreData">
-      <div>没有更多数据了</div>
-    </div>
-  </div>
-  <div class="bottom fixed-bottom-bgColor">
-    <van-button type="primary" class="sumbit" block @click="gotoEditCompany()">新增抬头</van-button>
-  </div>
-</template>
 <script setup lang="ts">
-import { showLoadingToast, closeToast } from 'vant';
-import { updateCompanySetDefaultApi, getCompanyListApi } from '@/api/company';
-import { useStore } from '@/stores';
+import { closeToast, showLoadingToast } from 'vant'
+import { getCompanyListApi, updateCompanySetDefaultApi } from '@/api/company'
+import { useStore } from '@/stores'
 
-const store = useStore();
-const router = useRouter();
-const route = useRoute();
+const store = useStore()
+const router = useRouter()
+const route = useRoute()
 
 const state = reactive({
   noData: false,
@@ -79,93 +19,155 @@ const state = reactive({
     totalPages: 0,
   },
   checked: '',
-});
+})
 
 const getCompanyList = () => {
   showLoadingToast({
     duration: 0,
     message: '加载中...',
     forbidClick: true,
-  });
+  })
   const params = {
     name: state.companyName,
     size: state.pagination.size,
     page: state.pagination.page,
-  };
-  getCompanyListApi(params).then(res => {
-    state.loading = false;
-    closeToast();
+  }
+  getCompanyListApi(params).then((res) => {
+    state.loading = false
+    closeToast()
     if (res.code === 1) {
-      state.companyList = state.companyList.concat(res.content);
-      state.pagination.totalPages = res.totalPages;
-      state.companyList.forEach(item => {
-        if (item.ifDefault) {
-          state.checked = item.companyId;
-        }
-      });
+      state.companyList = state.companyList.concat(res.content)
+      state.pagination.totalPages = res.totalPages
+      state.companyList.forEach((item) => {
+        if (item.ifDefault)
+          state.checked = item.companyId
+      })
     } else {
-      state.companyList = [];
-      state.pagination.totalPages = 0;
+      state.companyList = []
+      state.pagination.totalPages = 0
     }
-  });
-};
+  })
+}
 
 const companyNameSearch = () => {
-  state.companyList = [];
-  state.pagination.page = 0;
-  state.noData = false;
-  state.noMoreData = false;
-  state.loading = true;
-  getCompanyList();
-};
+  state.companyList = []
+  state.pagination.page = 0
+  state.noData = false
+  state.noMoreData = false
+  state.loading = true
+  getCompanyList()
+}
 
-const select = item => {
-  if (route.query.from) {
-    return;
-  }
-  state.checked = item.companyId;
+const select = (item) => {
+  if (route.query.from)
+    return
+
+  state.checked = item.companyId
   // 设置为默认抬头
-  updateCompanySetDefaultApi(item.companyId).then(res => {
-    if (res.code === 1) {
-      history.back();
-    }
-  });
-};
+  updateCompanySetDefaultApi(item.companyId).then((res) => {
+    if (res.code === 1)
+      history.back()
+  })
+}
 
-const gotoEditCompany = companyId => {
+const gotoEditCompany = (companyId) => {
   router.push({
     path: '/company/edit',
     query: { id: companyId },
-  });
-};
+  })
+}
 
 const getPageList = () => {
   if (state.pagination.page < state.pagination.totalPages - 1) {
-    state.pagination.page = state.pagination.page + 1;
-    getCompanyList();
+    state.pagination.page = state.pagination.page + 1
+    getCompanyList()
   }
-  if (state.pagination.page === state.pagination.totalPages - 1) {
-    state.noMoreData = true;
-  }
-};
+  if (state.pagination.page === state.pagination.totalPages - 1)
+    state.noMoreData = true
+}
 
 const lazyLoading = () => {
-  const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-  const clientHeight = document.documentElement.clientHeight;
-  const scrollHeight = document.documentElement.scrollHeight;
+  const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+  const clientHeight = document.documentElement.clientHeight
+  const scrollHeight = document.documentElement.scrollHeight
   if (scrollTop + clientHeight >= scrollHeight - 10) {
     // 滚动到底部，逻辑代码
-    //事件处理
-    getPageList();
+    // 事件处理
+    getPageList()
   }
-};
+}
 
 onMounted(() => {
-  getCompanyList();
+  getCompanyList()
   // 滚动到底部，再加载的处理事件
-  window.addEventListener('scroll', lazyLoading);
-});
+  window.addEventListener('scroll', lazyLoading)
+})
 </script>
+
+<template>
+  <Header v-if="store.ifShowH5NavBar" header-title="抬头管理" />
+  <div :class="store.ifShowH5NavBar ? 'search-top' : 'search'">
+    <van-search
+      v-model="state.companyName"
+      placeholder="请输入公司名称"
+      @update:model-value="companyNameSearch"
+    />
+  </div>
+  <div class="search-placeholder" />
+  <div class="company">
+    <div v-if="!state.loading">
+      <div v-if="state.companyList.length === 0">
+        <van-empty image="search" description="暂无数据" />
+      </div>
+      <div v-else class="company-list">
+        <van-radio-group v-model="state.checked">
+          <div
+            v-for="(item, index) in state.companyList"
+            :key="index"
+            class="company-list-item"
+            @click="select(item)"
+          >
+            <div class="company-list-item_content">
+              <van-radio
+                v-if="!route.query.from"
+                class="company-list-item_radio"
+                :name="item.companyId"
+              />
+              <div class="company-list-item_name">
+                <div class="company-list-item_tag">
+                  <van-tag v-if="item.ifDefault" type="primary" size="medium" class="tag">
+                    默认
+                  </van-tag>
+                  <span class="rise-text">{{ item.name }}</span>
+                </div>
+                <div class="company-list-item_taxNumber">
+                  {{ item.taxNumber }}
+                </div>
+              </div>
+            </div>
+            <van-icon
+              name="edit"
+              color="#999"
+              size="22"
+              @click.stop="gotoEditCompany(item.companyId)"
+            />
+          </div>
+        </van-radio-group>
+      </div>
+    </div>
+    <div v-if="state.loading" class="loading">
+      <div>加载中......</div>
+    </div>
+    <div v-if="state.noMoreData" class="no-more-data">
+      <div>没有更多数据了</div>
+    </div>
+  </div>
+  <div class="bottom fixed-bottom-bgColor">
+    <van-button type="primary" class="sumbit" block @click="gotoEditCompany()">
+      新增抬头
+    </van-button>
+  </div>
+</template>
 
 <style lang="less">
 .company {
@@ -180,6 +182,7 @@ onMounted(() => {
   }
 }
 </style>
+
 <style lang="less" scoped>
 .search-top {
   position: fixed;
