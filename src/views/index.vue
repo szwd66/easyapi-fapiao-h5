@@ -66,13 +66,13 @@ const findSetting = () => {
     if (res.code === 1) {
       for (const setting of res.content) {
         if (setting.fieldKey === 'if_product') {
-          state.ifProductMake = setting.fieldValue == 'true'
+          state.ifProductMake = setting.fieldValue === 'true'
           localStorage.set('ifProductMake', state.ifProductMake)
         } else if (setting.fieldKey === 'if_money') {
-          state.ifMoneyMake = setting.fieldValue == 'true'
+          state.ifMoneyMake = setting.fieldValue === 'true'
           localStorage.set('ifMoneyMake', state.ifMoneyMake)
         } else if (setting.fieldKey === 'if_order') {
-          state.ifOrderMake = setting.fieldValue == 'true'
+          state.ifOrderMake = setting.fieldValue === 'true'
           localStorage.set('ifOrderMake', state.ifOrderMake)
         }
       }

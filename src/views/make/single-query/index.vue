@@ -89,11 +89,11 @@ const getShortNameByTaxCode = () => {
     accessToken: localStorage.get('accessToken'),
   }
   getShortNameByTaxCodeApi(data).then((res) => {
-    if (res.code == 1) {
+    if (res.code === 1) {
       state.taxNumbers = res.data.content
       state.outOrder.items.forEach((item) => {
         res.data.content.forEach((citem) => {
-          if (item.no == citem.no)
+          if (item.no === citem.no)
             item.shortName = citem.shortName
         })
       })
@@ -134,7 +134,7 @@ const makeInvoice = () => {
       state.invoiceForm.outOrderNo = state.outOrder.outOrderNo
       const items = JSON.parse(JSON.stringify(state.outOrder.items))
       items.forEach((item) => {
-        if (state.active == '商品类别')
+        if (state.active === '商品类别')
           item.name = item.shortName
       })
       state.invoiceForm.items = items
@@ -242,7 +242,7 @@ onMounted(() => {
           <van-cell class="line" />
           <ul v-for="(item, index) in state.outOrder.items" :key="index" class="product-content">
             <li style="width: 35%; line-height: 15px; padding-top: 12px; word-wrap: break-word">
-              <span v-if="state.active == '商品明细'">{{ item.name }}</span>
+              <span v-if="state.active === '商品明细'">{{ item.name }}</span>
               <span v-else>{{ item.shortName }}</span>
             </li>
             <li style="width: 35%; line-height: 15px; padding-top: 12px">

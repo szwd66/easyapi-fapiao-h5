@@ -11,7 +11,6 @@ export default function () {
     remarkPlaceholder: '可输入发票备注信息', // 发票备注填写说明
     ifNeedMobile: false, // 手机号码是否必填
     ifNeedEmail: false, // 邮箱是否必填
-    // ifCheckEmailMobile: true, //邮箱和手机是否效验通过
   })
 
   /**
@@ -35,9 +34,9 @@ export default function () {
       if (res.code === 1) {
         for (const setting of res.content) {
           if (setting.fieldKey === 'if_need_mobile')
-            common.ifNeedMobile = setting.fieldValue == 'true'
+            common.ifNeedMobile = setting.fieldValue === 'true'
           else if (setting.fieldKey === 'if_need_email')
-            common.ifNeedEmail = setting.fieldValue == 'true'
+            common.ifNeedEmail = setting.fieldValue === 'true'
         }
       }
     })
@@ -46,8 +45,6 @@ export default function () {
    * 检查邮箱和手机号码
    */
   const checkEmailMobile = (data) => {
-    console.log(common)
-
     // 验证邮箱
     if (common.ifNeedEmail === true) {
       if (data.email === '') {

@@ -24,3 +24,6 @@ stats.html
 
 # Misc
 .DS_Store
+
+#Auto files
+/.eslintrc-auto-import.json

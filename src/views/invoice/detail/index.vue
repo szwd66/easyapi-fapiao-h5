@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 import { closeToast, showLoadingToast, showToast } from 'vant'
-import clipboard from 'clipboard'
+import Clipboard from 'clipboard'
 import { getInvoiceApi } from '@/api/invoice'
 import { getOutOrderCountApi } from '@/api/out-order'
 import { useStore } from '@/stores'
@@ -57,11 +57,11 @@ const goAssociatedOrder = () => {
 }
 
 const copyLink = () => {
-  const newclipboard = new clipboard('.copyPdfUrl')
-  newclipboard.on('success', () => {
+  const newClipboard = new Clipboard('.copyPdfUrl')
+  newClipboard.on('success', () => {
     showToast('复制成功')
   })
-  newclipboard.on('error', () => {
+  newClipboard.on('error', () => {
     showToast('复制失败')
   })
 }
