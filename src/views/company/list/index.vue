@@ -163,7 +163,7 @@ onMounted(() => {
     </div>
   </div>
   <div class="bottom fixed-bottom-bgColor">
-    <van-button type="primary" class="sumbit" block @click="gotoEditCompany()">
+    <van-button type="primary" class="sumbit" block @click="gotoEditCompany('')">
       新增抬头
     </van-button>
   </div>

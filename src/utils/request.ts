@@ -1,5 +1,5 @@
-import type { AxiosError, AxiosRequestConfig } from 'axios'
-import axios, { AxiosResponse } from 'axios'
+import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios from 'axios'
 import { showNotify, showToast } from 'vant'
 
 // 创建 axios 实例

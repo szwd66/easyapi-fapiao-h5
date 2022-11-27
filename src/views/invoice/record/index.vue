@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { getRecordListApi } from '@/api/record'
 import { useStore } from '@/stores'
 
@@ -76,8 +76,8 @@ const onConfirm = (date) => {
   const [start, end] = date
   state.showCalendar = false
   state.date = `${formatDate(start)} - ${formatDate(end)}`
-  state.startAddTime = moment(date[0]).format('YYYY-MM-DD 00:00:00')
-  state.endAddTime = moment(date[1]).format('YYYY-MM-DD 23:59:59')
+  state.startAddTime = dayjs(date[0]).format('YYYY-MM-DD 00:00:00')
+  state.endAddTime = dayjs(date[1]).format('YYYY-MM-DD 23:59:59')
   state.pagination.page = 0
   state.invoiceList = []
   state.empty = false
