@@ -1,4 +1,4 @@
-import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios'
+import type { AxiosError, AxiosRequestConfig } from 'axios'
 import axios from 'axios'
 import { showNotify, showToast } from 'vant'
 
@@ -41,9 +41,7 @@ const errorHandler = (error: RequestError): Promise<any> => {
 }
 
 // 请求拦截器
-const requestHandler = (
-  config: AxiosRequestConfig,
-): AxiosRequestConfig | Promise<AxiosRequestConfig> => {
+const requestHandler = (config: AxiosRequestConfig): AxiosRequestConfig | Promise<AxiosRequestConfig> => {
   return config
 }
 
@@ -51,13 +49,11 @@ const requestHandler = (
 request.interceptors.request.use(requestHandler, errorHandler)
 
 // 响应拦截器
-const responseHandler = (response: AxiosResponse<any>) => {
+const responseHandler = (response: { data: any }) => {
   return response.data
 }
 
 // Add a response interceptor
 request.interceptors.response.use(responseHandler, errorHandler)
-
-export { AxiosResponse }
 
 export default request
