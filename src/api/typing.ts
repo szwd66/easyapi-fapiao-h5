@@ -1,16 +1,14 @@
 export interface ResponseBody<T = any> {
-  message?: string
   code?: number
-  data?: T
-  success: boolean
+  message?: string
+  content?: T
 }
 
 /** 统一返回结构体 */
-
 export interface PageResult<T = any> {
-  data: T[]
-  current?: number
-  pageSize?: number
-  total?: number
-  success: boolean
+  code: number
+  content: T[]
+  numberOfElements?: number
+  totalPages?: number
+  totalElements?: number
 }
