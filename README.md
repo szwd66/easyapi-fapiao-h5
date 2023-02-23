@@ -3,15 +3,12 @@
 ## 项目介绍
 EasyAPI电子发票H5移动端是标准的发票申请与发票记录查询模块，功能类似滴滴打车、顺丰快递申请发票模块，可直接嵌入到小程序、微信H5，APP中，极速实现发票申请的功能。
 ## 前序准备
-需要在本地安装 node。本项目技术栈基于 ES2015+、vue、vuex、vue-router 、vue-cli 、axios 和 vant
+需要在本地安装 node。本项目技术栈基于 `Vue3`, `Vite3`, `Vant4`, `Pinia2`, `Vitest`, `TypeScript`
 ## 相关技术和第三方库
 
-* [vue3.0中文网](https://vuefe.cn/v2/guide/)
-* [ECMAScript 6 入门](http://es6.ruanyifeng.com/)
-* [vuex中文文档](https://vuex.vuejs.org/zh-cn/)
-* [vue-router中文文档](https://router.vuejs.org/zh-cn/)
-* [Vant 轻量、可靠的移动端组件库](https://vant-contrib.gitee.io/vant/v2/#/zh-CN/)
-* [vue-cli脚手架](https://github.com/vuejs/vue-cli)
+* [Vue.js JavaScript 框架](https://cn.vuejs.org/)
+* [Vite3 下一代前端开发与构建工具](https://vitejs.cn/)
+* [Vant4 轻量、可靠的移动端组件库](https://vant-contrib.gitee.io/vant/#/zh-CN)
 
 ---
 
