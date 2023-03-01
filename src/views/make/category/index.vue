@@ -38,7 +38,7 @@ const state = reactive({
     outOrderNo: `H5${new Date().getTime()}`,
     category: '增值税电子普通发票',
     property: localStorage.get('ifElectronic') ? '电子' : '纸质',
-    type: '个人',
+    type: '企业',
     purchaserName: '',
     purchaserTaxpayerNumber: '',
     purchaserAddress: '',
@@ -258,7 +258,7 @@ onMounted(() => {
         label="发票备注"
         :placeholder="common.remarkPlaceholder"
       />
-      <van-cell title="附件" required>
+      <van-cell title="附件" label="可上传最多3张" required>
         <van-uploader
           v-model="state.imageList"
           :max-count="3"

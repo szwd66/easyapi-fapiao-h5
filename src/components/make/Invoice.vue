@@ -67,22 +67,6 @@ const changePaper = () => {
   emits('getInvoiceProperty', (state.childInvoiceForm.property = '纸质'))
 }
 
-const selectInvoiceType = () => {
-  localStorage.set('type', state.childInvoiceForm.type)
-  if (state.childInvoiceForm.type === '企业') {
-    getDefaultCompany()
-    getDefaultAddress()
-  } else if (state.childInvoiceForm.type === '个人') {
-    state.childInvoiceForm.purchaserName = ''
-    state.childInvoiceForm.purchaserTaxpayerNumber = ''
-    state.childInvoiceForm.purchaserAddress = ''
-    state.childInvoiceForm.purchaserPhone = ''
-    state.childInvoiceForm.purchaserBank = ''
-    state.childInvoiceForm.purchaserBankAccount = ''
-    state.childInvoiceForm.companyId = ''
-  }
-}
-
 /**
  * 前往抬头管理页
  */
@@ -132,6 +116,22 @@ const getDefaultAddress = () => {
       state.childInvoiceForm.addressId = state.address.addressId
     }
   })
+}
+
+const selectInvoiceType = () => {
+  localStorage.set('type', state.childInvoiceForm.type)
+  if (state.childInvoiceForm.type === '企业') {
+    getDefaultCompany()
+    getDefaultAddress()
+  } else if (state.childInvoiceForm.type === '个人') {
+    state.childInvoiceForm.purchaserName = ''
+    state.childInvoiceForm.purchaserTaxpayerNumber = ''
+    state.childInvoiceForm.purchaserAddress = ''
+    state.childInvoiceForm.purchaserPhone = ''
+    state.childInvoiceForm.purchaserBank = ''
+    state.childInvoiceForm.purchaserBankAccount = ''
+    state.childInvoiceForm.companyId = ''
+  }
 }
 
 /**
