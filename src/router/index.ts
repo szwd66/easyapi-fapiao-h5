@@ -22,7 +22,8 @@ import makeSingleOrder from '@/views/make/single/index.vue'
 import makeSingleQuery from '@/views/make/single-query/index.vue'
 import singleOrderSuccess from '@/views/make/single-order-success.vue'
 import outOrder from '@/views/out-order/index.vue'
-import jdOrderMake from '@/views/jd/order-make.vue'
+import mallOrderJd from '@/views/mall-order/jd.vue'
+import mallOrderKuaishou from '@/views/mall-order/kuaishou.vue'
 NProgress.configure({ showSpinner: true })
 
 // 定义路由，每个路由都需要映射到一个组件
@@ -118,9 +119,14 @@ const routes = [
     component: outOrder,
   },
   {
-    path: '/jd/order-make',
-    name: 'JdOrderMake',
-    component: jdOrderMake,
+    path: '/mall-order/jd',
+    name: 'OrderMakeJd',
+    component: mallOrderJd,
+  },
+  {
+    path: '/mall-order/kuaishou',
+    name: 'OrderMakeKuaishou',
+    component: mallOrderKuaishou,
   },
 ]
 

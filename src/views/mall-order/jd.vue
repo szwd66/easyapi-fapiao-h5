@@ -25,5 +25,5 @@ const gotoIndex = () => {
 </template>
 
 <style lang='less' scoped>
-@import './order-make.less';
+@import './mall-order.less';
 </style>
