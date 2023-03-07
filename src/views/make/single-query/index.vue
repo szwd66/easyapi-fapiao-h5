@@ -40,7 +40,6 @@ const state = reactive({
   invoiceForm: {
     type: '企业',
     category: '增值税电子普通发票',
-    property: localStorage.get('ifElectronic') ? '电子' : '纸质',
     purchaserName: '',
     purchaserTaxpayerNumber: '',
     purchaserAddress: '',
@@ -130,7 +129,6 @@ const makeInvoice = () => {
         duration: 0,
       })
       state.invoiceForm.category = '增值税电子普通发票'
-      state.invoiceForm.property = '电子'
       state.invoiceForm.outOrderNo = state.outOrder.outOrderNo
       const items = JSON.parse(JSON.stringify(state.outOrder.items))
       items.forEach((item) => {
@@ -198,7 +196,6 @@ onMounted(() => {
       :company="state.company"
       @getCompany="receiveCompany"
       @getInvoiceCategory="receiveCategory"
-      @getInvoiceProperty="receiveProperty"
     />
 
     <div class="invoice-contents">

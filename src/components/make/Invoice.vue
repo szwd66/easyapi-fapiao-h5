@@ -24,7 +24,7 @@ const props = defineProps({
     type: Boolean,
   },
 })
-const emits = defineEmits(['getInvoiceCategory', 'getInvoiceProperty', 'getCompany'])
+const emits = defineEmits(['getInvoiceCategory', 'getCompany'])
 const router = useRouter()
 const state = reactive({
   address: {
@@ -36,7 +36,6 @@ const state = reactive({
   childInvoiceForm: {
     type: '',
     category: '',
-    property: '',
     purchaserName: '',
     purchaserTaxpayerNumber: '',
     purchaserAddress: '',
@@ -59,12 +58,10 @@ const state = reactive({
 
 const changeElectronic = () => {
   emits('getInvoiceCategory', (state.childInvoiceForm.category = '增值税电子普通发票'))
-  emits('getInvoiceProperty', (state.childInvoiceForm.property = '电子'))
 }
 
 const changePaper = () => {
   emits('getInvoiceCategory', (state.childInvoiceForm.category = '增值税普通发票'))
-  emits('getInvoiceProperty', (state.childInvoiceForm.property = '纸质'))
 }
 
 /**

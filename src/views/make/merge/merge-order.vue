@@ -24,7 +24,6 @@ const state = reactive({
     outOrderNo: `H5${new Date().getTime()}`,
     type: '企业',
     category: '增值税电子普通发票',
-    property: localStorage.get('ifElectronic') ? '纸质' : '电子',
     purchaserName: '',
     purchaserTaxpayerNumber: '',
     purchaserAddress: '',
@@ -52,7 +51,6 @@ const getOrder = () => {
     state.outOrderIds += `${state.seletedOutOrderList[i].outOrderId},`
     state.invoiceForm.outOrderIds = state.outOrderIds
     state.invoiceForm.category = '增值税电子普通发票'
-    state.invoiceForm.property = localStorage.get('ifElectronic') ? '电子' : '纸质'
   }
 }
 
@@ -115,7 +113,6 @@ onMounted(() => {
       :company="state.company"
       @getCompany="receiveCompany"
       @getInvoiceCategory="receiveCategory"
-      @getInvoiceProperty="receiveProperty"
     />
 
     <van-cell-group title="发票内容" inset>

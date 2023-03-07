@@ -37,7 +37,6 @@ const state = reactive({
   invoiceForm: {
     outOrderNo: `H5${new Date().getTime()}`,
     category: '增值税电子普通发票',
-    property: localStorage.get('ifElectronic') ? '电子' : '纸质',
     type: '企业',
     purchaserName: '',
     purchaserTaxpayerNumber: '',
@@ -212,7 +211,6 @@ onMounted(() => {
       :company="state.company"
       @getCompany="receiveCompany"
       @getInvoiceCategory="receiveCategory"
-      @getInvoiceProperty="receiveProperty"
     />
 
     <van-cell-group title="发票内容" inset>

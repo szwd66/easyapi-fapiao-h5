@@ -24,6 +24,7 @@ import singleOrderSuccess from '@/views/make/single-order-success.vue'
 import outOrder from '@/views/out-order/index.vue'
 import mallOrderJd from '@/views/mall-order/jd.vue'
 import mallOrderKuaishou from '@/views/mall-order/kuaishou.vue'
+import mallOrderYouZan from '@/views/mall-order/youzan.vue'
 NProgress.configure({ showSpinner: true })
 
 // 定义路由，每个路由都需要映射到一个组件
@@ -127,6 +128,11 @@ const routes = [
     path: '/mall-order/kuaishou',
     name: 'OrderMakeKuaishou',
     component: mallOrderKuaishou,
+  },
+  {
+    path: '/mall-order/youzan',
+    name: 'OrderMakeYouZan',
+    component: mallOrderYouZan,
   },
 ]
 

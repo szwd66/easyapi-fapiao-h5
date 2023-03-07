@@ -26,7 +26,6 @@ const state = reactive({
     outOrderNo: `H5${new Date().getTime()}`,
     type: '企业',
     category: '增值税电子普通发票',
-    property: localStorage.get('ifElectronic') ? '电子' : '纸质',
     purchaserName: '',
     purchaserTaxpayerNumber: '',
     purchaserAddress: '',
@@ -206,7 +205,6 @@ onMounted(() => {
       :company="state.company"
       @getCompany="receiveCompany"
       @getInvoiceCategory="receiveCategory"
-      @getInvoiceProperty="receiveProperty"
     />
 
     <div class="invoice-contents">
