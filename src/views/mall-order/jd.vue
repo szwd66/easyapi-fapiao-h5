@@ -59,7 +59,7 @@ const openTips = () => {
       {{ state.shopName }}京东店铺——订单开票
     </div>
 
-    <van-cell-group title="京东订单信息（已在京东申请的开票）" inset>
+    <van-cell-group title="京东订单信息（已在京东申请开票的订单）" inset>
       <van-field
         v-model="state.orderForm.number"
         label="订单号"
