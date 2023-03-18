@@ -5,7 +5,7 @@ import { localStorage } from '@/utils/local-storage'
  * 获取发票详情信息
  */
 export async function getInvoiceApi(id): Promise<any> {
-  return request.get(`/api/invoice/record/${id}`, {
+  return request.get(`/invoice/${id}`, {
     params: {
       accessToken: localStorage.get('accessToken'),
     },

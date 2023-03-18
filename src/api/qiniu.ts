@@ -15,7 +15,7 @@ export async function getQiniuKeyApi(): Promise<any> {
  * @see https://www.easyapi.com
  */
 export async function getQiniuTokenApi(): Promise<any> {
-  return request.get('https://api.easyapi.com/qiniu/upToken')
+  return request.get('https://api.easyapi.com/qiniu/upload-token')
 }
 
 /**

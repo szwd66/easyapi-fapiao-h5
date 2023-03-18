@@ -8,7 +8,7 @@ import { localStorage } from '@/utils/local-storage'
  */
 
 export async function getRecordListApi(params): Promise<any> {
-  return request.get('/api/invoice/records', {
+  return request.get('/invoices', {
     params: {
       accessToken: localStorage.get('accessToken'),
       ...params,
