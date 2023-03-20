@@ -208,7 +208,7 @@ onMounted(() => {
             企业
           </van-radio>
           <van-radio name="个人">
-            个人/事业单位
+            个人或事业单位
           </van-radio>
         </van-radio-group>
       </van-cell>
@@ -226,7 +226,7 @@ onMounted(() => {
         v-if="state.childInvoiceForm.type === '个人'"
         v-model="state.childInvoiceForm.purchaserName"
         label="发票抬头"
-        placeholder="请输入姓名/事业单位"
+        placeholder="请输入姓名或事业单位名称"
         required
       />
       <van-field
