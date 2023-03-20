@@ -168,10 +168,6 @@ const receiveCategory = (val) => {
   state.invoiceForm.category = val
 }
 
-const receiveProperty = (val) => {
-  state.invoiceForm.property = val
-}
-
 /**
  * 选择自定义分类
  */

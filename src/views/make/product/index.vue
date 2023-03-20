@@ -239,7 +239,6 @@ onMounted(() => {
             删除
           </li>
         </ul>
-        <van-cell class="line" />
         <div class="btn">
           <van-button class="submit-btn" @click="showProductSearchPopup">
             +添加发票内容
