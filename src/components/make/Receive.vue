@@ -66,7 +66,9 @@ const getDefaultAddress = () => {
 const getCustomer = () => {
   if (localStorage.get('invoiceForm')) {
     state.childForm.email = JSON.parse(localStorage.get('invoiceForm')).email
-    state.childForm.addrMobile = JSON.parse(localStorage.get('invoiceForm')).addrMobile
+    state.childForm.addrMobile = JSON.parse(
+      localStorage.get('invoiceForm')
+    ).addrMobile
   } else {
     getCustomerApi({}).then((res) => {
       state.childForm.email = res.content.email ? res.content.email : ''
@@ -85,7 +87,11 @@ onMounted(() => {
 <template>
   <div>
     <van-cell-group v-if="props.ifElectronic" title="接收方式" inset>
-      <van-field v-if="!ifNeedEmail" v-model="state.childForm.email" label="电子邮箱" />
+      <van-field
+        v-if="!ifNeedEmail"
+        v-model="state.childForm.email"
+        label="电子邮箱"
+      />
       <van-field
         v-if="props.ifNeedEmail"
         v-model="state.childForm.email"
@@ -115,23 +121,33 @@ onMounted(() => {
         readonly
         @click="gotoAddress"
       />
-      <van-field v-model="state.childAddress.mobile" label="手机号码" readonly />
+      <van-field
+        v-model="state.childAddress.mobile"
+        label="手机号码"
+        readonly
+      />
       <van-cell
         title="邮寄地址"
         :value="
-          state.childAddress.province
-            + state.childAddress.city
-            + state.childAddress.district
-            + state.childAddress.addr
+          state.childAddress.province +
+          state.childAddress.city +
+          state.childAddress.district +
+          state.childAddress.addr
         "
         readonly
       />
     </van-cell-group>
 
-    <div v-if="!props.ifElectronic" class="page-part" style="margin-bottom: 60px">
-      <p>开票金额不足200元，需支付邮费</p>
+    <div v-if="!props.ifElectronic" class="page-part">
+      开票金额不足200元，需支付邮费
     </div>
   </div>
 </template>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.page-part {
+  margin: 10px 0 0 20px;
+  color: #999;
+  font-size: 12px;
+}
+</style>
