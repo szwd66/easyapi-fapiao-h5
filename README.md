@@ -29,27 +29,25 @@ yarn build
 ## 项目目录结构
 
 ``` bash
- ├── README.md
- ├── public                #入口
- ├── node_modules          #依赖模块
- ├── src                   #源码
- │  ├── api                #api接口目录
- │  │  ├── api.js          #api接口列表
- │  │  └── fetch.js        #axios封装
- │  ├──assets              #资源目录，用于组织未编译的静态资源如STYLUS LESS、SASS 或 JavaScript
- │  │  ├── images          #图片
- │  │  └── styles          #样式、字体图片等
- │  ├── components         #组件目录
- │  ├── pages              #页面目录  
- │  ├── router             #页面路由  
- │  ├── store              #vuex状态管理
- │  ├── util               #放置公用方法   
- │  ├── App.vue            #  
- │  └── main.js            #入口文件  
- ├── static                #静态资源文件
- │  └── images             #图片
- └── package.json          #入口 
-
+ ├──.nuxt               #自动生成的目录
+ ├──api                 #API接口目录
+ ├──assets              #资源目录，用于组织未编译的静态资源如STYLUS LESS、SASS 或 JavaScript
+ │  ├──css              #css样式
+ │  ├──images           #图片
+ │  ├──js               #脚本
+ ├──components          #组件目录
+ ├──layouts             #布局目录
+ ├──middleware          #中间件目录
+ ├──pages               #页面目录
+ ├──plugins             #插件目录
+ ├──public              #静态文件目录，用于存放应用的静态文件，此类文件不会被 Nuxt.js 调用 Webpack 进行构建编译处理
+ ├──stores              #状态管理目录
+ ├──utils               #工具类
+ ├──.gitignore          #忽略配置文件
+ ├──app.vue             #项目入口文件
+ ├──package.json        #用于描述应用的依赖关系和对外暴露的脚本接口
+ ├──nuxt.config.js      #Nuxt.js配置文件，覆盖默认配置。
+ └──tailwind.config     #Tailwind CSS配置
 ```
 
 
