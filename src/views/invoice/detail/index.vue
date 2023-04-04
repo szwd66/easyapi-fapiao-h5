@@ -37,16 +37,11 @@ const state = reactive({
 
 // 查看发票
 const viewPicture = () => {
-  if (state.invoiceDetail.state === 1)
-    state.popupVisible = true
-  else if (state.invoiceDetail.state === 2)
-    showToast('当前发票作废了')
-  else if (state.invoiceDetail.state === 3)
-    showToast('当前发票退票中')
-  else if (state.invoiceDetail.state === 4)
-    showToast('正在开票中')
-  else
-    showToast('等待后台审核通过')
+  if (state.invoiceDetail.state === 1) state.popupVisible = true
+  else if (state.invoiceDetail.state === 2) showToast('当前发票作废了')
+  else if (state.invoiceDetail.state === 3) showToast('当前发票退票中')
+  else if (state.invoiceDetail.state === 4) showToast('正在开票中')
+  else showToast('等待后台审核通过')
 }
 
 const goAssociatedOrder = () => {
@@ -77,8 +72,7 @@ const getInvoiceDetail = () => {
   })
   getInvoiceApi(route.query.id).then((res) => {
     closeToast()
-    if (res.code === 1)
-      state.invoiceDetail = res.content
+    if (res.code === 1) state.invoiceDetail = res.content
   })
 }
 
@@ -87,8 +81,7 @@ const getInvoiceDetail = () => {
  */
 const getOutOrderCount = () => {
   getOutOrderCountApi({ invoiceId: route.query.id }).then((res) => {
-    if (res.code === 1)
-      state.outOrderCount = res.content
+    if (res.code === 1) state.outOrderCount = res.content
   })
 }
 
@@ -106,6 +99,13 @@ onMounted(() => {
         :title="`${state.invoiceDetail.category}（${state.invoiceDetail.statements}）`"
         is-link
       />
+      <van-cell
+        v-if="state.outOrderCount > 0"
+        :title="`1张发票，含${state.outOrderCount}个订单`"
+        :label="state.invoiceDetail.updateTime"
+        is-link
+        @click="goAssociatedOrder"
+      />
       <van-cell v-if="state.invoiceDetail.auditState" title="未通过原因：">
         <van-tag type="warning">
           {{ state.invoiceDetail.consoleReason }}
@@ -115,13 +115,22 @@ onMounted(() => {
 
     <van-cell-group title="发票详情" inset>
       <van-cell :value="state.invoiceDetail.purchaserName" title="发票抬头" />
-      <van-cell :value="state.invoiceDetail.purchaserTaxpayerNumber" title="税号" />
       <van-cell
-        :value="state.invoiceDetail.purchaserAddress + state.invoiceDetail.purchaserPhone"
+        :value="state.invoiceDetail.purchaserTaxpayerNumber"
+        title="税号"
+      />
+      <van-cell
+        :value="
+          state.invoiceDetail.purchaserAddress +
+          state.invoiceDetail.purchaserPhone
+        "
         title="地址、电话"
       />
       <van-cell
-        :value="state.invoiceDetail.purchaserBank + state.invoiceDetail.purchaserBankAccount"
+        :value="
+          state.invoiceDetail.purchaserBank +
+          state.invoiceDetail.purchaserBankAccount
+        "
         title="开户行及账号"
       />
       <van-cell :value="state.invoiceDetail.price" title="发票金额" />
@@ -129,25 +138,18 @@ onMounted(() => {
     </van-cell-group>
 
     <van-cell-group
-      v-if="state.invoiceDetail.category === '增值税电子普通发票'"
+      v-if="state.invoiceDetail.category.indexOf('电子') !== -1"
       title="接收方式"
       inset
     >
       <van-cell :value="state.invoiceDetail.email" title="电子邮件" />
       <van-cell :value="state.invoiceDetail.addrMobile" title="手机号码" />
-      <van-cell
-        v-if="state.outOrderCount > 0"
-        :title="`1张发票，含${state.outOrderCount}个订单`"
-        :label="state.invoiceDetail.updateTime"
-        is-link
-        @click="goAssociatedOrder"
-      />
     </van-cell-group>
 
     <van-cell-group
       v-if="
-        state.invoiceDetail.category === '增值税普通发票'
-          || state.invoiceDetail.category === '增值税专用发票'
+        state.invoiceDetail.category === '增值税普通发票' ||
+        state.invoiceDetail.category === '增值税专用发票'
       "
       title="接收方式"
       inset
@@ -156,11 +158,17 @@ onMounted(() => {
       <van-field label="手机号码" readonly />
     </van-cell-group>
 
-    <van-popup v-model:show="state.popupVisible" style="padding: 30px" align="center">
-      <p style="font-size: 18px; margin-bottom: 20px">
-        发票预览
-      </p>
-      <img :src="state.invoiceDetail.electronicInvoiceImg" alt="" style="width: 350px">
+    <van-popup
+      v-model:show="state.popupVisible"
+      style="padding: 30px"
+      align="center"
+    >
+      <p style="font-size: 18px; margin-bottom: 20px">发票预览</p>
+      <img
+        :src="state.invoiceDetail.electronicInvoiceImg"
+        alt=""
+        style="width: 350px"
+      />
       <div style="margin-bottom: 20px">
         <van-button
           type="primary"
@@ -173,11 +181,12 @@ onMounted(() => {
         </van-button>
       </div>
       <div style="width: 300px; font-size: 12px">
-        <textarea :value="state.invoiceDetail.electronicInvoiceUrl" style="width: 300px" />
+        <textarea
+          :value="state.invoiceDetail.electronicInvoiceUrl"
+          style="width: 300px"
+        />
       </div>
-      <p style="margin-top: 20px">
-        复制发票下载地址并在浏览器中打开进行下载
-      </p>
+      <p style="margin-top: 20px">复制发票下载地址并在浏览器中打开进行下载</p>
     </van-popup>
   </div>
 </template>

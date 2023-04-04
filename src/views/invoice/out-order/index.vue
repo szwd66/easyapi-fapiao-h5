@@ -15,6 +15,7 @@ const state = reactive({
     totalPages: 0,
   },
   windowHeight: 0,
+  empty: false,
 })
 
 const getOutOrderList = () => {
@@ -29,6 +30,7 @@ const getOutOrderList = () => {
       state.outOrders = state.outOrders.concat(res.content)
       state.pagination.totalPages = res.totalPages
     } else {
+      state.empty = true
       state.outOrders = []
       state.pagination.totalPages = 0
     }
@@ -60,7 +62,13 @@ onMounted(() => {
 
 <template>
   <Header v-if="store.ifShowH5NavBar" header-title="关联订单" />
+
+  <div v-if="state.empty">
+    <van-empty image="search" description="暂无订单数据" />
+  </div>
+
   <van-list
+    v-else
     v-model:loading="state.loading"
     :finished="state.finished"
     finished-text="没有更多数据了"
@@ -68,16 +76,19 @@ onMounted(() => {
     :style="{ height: `${state.windowHeight}px` }"
     @load="loadMore"
   >
-    <div v-for="(item, index) in state.outOrders" :key="index" class="order-con">
+    <div
+      v-for="(item, index) in state.outOrders"
+      :key="index"
+      class="order-con"
+    >
       <van-cell-group :border="false">
         <van-cell title="订单编号：" :value="item.no" :border="false" />
+        <van-cell title="订单时间：" :value="item.addTime" :border="false" />
         <van-cell
           v-if="item.fields"
-          :title="Object.values(JSON.parse(item.fields))[0]"
-          :value="item.no"
+          :value="Object.values(JSON.parse(item.fields))[0]"
           :border="false"
         />
-        <van-cell title="" :value="item.model" :border="false" />
         <div class="subtotal">
           <span>小计</span>
           <span class="price">￥{{ item.price }}</span>
