@@ -3,6 +3,7 @@ import { getDefaultCompanyApi } from '@/api/company'
 import { getDefaultAddressApi } from '@/api/address'
 import { findSettingApi } from '@/api/setting'
 import { localStorage } from '@/utils/local-storage'
+import { invoiceTag } from '@/utils/invoice-category'
 
 const props = defineProps({
   ifElectronic: {
@@ -54,14 +55,13 @@ const state = reactive({
     bankAccount: '',
     companyId: '',
   },
+  invoiceCategories: [],
+  selectInvoiceCategories: '',
 })
 
-function changeElectronic() {
-  emits('getInvoiceCategory', (state.childInvoiceForm.category = '增值税电子普通发票'))
-}
-
-function changePaper() {
-  emits('getInvoiceCategory', (state.childInvoiceForm.category = '增值税普通发票'))
+function changeInvoiceCategories(row) {
+  state.selectInvoiceCategories = row.category
+  emits('getInvoiceCategory', row.category)
 }
 
 /**
@@ -144,52 +144,20 @@ function findSetting() {
 onMounted(() => {
   findSetting()
   state.childInvoiceForm = props.invoiceForm as any
+  state.invoiceCategories = localStorage.get('invoiceCategories') as any
 })
 </script>
 
 <template>
   <div>
-    <div class="invoice-type">
-      <p class="title">
-        请选择发票类型
-      </p>
-      <van-row justify="space-between" class="invoice-type-list">
-        <van-col v-if="props.ifElectronic" span="12">
-          <div
-            :class="{
-              'invoice-type_blue_box': state.childInvoiceForm.property === '电子',
-              'invoice-type_gray_box': state.childInvoiceForm.property !== '电子',
-            }"
-            style="margin-right: 5px"
-            @click="changeElectronic"
-          >
-            <p style="font-size: 16px; margin-top: -6px">
-              电子发票
-            </p>
-            <p style="font-size: 12px; margin-top: 6px">
-              {{ state.electronicInvoiceMakeTime }}
-            </p>
-          </div>
-        </van-col>
-        <van-col v-if="props.ifPaper" span="12">
-          <div
-            :class="{
-              'invoice-type_blue_box': state.childInvoiceForm.property === '纸质',
-              'invoice-type_gray_box': state.childInvoiceForm.property !== '纸质',
-            }"
-            style="margin-left: 5px"
-            @click="changePaper"
-          >
-            <p style="font-size: 16px; margin-top: -6px">
-              纸质发票
-            </p>
-            <p style="font-size: 12px; margin-top: 6px">
-              预计一周送达
-            </p>
-          </div>
-        </van-col>
-      </van-row>
-    </div>
+    <van-cell-group title="请选择发票类型" inset>
+      <van-cell v-for="(item, index) in state.invoiceCategories" :key="index" @click="changeInvoiceCategories(item)">
+        <template #title>
+          <van-tag class="invoice-tag" type="primary" :color="state.selectInvoiceCategories === item.category ? invoiceTag(item).color : '#969799'">{{ invoiceTag(item).name }}</van-tag>
+          <span class="custom-title" :style="state.selectInvoiceCategories === item.category ? 'color:#333333' : 'color:#969799' ">{{ item.category }}</span>
+        </template>
+      </van-cell>
+    </van-cell-group>
 
     <van-cell-group title="发票详情" inset>
       <van-cell>
@@ -288,6 +256,10 @@ onMounted(() => {
 </template>
 
 <style lang="less" scoped>
+.invoice-tag{
+  margin-right: 8px;
+}
+
 .invoice-type {
   padding: 0 16px;
 

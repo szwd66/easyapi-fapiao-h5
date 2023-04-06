@@ -45,6 +45,7 @@ function getShop() {
     if (res.code === 1) {
       localStorage.set('ifElectronic', res.content.ifElectronic)
       localStorage.set('ifPaper', res.content.ifPaper)
+      localStorage.set('invoiceCategories',res.content.invoiceCategories)
     }
   })
 }
