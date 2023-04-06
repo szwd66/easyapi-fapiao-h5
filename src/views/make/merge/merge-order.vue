@@ -40,7 +40,7 @@ const state = reactive({
   seletedOutOrderList: [],
 })
 
-const getOrder = () => {
+function getOrder() {
   state.orderType = localStorage.get('orderType') ? localStorage.get('orderType') : ''
   state.invoiceForm.price = localStorage.get('tot') ? localStorage.get('tot') : 0.0
   state.seletedOutOrderList = []
@@ -57,7 +57,7 @@ const getOrder = () => {
 /**
  * 提交开票信息
  */
-const makeInvoice = () => {
+function makeInvoice() {
   if (state.invoiceForm.type === '个人' && state.invoiceForm.purchaserName === '')
     return showToast('请输入发票抬头')
 
@@ -87,7 +87,7 @@ const makeInvoice = () => {
   }).catch(() => {})
 }
 
-const receiveCompany = (val) => {
+function receiveCompany(val) {
   state.company = val
 }
 

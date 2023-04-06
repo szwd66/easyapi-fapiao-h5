@@ -10,11 +10,11 @@ const route = useRoute()
 
 const state = reactive({
   addressForm: {
+    name: '',
     area: '',
     province: '',
     city: '',
     district: '',
-    name: '',
     mobile: '',
     addr: '',
     ifDefault: false,
@@ -24,7 +24,10 @@ const state = reactive({
   areaList: {},
 })
 
-const getAddress = () => {
+/**
+ * 获取地址详情
+ */
+function getAddress() {
   getAddressApi(route.query.id).then((res) => {
     if (res.code === 1) {
       state.addressForm = res.content
@@ -34,7 +37,10 @@ const getAddress = () => {
   })
 }
 
-const getAreaList = () => {
+/**
+ * 获取省市区列表
+ */
+function getAreaList() {
   getAreaListApi({ }).then((res) => {
     if (res.status === 1) {
       const provinces = res.provinces
@@ -67,7 +73,7 @@ const getAreaList = () => {
 /**
  * 删除地址
  */
-const deleteData = () => {
+function deleteData() {
   showConfirmDialog({
     title: '提示',
     message: '确定删除?',
@@ -76,10 +82,10 @@ const deleteData = () => {
       if (res.code === 1)
         history.back()
     })
-  }).catch(() => {})
+  })
 }
 
-const confirm = () => {
+function confirm() {
   showConfirmDialog({
     title: '提示',
     message: '确定提交吗？',
@@ -95,9 +101,9 @@ const confirm = () => {
           history.back()
       })
     }
-  }).catch(() => {})
+  })
 }
-const onAddrConfirm = (e) => {
+function onAddrConfirm(e) {
   state.addressForm.province = e.selectedOptions[0].text
   state.addressForm.city = e.selectedOptions[1].text
   state.addressForm.district = e.selectedOptions[2].text

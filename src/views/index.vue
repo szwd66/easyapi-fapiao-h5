@@ -14,7 +14,10 @@ const state = shallowReactive({
   orderTypeList: [], // 订单开票类型列表
 })
 
-const initialization = () => {
+/**
+ * 初始化
+ */
+function initialization() {
   localStorage.remove('ifProductMake')
   localStorage.remove('ifMoneyMake')
   localStorage.remove('ifOrderMake')
@@ -26,7 +29,7 @@ const initialization = () => {
   }
 }
 
-const gotoMake = () => {
+function gotoMake() {
   if (state.ifProductMake)
     router.push('/make/product')
 
@@ -37,7 +40,7 @@ const gotoMake = () => {
 /**
  * 获取发票类型
  */
-const getShop = () => {
+function getShop() {
   getShopApi().then((res) => {
     if (res.code === 1) {
       localStorage.set('ifElectronic', res.content.ifElectronic)
@@ -49,7 +52,7 @@ const getShop = () => {
 /**
  * 获取订单类型列表
  */
-const getOrderTypeList = () => {
+function getOrderTypeList() {
   getOrderTypeListApi().then((res) => {
     if (res.code === 1)
       state.orderTypeList = res.content
@@ -59,7 +62,7 @@ const getOrderTypeList = () => {
 /**
  * 获取发票开票类型
  */
-const findSetting = () => {
+function findSetting() {
   findSettingApi({
     fieldKeys: 'if_product' + ',' + 'if_money' + ',' + 'if_order',
   }).then((res) => {

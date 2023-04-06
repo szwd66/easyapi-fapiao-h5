@@ -27,9 +27,9 @@ const state = reactive({
 })
 
 /**
- * 获取发票类型
+ * 获取发票列表
  */
-const getRecordList = () => {
+function getRecordList() {
   const params = {
     size: state.pagination.size,
     page: state.pagination.page - 1,
@@ -52,7 +52,7 @@ const getRecordList = () => {
 /**
  * 上拉加载
  */
-const loadMore = () => {
+function loadMore() {
   if (state.pagination.page === state.pagination.totalPages) {
     state.finished = true
     return
@@ -64,15 +64,15 @@ const loadMore = () => {
 /**
  * 跳转详情
  */
-const gotoDetail = (id) => {
+function gotoDetail(id) {
   router.push({ path: '/invoice/detail', query: { id } })
 }
 
-const formatDate = (date) => {
+function formatDate(date) {
   return `${date.getYear() + 1900}/${date.getMonth() + 1}/${date.getDate()}`
 }
 
-const onConfirm = (date) => {
+function onConfirm(date) {
   const [start, end] = date
   state.showCalendar = false
   state.date = `${formatDate(start)} - ${formatDate(end)}`
@@ -87,7 +87,7 @@ const onConfirm = (date) => {
   getRecordList()
 }
 
-const clearDate = () => {
+function clearDate() {
   state.date = ''
   state.startAddTime = ''
   state.endAddTime = ''
@@ -99,7 +99,7 @@ const clearDate = () => {
   state.finished = false
 }
 
-const getWindowHeight = () => {
+function getWindowHeight() {
   const clientHeight = document.documentElement.clientHeight
   state.windowHeight = clientHeight - 69 - (store.ifShowH5NavBar ? 46 : 0)
 }
@@ -191,7 +191,7 @@ onMounted(() => {
 
 <style lang='less' scoped>
 .record-list {
-  padding: 15px 16px 0px 16px;
+  padding: 15px 16px 0 16px;
 
   .record-list_item {
     background: url('@/assets/images/record-bg.png') no-repeat center;

@@ -18,7 +18,10 @@ const state = reactive({
   empty: false,
 })
 
-const getOutOrderList = () => {
+/**
+ * 获取外部订单列表
+ */
+function getOutOrderList() {
   const params = {
     invoiceId: route.query.id,
     page: state.pagination.page - 1,
@@ -40,7 +43,7 @@ const getOutOrderList = () => {
 /**
  * 上拉加载
  */
-const loadMore = () => {
+function loadMore() {
   if (state.pagination.page === state.pagination.totalPages) {
     state.finished = true
     return
@@ -49,7 +52,7 @@ const loadMore = () => {
   getOutOrderList()
 }
 
-const getWindowHeight = () => {
+function getWindowHeight() {
   const clientHeight = document.documentElement.clientHeight
   state.windowHeight = clientHeight - 15 - (store.ifShowH5NavBar ? 46 : 0)
 }

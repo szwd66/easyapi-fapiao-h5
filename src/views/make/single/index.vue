@@ -55,7 +55,7 @@ const state = reactive({
   },
 })
 
-const getOutOrder = () => {
+function getOutOrder() {
   const outOrderNo = state.outOrderNo
   const params = {
     accessToken: state.accessToken,
@@ -75,11 +75,14 @@ const getOutOrder = () => {
   })
 }
 
-const receiveCompany = (val) => {
+function receiveCompany(val) {
   state.company = val
 }
 
-const makeInvoice = () => {
+/**
+ * 开具发票
+ */
+function makeInvoice() {
   if (state.invoiceForm.type === '个人') {
     if (state.invoiceForm.purchaserName === '')
       return showToast('请输入发票抬头')
@@ -110,18 +113,17 @@ const makeInvoice = () => {
         showToast(res.message)
       }
     })
-  }).catch(() => {
   })
 }
 
 /**  计算发票金额 */
-const calculatedAmount = () => {
+function calculatedAmount() {
   if (state.outOrder !== null)
     state.amountOfMoney = state.outOrder.price.toFixed(2)
 }
 
 /** 删除商品 */
-const deleteProduct = (id) => {
+function deleteProduct(id) {
   for (let i = 0; i < state.productList.length; i++) {
     if (id === state.productList[i].productId)
       state.productList.splice(i, 1)

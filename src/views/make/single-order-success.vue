@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { localStorage } from '@/utils/local-storage'
 
-const back = () => {
+function back() {
   const returnUrl = localStorage.get('returnUrl')
   if (returnUrl) {
     if (returnUrl.includes('backwxurl')) {

@@ -17,7 +17,7 @@ const state = reactive({
 /**
  * 点击开票
  */
-const makeInvoice = () => {
+function makeInvoice() {
   if (state.orderForm.number === '') {
     showToast('请输入订单号')
     return
@@ -40,7 +40,7 @@ const makeInvoice = () => {
 /**
  * 点击提示
  */
-const openTips = () => {
+function openTips() {
   showDialog({
     title: '温馨提示',
     message: '代码是写出来给人看的，附带能在机器上运行。',
@@ -53,7 +53,7 @@ const openTips = () => {
 <template>
   <div class="mall-order">
     <div class="image">
-      <img src="@/assets/images/jd.png">
+      <img src="https://qiniu.easyapi.com/mall/jd.png">
     </div>
     <div class="title">
       {{ state.shopName }}京东店铺——订单开票
@@ -63,7 +63,7 @@ const openTips = () => {
       <van-field
         v-model="state.orderForm.number"
         label="订单号"
-        placeholder="请输入订单号"
+        placeholder="请输入京东订单号"
         required
       />
       <van-field
@@ -71,7 +71,7 @@ const openTips = () => {
         readonly
         clickable
         label="金额"
-        placeholder="请输入订单金额"
+        placeholder="请输入京东订单金额"
         @touchstart.stop="state.keyboardShow = true"
       />
       <van-number-keyboard
@@ -84,7 +84,7 @@ const openTips = () => {
       />
     </van-cell-group>
     <div class="tips-forget" @click="openTips">
-      我不知道订单在哪里
+      我不知道京东订单在哪里
     </div>
     <van-cell-group title="接收方式" inset>
       <van-field

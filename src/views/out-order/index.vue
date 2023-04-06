@@ -35,19 +35,21 @@ const state = reactive({
 const totalPrice = computed({
   get() {
     let totalPrice = 0
-    if (state.outOrderList.length === 0) return totalPrice
+    if (state.outOrderList.length === 0)
+      return totalPrice
 
     for (let i = 0; i < state.outOrderList.length; i++) {
       const item = state.outOrderList[i]
-      if (item.status === true) totalPrice += item.price
+      if (item.status === true)
+        totalPrice += item.price
     }
-    state.selectList = state.outOrderList.filter((x) => x.status === true)
+    state.selectList = state.outOrderList.filter(x => x.status === true)
     return (totalPrice - state.minusAmount).toFixed(2)
   },
   set() {},
 })
 
-const checked = (index) => {
+function checked(index) {
   state.outOrderList[index].status = !state.outOrderList[index].status
   state.allCheck = state.selectList.length === state.outOrderList.length
 }
@@ -55,7 +57,7 @@ const checked = (index) => {
 /**
  * 获取全部负数（欠费）外部订单列表
  */
-const getMinusOutOrderList = () => {
+function getMinusOutOrderList() {
   const params = {
     maxPrice: -0.01,
     type: state.orderType,
@@ -77,7 +79,7 @@ const getMinusOutOrderList = () => {
 /**
  * 获取外部订单列表
  */
-const getOutOrderList = () => {
+function getOutOrderList() {
   const params = {
     type: state.orderType,
     page: state.pagination.page - 1,
@@ -102,7 +104,7 @@ const getOutOrderList = () => {
 /**
  * 上拉加载
  */
-const loadMore = () => {
+function loadMore() {
   if (state.pagination.page === state.pagination.totalPages) {
     state.finished = true
     return
@@ -114,15 +116,16 @@ const loadMore = () => {
 /**
  * 全选
  */
-const change = () => {
+function change() {
   state.outOrderList.forEach((v) => {
     return (v.status = state.allCheck)
   })
-  if (state.allCheck === true) state.selectList = state.outOrderList
+  if (state.allCheck === true)
+    state.selectList = state.outOrderList
   else state.selectList = []
 }
 
-const goElectronicInvoice = () => {
+function goElectronicInvoice() {
   localStorage.set('tot', totalPrice.value)
   localStorage.set('seleted', JSON.stringify(state.selectList))
   router.push('/make/merge-order')
@@ -130,13 +133,14 @@ const goElectronicInvoice = () => {
 /**
  * 获取发票类型
  */
-const getShop = () => {
+function getShop() {
   getShopApi().then((res) => {
-    if (res.code === 1) state.minPrice = res.content.minPrice
+    if (res.code === 1)
+      state.minPrice = res.content.minPrice
   })
 }
 
-const getWindowHeight = () => {
+function getWindowHeight() {
   const clientHeight = document.documentElement.clientHeight
   state.windowHeight = clientHeight - 87 - (store.ifShowH5NavBar ? 46 : 0)
 }
@@ -153,7 +157,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <header v-if="store.ifShowH5NavBar" headerTitle="选择订单" />
+  <header v-if="store.ifShowH5NavBar" header-title="选择订单" />
 
   <div v-if="state.empty">
     <van-empty image="search" description="暂无订单数据" />
@@ -254,7 +258,9 @@ onMounted(() => {
       <van-checkbox v-model="state.allCheck" @click="change()">
         本页全选
       </van-checkbox>
-      <template #tip> 最低开票金额{{ state.minPrice }}元 </template>
+      <template #tip>
+        最低开票金额{{ state.minPrice }}元
+      </template>
     </van-submit-bar>
   </div>
 </template>

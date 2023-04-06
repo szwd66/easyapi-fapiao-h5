@@ -54,33 +54,33 @@ const state = reactive({
   },
 })
 
-const getToken = () => {
+function getToken() {
   getQiniuTokenApi().then((res) => {
     state.qnToken = res.content.uploadToken
   })
 }
 
-const getKey = () => {
+function getKey() {
   getQiniuKeyApi().then((res) => {
     state.qnKey = res.content.key
   })
 }
 
-const onAfterRead = (file) => {
+function onAfterRead(file) {
   uploadImgToQiniu(state.qnToken, state.qnKey, file)
 }
 
 /**
  * 上传图片到七牛
  */
-const uploadImgToQiniu = (qnToken, qnKey, file) => {
+function uploadImgToQiniu(qnToken, qnKey, file) {
   const data = new FormData()
   // 七牛需要的token，后台获取
   data.append('token', qnToken)
   data.append('key', qnKey)
   data.append('file', file.file)
   qiniuUploadApi(data)
-    .then((res) => {
+    .then((res: any) => {
       state.fieldValue.push(`https://qiniu.easyapi.com/${res.key}`)
       // 上传成功后，重新更新七牛参数
       getToken()
@@ -95,7 +95,7 @@ const uploadImgToQiniu = (qnToken, qnKey, file) => {
     })
 }
 
-const deleteFieldValue = (file, { index }) => {
+function deleteFieldValue(file, { index }) {
   state.fieldValue.splice(index, 1)
   return true
 }
@@ -103,7 +103,7 @@ const deleteFieldValue = (file, { index }) => {
 /**
  * 获取自定义发票分类
  */
-const getCustomCategoryList = () => {
+function getCustomCategoryList() {
   getCustomCategoryListApi({}).then((res) => {
     if (res.code === 1) {
       state.customCategoryList = res.content
@@ -114,7 +114,10 @@ const getCustomCategoryList = () => {
   })
 }
 
-const makeInvoice = () => {
+/**
+ * 开具发票
+ */
+function makeInvoice() {
   if (!checkEmailMobile(state.invoiceForm))
     return
 
@@ -157,21 +160,20 @@ const makeInvoice = () => {
           showToast(res.message)
       })
     })
-    .catch(() => {})
 }
 
-const receiveCompany = (val) => {
+function receiveCompany(val) {
   state.company = val
 }
 
-const receiveCategory = (val) => {
+function receiveCategory(val) {
   state.invoiceForm.category = val
 }
 
 /**
  * 选择自定义分类
  */
-const onConfirm = (value) => {
+function onConfirm(value) {
   state.customCategory.customCategoryId = value.selectedOptions[0].customCategoryId
   state.customCategory.name = value.selectedOptions[0].name
   state.showCustomCategory = false

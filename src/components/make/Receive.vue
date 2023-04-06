@@ -39,7 +39,7 @@ const state = reactive({
 /**
  * 前往地址管理页
  */
-const gotoAddress = () => {
+function gotoAddress() {
   router.push({
     path: '/address/',
     name: 'Address',
@@ -52,7 +52,7 @@ const gotoAddress = () => {
 /**
  * 获取默认地址
  */
-const getDefaultAddress = () => {
+function getDefaultAddress() {
   getDefaultAddressApi('test').then((res) => {
     if (res.code === 1) {
       state.childAddress = res.content
@@ -63,11 +63,11 @@ const getDefaultAddress = () => {
 /**
  * 获取开票用户信息
  */
-const getCustomer = () => {
+function getCustomer() {
   if (localStorage.get('invoiceForm')) {
     state.childForm.email = JSON.parse(localStorage.get('invoiceForm')).email
     state.childForm.addrMobile = JSON.parse(
-      localStorage.get('invoiceForm')
+      localStorage.get('invoiceForm'),
     ).addrMobile
   } else {
     getCustomerApi({}).then((res) => {
@@ -129,10 +129,10 @@ onMounted(() => {
       <van-cell
         title="邮寄地址"
         :value="
-          state.childAddress.province +
-          state.childAddress.city +
-          state.childAddress.district +
-          state.childAddress.addr
+          state.childAddress.province
+            + state.childAddress.city
+            + state.childAddress.district
+            + state.childAddress.addr
         "
         readonly
       />

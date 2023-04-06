@@ -46,7 +46,7 @@ const state = reactive({
 })
 
 /** 计算发票金额 */
-const calcAmount = () => {
+function calcAmount() {
   let money = 0
   if (state.productList !== null) {
     for (let i = 0; i < state.productList.length; i++)
@@ -57,7 +57,7 @@ const calcAmount = () => {
 }
 
 /** 删除商品 */
-const deleteProduct = (id) => {
+function deleteProduct(id) {
   for (let i = 0; i < state.productList.length; i++) {
     if (id === state.productList[i].productId)
       state.productList.splice(i, 1)
@@ -70,7 +70,7 @@ const deleteProduct = (id) => {
 }
 
 /** 获取商品服务列表 */
-const getProductList = (params) => {
+function getProductList(params) {
   getProductListApi(params).then((res) => {
     if (res.code === 1)
       state.productListAll = res.content
@@ -78,7 +78,7 @@ const getProductList = (params) => {
 }
 
 /** 追加商品服务 */
-const appendProduct = () => {
+function appendProduct() {
   let obj = {}
 
   if (
@@ -110,7 +110,7 @@ const appendProduct = () => {
 }
 
 /** 显示选择商品弹框 */
-const showProductSearchPopup = () => {
+function showProductSearchPopup() {
   state.productPrice = 0
   state.showPopup = true
   state.productKeyword = ''
@@ -118,12 +118,12 @@ const showProductSearchPopup = () => {
 }
 
 /** 搜索商品 */
-const onProductSearch = () => {
+function onProductSearch() {
   getProductList({ name: state.productKeyword })
 }
 
 /** 计算追加商品总价 */
-const calcTotalPrice = () => {
+function calcTotalPrice() {
   let total = 0
   if (state.productListAll !== null) {
     for (let i = 0; i < state.productListAll.length; i++)
@@ -133,19 +133,18 @@ const calcTotalPrice = () => {
   }
 }
 
-const receiveCompany = (val) => {
+function receiveCompany(val) {
   state.company = val
 }
 
-const receiveCategory = (val) => {
+function receiveCategory(val) {
   state.invoiceForm.category = val
 }
 
-const receiveProperty = (val) => {
-  state.invoiceForm.property = val
-}
-
-const makeInvoice = () => {
+/**
+ * 开具发票
+ */
+function makeInvoice() {
   if (state.invoiceForm.type === '个人' && state.invoiceForm.purchaserName === '')
     return showToast('请输入发票抬头')
 
@@ -176,7 +175,6 @@ const makeInvoice = () => {
       })
       localStorage.remove('productList')
     })
-    .catch(() => {})
 }
 
 onMounted(() => {

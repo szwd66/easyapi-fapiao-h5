@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { json } from 'stream/consumers'
 import { closeToast, showConfirmDialog, showLoadingToast, showToast } from 'vant'
 import makeMixins from '../mixins/make'
 import { getShortNameByTaxCodeApi, getStateApi, queryShopOrderApi } from '@/api/query'
@@ -56,11 +55,14 @@ const state = reactive({
   },
 })
 
-const showDetail = (name) => {
+function showDetail(name) {
   state.active = name
 }
 
-const getShopOrder = () => {
+/**
+ * 获取发票状态
+ */
+function getShopOrder() {
   getStateApi(state.outOrderNo).then((res) => {
     if (res.code === 1) {
       router.replace({
@@ -78,7 +80,7 @@ const getShopOrder = () => {
   })
 }
 
-const getShortNameByTaxCode = () => {
+function getShortNameByTaxCode() {
   const nos = []
   state.outOrder.items.forEach((item) => {
     nos.push(item.no)
@@ -100,11 +102,14 @@ const getShortNameByTaxCode = () => {
   })
 }
 
-const receiveCompany = (val) => {
+function receiveCompany(val) {
   state.company = val
 }
 
-const makeInvoice = () => {
+/**
+ * 开具发票
+ */
+function makeInvoice() {
   if (state.invoiceForm.type === '个人' && state.invoiceForm.purchaserName === '')
     return showToast('请输入发票抬头')
 
@@ -145,13 +150,12 @@ const makeInvoice = () => {
           showToast(res.message)
       })
     })
-    .catch(() => {})
 }
 
 /**
- * 获取发票类型
+ * 获取店铺信息
  */
-const getShop = () => {
+function getShop() {
   getShopApi().then((res) => {
     if (res.code === 1) {
       localStorage.set('ifElectronic', res.content.ifElectronic)

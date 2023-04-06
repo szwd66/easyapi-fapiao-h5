@@ -14,13 +14,13 @@ const route = useRoute()
 
 const state = reactive({
   companyForm: {
+    name: '',
     taxNumber: '',
     address: '',
     phone: '',
     bank: '',
     bankAccount: '',
     ifDefault: true,
-    name: '',
   },
   id: '',
   searchList: [], // 智能提示的抬头列表
@@ -31,7 +31,7 @@ const state = reactive({
 /**
  * 删除
  */
-const deleteData = () => {
+function deleteData() {
   showConfirmDialog({
     title: '提示',
     message: '确定删除?',
@@ -40,11 +40,10 @@ const deleteData = () => {
       if (res.code === 1)
         history.back()
     })
-  }).catch(() => {
   })
 }
 
-const searchCompanyList = () => {
+function searchCompanyList() {
   if (state.name.length < 4)
     return
 
@@ -54,7 +53,7 @@ const searchCompanyList = () => {
   })
 }
 
-const chooseCompany = (index) => {
+function chooseCompany(index) {
   state.name = state.searchList[index].name
   state.companyForm.taxNumber = state.searchList[index].taxNumber
   state.companyForm.bank = state.searchList[index].bank
@@ -64,7 +63,7 @@ const chooseCompany = (index) => {
   state.listShow = false
 }
 
-const confirm = () => {
+function confirm() {
   if (!state.name && !state.companyForm.taxNumber) {
     showToast('发票抬头和税号不能为空！')
     return
@@ -85,15 +84,14 @@ const confirm = () => {
           history.back()
       })
     }
-  }).catch(() => {
   })
 }
 
-const inputBlur = () => {
+function inputBlur() {
   state.listShow = false
 }
 
-const getCompany = () => {
+function getCompany() {
   showLoadingToast({
     duration: 0,
     message: '加载中...',

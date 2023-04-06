@@ -21,7 +21,7 @@ const state = reactive({
   checked: '',
 })
 
-const getCompanyList = () => {
+function getCompanyList() {
   showLoadingToast({
     duration: 0,
     message: '加载中...',
@@ -49,7 +49,7 @@ const getCompanyList = () => {
   })
 }
 
-const companyNameSearch = () => {
+function companyNameSearch() {
   state.companyList = []
   state.pagination.page = 0
   state.noData = false
@@ -58,7 +58,7 @@ const companyNameSearch = () => {
   getCompanyList()
 }
 
-const select = (item) => {
+function select(item) {
   if (route.query.from)
     return
 
@@ -70,14 +70,14 @@ const select = (item) => {
   })
 }
 
-const gotoEditCompany = (companyId) => {
+function gotoEditCompany(companyId) {
   router.push({
     path: '/company/edit',
     query: { id: companyId },
   })
 }
 
-const getPageList = () => {
+function getPageList() {
   if (state.pagination.page < state.pagination.totalPages - 1) {
     state.pagination.page = state.pagination.page + 1
     getCompanyList()
@@ -86,7 +86,7 @@ const getPageList = () => {
     state.noMoreData = true
 }
 
-const lazyLoading = () => {
+function lazyLoading() {
   const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
   const clientHeight = document.documentElement.clientHeight
   const scrollHeight = document.documentElement.scrollHeight

@@ -5,7 +5,7 @@ const state = shallowReactive({
   content: '',
 })
 
-const findSetting = () => {
+function findSetting() {
   findSettingApi({ fieldKeys: 'invoice-rule' }).then((res) => {
     if (res.code === 1)
       state.content = res.content[0].fieldValue

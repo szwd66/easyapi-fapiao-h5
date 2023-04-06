@@ -5,7 +5,7 @@ defineProps({
   },
 })
 
-const goBack = () => {
+function goBack() {
   history.go(-1)
 }
 </script>

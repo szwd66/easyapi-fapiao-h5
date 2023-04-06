@@ -1,10 +1,10 @@
 <script setup lang='ts'>
 const router = useRouter()
 
-const gotoInvoiceList = () => {
+function gotoInvoiceList() {
   router.replace('/invoice/record')
 }
-const gotoIndex = () => {
+function gotoIndex() {
   router.replace('/')
 }
 </script>

@@ -56,18 +56,18 @@ const state = reactive({
   },
 })
 
-const changeElectronic = () => {
+function changeElectronic() {
   emits('getInvoiceCategory', (state.childInvoiceForm.category = '增值税电子普通发票'))
 }
 
-const changePaper = () => {
+function changePaper() {
   emits('getInvoiceCategory', (state.childInvoiceForm.category = '增值税普通发票'))
 }
 
 /**
  * 前往抬头管理页
  */
-const gotoCompany = () => {
+function gotoCompany() {
   router.push({
     path: '/company/list',
   })
@@ -76,7 +76,7 @@ const gotoCompany = () => {
 /**
  * 购买方更多信息
  */
-const purchaserMore = () => {
+function purchaserMore() {
   state.show = true
   state.hide = false
 }
@@ -84,12 +84,12 @@ const purchaserMore = () => {
 /**
  * 隐藏购买方更多信息
  */
-const purchaserMoreHide = () => {
+function purchaserMoreHide() {
   state.show = false
   state.hide = true
 }
 
-const getDefaultCompany = () => {
+function getDefaultCompany() {
   getDefaultCompanyApi().then((res) => {
     if (res.code === 1) {
       state.childCompany = res.content
@@ -105,7 +105,7 @@ const getDefaultCompany = () => {
   })
 }
 
-const getDefaultAddress = () => {
+function getDefaultAddress() {
   // todo username更换
   getDefaultAddressApi('test').then((res) => {
     if (res.code === 1) {
@@ -115,7 +115,7 @@ const getDefaultAddress = () => {
   })
 }
 
-const selectInvoiceType = () => {
+function selectInvoiceType() {
   localStorage.set('type', state.childInvoiceForm.type)
   if (state.childInvoiceForm.type === '企业') {
     getDefaultCompany()
@@ -134,7 +134,7 @@ const selectInvoiceType = () => {
 /**
  * 获取电子发票文案说明
  */
-const findSetting = () => {
+function findSetting() {
   findSettingApi({ fieldKeys: 'electronic_invoice_make_time' }).then((res) => {
     if (res.code === 1)
       state.electronicInvoiceMakeTime = res.content[0].fieldValue

@@ -42,7 +42,7 @@ const state = reactive({
 /**
  * 点击开票
  */
-const makeInvoice = () => {
+function makeInvoice() {
   if (state.orderForm.number === '') {
     showToast('请输入订单号')
     return
@@ -65,7 +65,7 @@ const makeInvoice = () => {
 /**
  * 点击提示
  */
-const openTips = () => {
+function openTips() {
   showDialog({
     title: '温馨提示',
     message: '代码是写出来给人看的，附带能在机器上运行。',
@@ -74,7 +74,7 @@ const openTips = () => {
   })
 }
 
-const receiveCompany = (val) => {
+function receiveCompany(val) {
   state.company = val
 }
 </script>
@@ -82,7 +82,7 @@ const receiveCompany = (val) => {
 <template>
   <div class="mall-order">
     <div class="image">
-      <img src="@/assets/images/kuaishou.png">
+      <img src="https://qiniu.easyapi.com/mall/youzan.png">
     </div>
     <div class="title">
       {{ state.shopName }}快手店铺——订单开票
@@ -102,7 +102,7 @@ const receiveCompany = (val) => {
       <van-field
         v-model="state.orderForm.number"
         label="订单号"
-        placeholder="请输入订单号"
+        placeholder="请输入有赞订单号"
         required
       />
       <van-field
@@ -110,7 +110,7 @@ const receiveCompany = (val) => {
         readonly
         clickable
         label="金额"
-        placeholder="请输入订单金额"
+        placeholder="请输入有赞订单金额"
         required
         @touchstart.stop="state.keyboardShow = true"
       />

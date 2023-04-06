@@ -11,7 +11,10 @@ const state = reactive({
   addressList: [],
 })
 
-const getAddressList = () => {
+/**
+ * 获取地址列表
+ */
+function getAddressList() {
   getAddressListApi({}).then((res) => {
     state.loading = false
     if (res.code === 1)
@@ -21,7 +24,7 @@ const getAddressList = () => {
   })
 }
 
-const select = (item) => {
+function select(item) {
   if (route.query.from)
     return
 
@@ -31,7 +34,7 @@ const select = (item) => {
   })
 }
 
-const gotoEditAddress = (addressId) => {
+function gotoEditAddress(addressId) {
   router.push({
     path: '/address/edit',
     query: { id: addressId },
@@ -93,12 +96,12 @@ onMounted(() => {
 <style lang='less' scoped>
 .address {
   .address-list {
-    padding: 0px 16px;
+    padding: 0 16px;
     padding-bottom: 80px;
 
     .address-list-item {
       border-radius: 5px;
-      box-shadow: 0px 2px 15px 0px rgba(0, 0, 0, 0.11);
+      box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.11);
       margin-top: 15px;
       overflow: hidden;
 
