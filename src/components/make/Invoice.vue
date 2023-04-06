@@ -145,6 +145,8 @@ onMounted(() => {
   findSetting()
   state.childInvoiceForm = props.invoiceForm as any
   state.invoiceCategories = localStorage.get('invoiceCategories') as any
+  state.selectInvoiceCategories = state.invoiceCategories[0].category
+  changeInvoiceCategories(state.invoiceCategories[0])
 })
 </script>
 
