@@ -150,14 +150,15 @@ onMounted(() => {
 
 <template>
   <div>
-    <van-cell-group title="请选择发票类型" inset>
-      <van-cell v-for="(item, index) in state.invoiceCategories" :key="index" @click="changeInvoiceCategories(item)">
-        <template #title>
-          <van-tag class="invoice-tag" type="primary" :color="state.selectInvoiceCategories === item.category ? invoiceTag(item).color : '#969799'">{{ invoiceTag(item).name }}</van-tag>
-          <span class="custom-title" :style="state.selectInvoiceCategories === item.category ? 'color:#333333' : 'color:#969799' ">{{ item.category }}</span>
-        </template>
-      </van-cell>
-    </van-cell-group>
+    <div class="invoice-type">
+      <p class="title">
+        请选择发票类型
+      </p>
+      <div class="invoice-type-list" v-for="(item, index) in state.invoiceCategories" :key="index" @click="changeInvoiceCategories(item)" :style="state.selectInvoiceCategories === item.category ? `border:2px solid ${invoiceTag(item).color}` : 'border:2px solid #f8f8f8' ">
+        <van-tag class="invoice-tag" size="large" type="primary" :color="state.selectInvoiceCategories === item.category ? invoiceTag(item).color : '#969799'">{{ invoiceTag(item).name }}</van-tag>
+        <span class="invoice-title" :style="state.selectInvoiceCategories === item.category ? `color:${invoiceTag(item).color}` : 'color:#969799' ">{{ item.category }}</span>
+      </div>
+    </div>
 
     <van-cell-group title="发票详情" inset>
       <van-cell>
@@ -264,15 +265,22 @@ onMounted(() => {
   padding: 0 16px;
 
   .title {
-    padding: 15px 0;
+    padding: 15px 0 5px 0;
     color: #969799;
   }
 
   .invoice-type-list {
-    text-align: center;
+    display:flex;
+    align-items: center;
     background: #fff;
-    padding: 20px 10px;
+    padding: 12px 10px;
     border-radius: 8px;
+    margin-top:10px;
+
+    .invoice-title{
+      font-size: 16px;
+      font-weight: bolder;
+    }
   }
 
   .invoice-type_blue_box {
