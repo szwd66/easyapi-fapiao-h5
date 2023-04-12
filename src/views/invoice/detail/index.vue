@@ -41,13 +41,8 @@ const state = reactive({
 function viewPicture() {
   if (state.invoiceDetail.state === 1)
     state.popupVisible = true
-  else if (state.invoiceDetail.state === 2)
-    showToast('当前发票作废了')
-  else if (state.invoiceDetail.state === 3)
-    showToast('当前发票退票中')
-  else if (state.invoiceDetail.state === 4)
-    showToast('正在开票中')
-  else showToast('等待后台审核通过')
+  else
+    showToast(`发票${state.invoiceDetail.statements}`)
 }
 
 /**
