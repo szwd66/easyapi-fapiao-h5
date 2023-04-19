@@ -45,9 +45,9 @@ const routes = [
     component: rule,
   },
   {
-    path: '/invoice/record',
-    name: 'invoiceRecord',
-    component: invoiceRecord,
+    path: '/invoice/list',
+    name: 'invoiceList',
+    component: invoiceList,
   },
   {
     path: '/invoice/detail',

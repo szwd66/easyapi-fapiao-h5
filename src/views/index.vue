@@ -107,7 +107,7 @@ onMounted(() => {
       />
     </van-cell-group>
     <van-cell-group title="发票管理" inset>
-      <van-cell title="开票记录" is-link to="/invoice/record" />
+      <van-cell title="开票记录" is-link to="/invoice/list" />
       <van-cell title="开票规则" is-link to="/rule" />
       <van-cell
         title="抬头管理"

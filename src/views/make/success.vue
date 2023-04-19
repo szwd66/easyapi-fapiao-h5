@@ -2,7 +2,7 @@
 const router = useRouter()
 
 function gotoInvoiceList() {
-  router.replace('/invoice/record')
+  router.replace('/invoice/list')
 }
 function gotoIndex() {
   router.replace('/')
