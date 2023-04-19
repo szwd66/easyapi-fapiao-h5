@@ -2,6 +2,9 @@
 import dayjs from 'dayjs'
 import { getRecordListApi } from '@/api/record'
 import { useStore } from '@/stores'
+import { invoiceTag } from '@/utils/invoice-category'
+import Clipboard from "clipboard";
+import {showToast} from "vant";
 
 const store = useStore()
 const router = useRouter()
@@ -40,6 +43,12 @@ function getRecordList() {
     state.loading = false
     if (res.code === 1) {
       const data = res.content
+      data.forEach((item, index) => {
+        if (item.state === 1) {
+          item.copyInfo = `${item.purchaserName} 发票金额：${item.price}元 发票代码：${item.code}， 发票号码：${item.number}， ${item.allElectronicInvoiceNumber ? `全电号码：${item.allElectronicInvoiceNumber}` : ''} 下载地址：${item.electronicInvoiceUrl}`
+        }
+      })
+      console.log(data,789)
       state.pagination.totalPages = res.totalPages
       state.invoiceList = state.invoiceList.concat(data)
     } else {
@@ -104,6 +113,15 @@ function getWindowHeight() {
   state.windowHeight = clientHeight - 69 - (store.ifShowH5NavBar ? 46 : 0)
 }
 
+function copyLink(item) {
+  navigator.clipboard.writeText(item.copyInfo).then((res) => {
+    showToast('复制成功')
+  })
+    .catch(() => {
+      showToast('复制失败')
+    })
+}
+
 onMounted(() => {
   getWindowHeight()
   getRecordList()
@@ -146,18 +164,12 @@ onMounted(() => {
         @click="gotoDetail(item.invoiceId)"
       >
         <div class="record-list_item_top">
-          <van-tag v-if="item.category === '增值税电子普通发票'" type="danger">
-            电
-          </van-tag>
-          <van-tag v-else-if="item.category === '增值税普通发票'" type="danger">
-            普
-          </van-tag>
-          <van-tag v-else-if="item.category === '增值税专用发票'" type="danger">
-            专
-          </van-tag>
-          <van-tag v-else type="danger">
-            票
-          </van-tag>
+          <div>
+            <span class="price">￥{{ item.price }}</span>
+            <van-tag  :color="invoiceTag(item).color">
+              {{invoiceTag(item).name}}
+            </van-tag>
+          </div>
           <span class="status">{{ item.statements }}</span>
         </div>
         <div class="record-list_item_bottom">
@@ -166,7 +178,13 @@ onMounted(() => {
           </p>
           <p class="record-list_item_bottom_time">
             <span>{{ item.addTime }}</span>
-            <span class="price">￥{{ item.price }}</span>
+            <van-button
+              size="mini"
+              type="primary"
+              @click.stop="copyLink(item)"
+            >
+              复制发票信息
+            </van-button>
           </p>
         </div>
       </div>
@@ -207,6 +225,11 @@ onMounted(() => {
       .status {
         color: #1989fa;
       }
+
+      .price {
+        color: #ff4848;
+        margin-right: 10px;
+      }
     }
 
     .record-list_item_bottom {
@@ -224,10 +247,6 @@ onMounted(() => {
         display: flex;
         justify-content: space-between;
         align-items: center;
-      }
-
-      .price {
-        color: #ff4848;
       }
     }
   }

@@ -33,6 +33,7 @@ const state = reactive({
     electronicInvoiceUrl: '',
     url: '',
   },
+  copyInfo: '',
 })
 
 /**
@@ -78,6 +79,7 @@ function getInvoiceDetail() {
     closeToast()
     if (res.code === 1)
       state.invoiceDetail = res.content
+      state.copyInfo = `${res.content.purchaserName} 发票金额：${res.content.price}元 发票代码：${res.content.code}， 发票号码：${res.content.number}， ${res.content.allElectronicInvoiceNumber ? `全电号码：${res.content.allElectronicInvoiceNumber}` : ''} 下载地址：${res.content.electronicInvoiceUrl}`
   })
 }
 
@@ -164,6 +166,11 @@ onMounted(() => {
       <van-field label="手机号码" readonly />
     </van-cell-group>
 
+    <van-action-bar v-if="state.invoiceDetail.state === 1">
+      <van-action-bar-button data-clipboard-action="copy" class="copyPdfUrl" :data-clipboard-text="state.copyInfo" color="#01a8b9"  text="复制发票信息" @click="copyLink" />
+      <van-action-bar-button color="#409eff" text="预览发票" @click="viewPicture" />
+    </van-action-bar>
+
     <van-popup
       v-model:show="state.popupVisible"
       style="padding: 30px"
@@ -182,7 +189,7 @@ onMounted(() => {
           type="primary"
           data-clipboard-action="copy"
           class="copyPdfUrl submit"
-          :data-clipboard-text="state.invoiceDetail.electronicInvoiceUrl"
+          :data-clipboard-text="state.copyInfo"
           @click="copyLink"
         >
           复制发票下载地址
