@@ -1,10 +1,10 @@
 <script setup lang='ts'>
 import dayjs from 'dayjs'
-import { getRecordListApi } from '@/api/record'
+import { showToast } from 'vant'
+import { getInvoiceListApi } from '@/api/invoice'
 import { useStore } from '@/stores'
 import { invoiceTag } from '@/utils/invoice-category'
-import Clipboard from "clipboard";
-import {showToast} from "vant";
+import { copyText } from '@/utils/invoice'
 
 const store = useStore()
 const router = useRouter()
@@ -32,24 +32,18 @@ const state = reactive({
 /**
  * 获取发票列表
  */
-function getRecordList() {
+function getInvoiceList() {
   const params = {
     size: state.pagination.size,
     page: state.pagination.page - 1,
     startAddTime: state.startAddTime,
     endAddTime: state.endAddTime,
   }
-  getRecordListApi(params).then((res) => {
+  getInvoiceListApi(params).then((res) => {
     state.loading = false
     if (res.code === 1) {
-      const data = res.content
-      data.forEach((item, index) => {
-        if (item.state === 1) {
-          item.copyInfo = `${item.purchaserName} 发票金额：${item.price}元 发票代码：${item.code}， 发票号码：${item.number}， ${item.allElectronicInvoiceNumber ? `全电号码：${item.allElectronicInvoiceNumber}` : ''} 下载地址：${item.electronicInvoiceUrl}`
-        }
-      })
       state.pagination.totalPages = res.totalPages
-      state.invoiceList = state.invoiceList.concat(data)
+      state.invoiceList = state.invoiceList.concat(res.content)
     } else {
       state.empty = true
       state.invoiceList = []
@@ -66,7 +60,7 @@ function loadMore() {
     return
   }
   state.pagination.page++
-  getRecordList()
+  getInvoiceList()
 }
 
 /**
@@ -92,7 +86,7 @@ function onConfirm(date) {
   state.showDown = false
   state.showCross = true
   state.finished = false
-  getRecordList()
+  getInvoiceList()
 }
 
 function clearDate() {
@@ -113,17 +107,16 @@ function getWindowHeight() {
 }
 
 function copyLink(item) {
-  navigator.clipboard.writeText(item.copyInfo).then((res) => {
-    showToast('复制成功')
+  navigator.clipboard.writeText(copyText(item)).then((res) => {
+    showToast('复制成功，可直接微信粘贴分享')
+  }).catch(() => {
+    showToast('复制失败')
   })
-    .catch(() => {
-      showToast('复制失败')
-    })
 }
 
 onMounted(() => {
   getWindowHeight()
-  getRecordList()
+  getInvoiceList()
 })
 </script>
 
@@ -165,8 +158,8 @@ onMounted(() => {
         <div class="record-list_item_top">
           <div>
             <span class="price">￥{{ item.price }}</span>
-            <van-tag  :color="invoiceTag(item).color">
-              {{invoiceTag(item).name}}
+            <van-tag :color="invoiceTag(item).color">
+              {{ invoiceTag(item).name }}
             </van-tag>
           </div>
           <span class="status">{{ item.statements }}</span>
@@ -177,11 +170,7 @@ onMounted(() => {
           </p>
           <p class="record-list_item_bottom_time">
             <span>{{ item.addTime }}</span>
-            <van-button
-              size="mini"
-              type="primary"
-              @click.stop="copyLink(item)"
-            >
+            <van-button v-if="item.state === 1" size="mini" type="primary" @click.stop="copyLink(item)">
               复制发票信息
             </van-button>
           </p>

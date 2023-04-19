@@ -2,6 +2,20 @@ import request from '@/utils/request'
 import { localStorage } from '@/utils/local-storage'
 
 /**
+ * 获取开票列表
+ *
+ * @see https://www.easyapi.com
+ */
+export async function getInvoiceListApi(params): Promise<any> {
+  return request.get('/invoices', {
+    params: {
+      accessToken: localStorage.get('accessToken'),
+      ...params,
+    },
+  })
+}
+
+/**
  * 获取发票详情信息
  */
 export async function getInvoiceApi(id): Promise<any> {
