@@ -48,7 +48,6 @@ function getRecordList() {
           item.copyInfo = `${item.purchaserName} 发票金额：${item.price}元 发票代码：${item.code}， 发票号码：${item.number}， ${item.allElectronicInvoiceNumber ? `全电号码：${item.allElectronicInvoiceNumber}` : ''} 下载地址：${item.electronicInvoiceUrl}`
         }
       })
-      console.log(data,789)
       state.pagination.totalPages = res.totalPages
       state.invoiceList = state.invoiceList.concat(data)
     } else {
