@@ -21,6 +21,6 @@ export async function getQiniuTokenApi(): Promise<any> {
 /**
  * 七牛上传
  */
-export const qiniuUploadApi = (data) => {
+export function qiniuUploadApi(data) {
   return request.post('https://upload.qiniup.com/', data)
 }
