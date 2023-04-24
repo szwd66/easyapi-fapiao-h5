@@ -5,6 +5,7 @@ import { getInvoiceListApi } from '@/api/invoice'
 import { useStore } from '@/stores'
 import { invoiceTag } from '@/utils/invoice-category'
 import { copyText } from '@/utils/invoice'
+import Clipboard from "clipboard";
 
 const store = useStore()
 const router = useRouter()
@@ -27,6 +28,7 @@ const state = reactive({
   showCross: false,
   minDate: new Date(2000, 0, 1),
   windowHeight: 0,
+  ifRouter: true,
 })
 
 /**
@@ -67,7 +69,12 @@ function loadMore() {
  * 跳转详情
  */
 function gotoDetail(id) {
-  router.push({ path: '/invoice/detail', query: { id } })
+  if (!state.ifRouter) {
+    return
+  }
+  setTimeout(() => {
+    router.push({ path: '/invoice/detail', query: { id } })
+  }, 10)
 }
 
 function formatDate(date) {
@@ -106,11 +113,16 @@ function getWindowHeight() {
   state.windowHeight = clientHeight - 69 - (store.ifShowH5NavBar ? 46 : 0)
 }
 
-function copyLink(item) {
-  navigator.clipboard.writeText(copyText(item)).then((res) => {
-    showToast('复制成功，可直接微信粘贴分享')
-  }).catch(() => {
+function copyLink() {
+  state.ifRouter = false
+  const newClipboard = new Clipboard('.copyBtn')
+  newClipboard.on('success', () => {
+    showToast('复制成功')
+    state.ifRouter = true
+  })
+  newClipboard.on('error', () => {
     showToast('复制失败')
+    state.ifRouter = true
   })
 }
 
@@ -170,7 +182,7 @@ onMounted(() => {
           </p>
           <p class="record-list_item_bottom_time">
             <span>{{ item.addTime }}</span>
-            <van-button v-if="item.state === 1" size="mini" type="primary" @click.stop="copyLink(item)">
+            <van-button class="copyBtn" v-if="item.state === 1" size="mini" type="primary" data-clipboard-action="copy" :data-clipboard-text="copyText(item)" @click="copyLink">
               复制发票信息
             </van-button>
           </p>
