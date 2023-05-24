@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { closeToast, showLoadingToast, showToast } from 'vant'
 import Clipboard from 'clipboard'
-import { getInvoiceApi } from '@/api/invoice'
+import {getInvoiceApi, sendEmail} from '@/api/invoice'
 import { getOutOrderCountApi } from '@/api/out-order'
 import { copyText } from '@/utils/invoice'
 import { useStore } from '@/stores'
@@ -95,6 +95,16 @@ function getOutOrderCount() {
   })
 }
 
+/**
+ * 发送邮箱
+ */
+function sendToEmail() {
+  sendEmail({ email: state.invoiceDetail.email, outOrderNo: state.invoiceDetail.outOrderNo }).then((res) => {
+    if (res.code === 1)
+      showToast(res.message)
+  })
+}
+
 onMounted(() => {
   getInvoiceDetail()
   getOutOrderCount()
@@ -171,6 +181,7 @@ onMounted(() => {
     <van-action-bar v-if="state.invoiceDetail.state === 1">
       <van-action-bar-button data-clipboard-action="copy" class="copyPdfUrl" :data-clipboard-text="state.copyInfo" color="#01a8b9" text="复制发票信息" @click="copyLink" />
       <van-action-bar-button color="#409eff" text="预览发票" @click="viewPicture" />
+      <van-action-bar-button v-if="state.invoiceDetail.category.indexOf('电子') !== -1" type="success" text="发送邮箱" @click="sendToEmail" />
     </van-action-bar>
 
     <van-popup

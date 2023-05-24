@@ -52,3 +52,15 @@ export async function getOutOrderListApi(params): Promise<any> {
     },
   })
 }
+
+/**
+ * 发送邮箱
+ */
+export async function sendEmail(params): Promise<any> {
+  return request.get('/send/email', {
+    params: {
+      accessToken: localStorage.get('accessToken'),
+      ...params,
+    },
+  })
+}
