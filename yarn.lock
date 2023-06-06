@@ -10,12 +10,12 @@
     "@jridgewell/gen-mapping" "^0.1.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@antfu/eslint-config-basic@0.39.4":
-  version "0.39.4"
-  resolved "https://mirrors.cloud.tencent.com/npm/@antfu/eslint-config-basic/-/eslint-config-basic-0.39.4.tgz#a76c952bb8a98f6ea5f567390df85bf2826a6f08"
-  integrity sha512-xDvS/OkOnueSojswaf1OmEcwuV5F9LM5tG+JihCmINHmYIOZGIriEIPlYJrnqx9K+/xZxDdLbKsDGTUzb/y2tQ==
+"@antfu/eslint-config-basic@0.39.5":
+  version "0.39.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@antfu/eslint-config-basic/-/eslint-config-basic-0.39.5.tgz#c1cc97ff3583431954d3a8f405b63c77d3990ea6"
+  integrity sha512-YQ8mWNfCV6r8xubr6kAp7RoWMJ5UqblauoDBXOdMFDcTuKnmxdhUmX1mSsLBKFD9GBAZtcjS2LHSzZFH4rLmmA==
   dependencies:
-    eslint-plugin-antfu "0.39.4"
+    eslint-plugin-antfu "0.39.5"
     eslint-plugin-eslint-comments "^3.2.0"
     eslint-plugin-html "^7.1.0"
     eslint-plugin-import "^2.27.5"
@@ -30,32 +30,32 @@
     jsonc-eslint-parser "^2.3.0"
     yaml-eslint-parser "^1.2.2"
 
-"@antfu/eslint-config-ts@0.39.4":
-  version "0.39.4"
-  resolved "https://mirrors.cloud.tencent.com/npm/@antfu/eslint-config-ts/-/eslint-config-ts-0.39.4.tgz#32c625adf9b1310703e0b3db19ec54ac755d330b"
-  integrity sha512-EwKC29QgEkDXu2qOWluq2kmEA8CHmqalfdn0vBD6uRh8kaJTbm5QzDJsqikbfDMZhukrGTPYAddsbraeryCu+g==
+"@antfu/eslint-config-ts@0.39.5":
+  version "0.39.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@antfu/eslint-config-ts/-/eslint-config-ts-0.39.5.tgz#ce0ed13ddf69becf75b88900f94f73f5fb46d768"
+  integrity sha512-oDhWVgnqqnx5gBpVDI0dghXreGXdhaRm8D/2t4ng/hnsrtk5gxaIc6wE51ff5j2QGPDD1/p7CcekfWbJbSTL/A==
   dependencies:
-    "@antfu/eslint-config-basic" "0.39.4"
+    "@antfu/eslint-config-basic" "0.39.5"
     "@typescript-eslint/eslint-plugin" "^5.59.7"
     "@typescript-eslint/parser" "^5.59.7"
     eslint-plugin-jest "^27.2.1"
 
-"@antfu/eslint-config-vue@0.39.4":
-  version "0.39.4"
-  resolved "https://mirrors.cloud.tencent.com/npm/@antfu/eslint-config-vue/-/eslint-config-vue-0.39.4.tgz#290a2d2247f07804c44fd1e6f89a0af31b1fd6ee"
-  integrity sha512-PtM3Uuaoe9+YcaIBq8t6JpSHdDKwAYZB7dxvM0cAREybtutn0XmXiFYO79Oxm/eckBPR7BK08g7jF746b31NfA==
+"@antfu/eslint-config-vue@0.39.5":
+  version "0.39.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@antfu/eslint-config-vue/-/eslint-config-vue-0.39.5.tgz#b8998bd294956129f8f3b4e878417f0ca1d05721"
+  integrity sha512-UT82oES4ixazKxYga4UZ053NWhFHQy3rfE9a57fUpy8+57AzXwEbGnLhX344HdOw2lXJHUeVl1jEksO+4T0rTA==
   dependencies:
-    "@antfu/eslint-config-basic" "0.39.4"
-    "@antfu/eslint-config-ts" "0.39.4"
+    "@antfu/eslint-config-basic" "0.39.5"
+    "@antfu/eslint-config-ts" "0.39.5"
     eslint-plugin-vue "^9.14.0"
     local-pkg "^0.4.3"
 
-"@antfu/eslint-config@^0.39.4":
-  version "0.39.4"
-  resolved "https://mirrors.cloud.tencent.com/npm/@antfu/eslint-config/-/eslint-config-0.39.4.tgz#1db90d5616e3dbd25b8aed95a9af4b5705cb2d3b"
-  integrity sha512-KluIlyMinAIpbwxZDOlZGettnYCMRonJiOBUR3rCt8IyppYToWwXrlXc3s1Lbof5pqD40E9bUSdgoky69jnjFA==
+"@antfu/eslint-config@^0.39.5":
+  version "0.39.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/@antfu/eslint-config/-/eslint-config-0.39.5.tgz#48982df8456b05d1cca2fc97e47e00e979212657"
+  integrity sha512-8y11aLb6pQfvx+WjOkohoE1OkzrIXDot/xtWjGbI9u2mrObNQl4+yEimNsr3Rl2sgbB7zuLZmw8DM/u8V9jLbQ==
   dependencies:
-    "@antfu/eslint-config-vue" "0.39.4"
+    "@antfu/eslint-config-vue" "0.39.5"
     "@typescript-eslint/eslint-plugin" "^5.59.7"
     "@typescript-eslint/parser" "^5.59.7"
     eslint-plugin-eslint-comments "^3.2.0"
@@ -75,7 +75,7 @@
   resolved "https://registry.yarnpkg.com/@antfu/utils/-/utils-0.7.2.tgz#3bb6f37a6b188056fe9e2f363b6aa735ed65d7ca"
   integrity sha512-vy9fM3pIxZmX07dL+VX1aZe7ynZ+YyB0jY+jE6r3hOK6GNY2t6W8rzpFC4tgpbXUYABkFQwgJq2XYXlxbXAI0g==
 
-"@antfu/utils@^0.7.3":
+"@antfu/utils@^0.7.4":
   version "0.7.4"
   resolved "https://mirrors.cloud.tencent.com/npm/@antfu/utils/-/utils-0.7.4.tgz#b1c11b95f89f13842204d3d83de01e10bb9257db"
   integrity sha512-qe8Nmh9rYI/HIspLSTwtbMFPj6dISG6+dJnOguTlPNXtCvS2uezdxscVBb7/3DrmNbQK49TDqpkSQ1chbRGdpQ==
@@ -2134,15 +2134,15 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@eslint/js@8.41.0":
-  version "8.41.0"
-  resolved "https://mirrors.cloud.tencent.com/npm/@eslint/js/-/js-8.41.0.tgz#080321c3b68253522f7646b55b577dd99d2950b3"
-  integrity sha512-LxcyMGxwmTh2lY9FwHPGWOHmYFCZvbrFCBZL4FzSSsxsRPuhrYUg/49/0KDfW8tnIEaEHtfmn6+NPN+1DqaNmA==
+"@eslint/js@8.42.0":
+  version "8.42.0"
+  resolved "https://mirrors.cloud.tencent.com/npm/@eslint/js/-/js-8.42.0.tgz#484a1d638de2911e6f5a30c12f49c7e4a3270fb6"
+  integrity sha512-6SWlXpWU5AvId8Ac7zjzmIOqMOba/JWY8XZ4A7q7Gn1Vlfg/SFFIlrtHXt9nPn4op9ZPAkl91Jao+QQv3r/ukw==
 
-"@humanwhocodes/config-array@^0.11.8":
-  version "0.11.8"
-  resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.11.8.tgz#03595ac2075a4dc0f191cc2131de14fbd7d410b9"
-  integrity sha512-UybHIJzJnR5Qc/MsD9Kr+RpO2h+/P1GhOwdiLPXK5TWk5sgTdu88bTD9UP+CKbPPh5Rni1u0GjAdYQLemG8g+g==
+"@humanwhocodes/config-array@^0.11.10":
+  version "0.11.10"
+  resolved "https://mirrors.cloud.tencent.com/npm/@humanwhocodes/config-array/-/config-array-0.11.10.tgz#5a3ffe32cc9306365fb3fd572596cd602d5e12d2"
+  integrity sha512-KVVjQmNUepDVGXNuoRRdmmEjruj0KfiGSbS8LVc12LMsWDQzRXJ0qdhN8L8uUigKpfEHRhlaQFY0ib1tnUbNeQ==
   dependencies:
     "@humanwhocodes/object-schema" "^1.2.1"
     debug "^4.1.1"
@@ -3436,10 +3436,10 @@ date-time@^3.1.0:
   dependencies:
     time-zone "^1.0.0"
 
-dayjs@^1.11.7:
-  version "1.11.7"
-  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.7.tgz#4b296922642f70999544d1144a2c25730fce63e2"
-  integrity sha512-+Yw9U6YO5TQohxLcIkrXBeY73WP3ejHWVvx8XCk3gxvQDCTEmS48ZrSZCKciI7Bhl/uCMyxYtE9UqRILmFphkQ==
+dayjs@^1.11.8:
+  version "1.11.8"
+  resolved "https://mirrors.cloud.tencent.com/npm/dayjs/-/dayjs-1.11.8.tgz#4282f139c8c19dd6d0c7bd571e30c2d0ba7698ea"
+  integrity sha512-LcgxzFoWMEPO7ggRv1Y2N31hUf2R0Vj7fuy/m+Bg1K8rr+KAs1AEy4y9jd5DXe8pbHgX+srkHNS7TH6Q6ZhYeQ==
 
 de-indent@^1.0.2:
   version "1.0.2"
@@ -3793,10 +3793,10 @@ eslint-module-utils@^2.7.4:
   dependencies:
     debug "^3.2.7"
 
-eslint-plugin-antfu@0.39.4:
-  version "0.39.4"
-  resolved "https://mirrors.cloud.tencent.com/npm/eslint-plugin-antfu/-/eslint-plugin-antfu-0.39.4.tgz#550dada44c46efd3706f8aca6feed142a20e2771"
-  integrity sha512-5vsIww98pW5QUF/TOcnuBIc6iJ+LGPRsp+S/OTA/ozPonMtBcQd55vMV1X9IJgxWtz0jM+DiqD6oy0VtsWlacg==
+eslint-plugin-antfu@0.39.5:
+  version "0.39.5"
+  resolved "https://mirrors.cloud.tencent.com/npm/eslint-plugin-antfu/-/eslint-plugin-antfu-0.39.5.tgz#9cb2f5ac75dd7c273ab3beda46019a3177670eed"
+  integrity sha512-xdBARaxUfz/hKzsFMhhV+jUZBGMZOEektLAEdbFcZzPLe1zAHOjplkB0FihqmIHrqxCZsZVGLPfhipHiSnnQuQ==
   dependencies:
     "@typescript-eslint/utils" "^5.59.7"
 
@@ -3994,16 +3994,16 @@ eslint-visitor-keys@^3.4.1:
   resolved "https://mirrors.cloud.tencent.com/npm/eslint-visitor-keys/-/eslint-visitor-keys-3.4.1.tgz#c22c48f48942d08ca824cc526211ae400478a994"
   integrity sha512-pZnmmLwYzf+kWaM/Qgrvpen51upAktaaiI01nsJD/Yr3lMOdNtq0cxkrrg16w64VtisN6okbs7Q8AfGqj4c9fA==
 
-eslint@^8.41.0:
-  version "8.41.0"
-  resolved "https://mirrors.cloud.tencent.com/npm/eslint/-/eslint-8.41.0.tgz#3062ca73363b4714b16dbc1e60f035e6134b6f1c"
-  integrity sha512-WQDQpzGBOP5IrXPo4Hc0814r4/v2rrIsB0rhT7jtunIalgg6gYXWhRMOejVO8yH21T/FGaxjmFjBMNqcIlmH1Q==
+eslint@^8.42.0:
+  version "8.42.0"
+  resolved "https://mirrors.cloud.tencent.com/npm/eslint/-/eslint-8.42.0.tgz#7bebdc3a55f9ed7167251fe7259f75219cade291"
+  integrity sha512-ulg9Ms6E1WPf67PHaEY4/6E2tEn5/f7FXGzr3t9cBMugOmf1INYvuUwwh1aXQN4MfJ6a5K2iNwP3w4AColvI9A==
   dependencies:
     "@eslint-community/eslint-utils" "^4.2.0"
     "@eslint-community/regexpp" "^4.4.0"
     "@eslint/eslintrc" "^2.0.3"
-    "@eslint/js" "8.41.0"
-    "@humanwhocodes/config-array" "^0.11.8"
+    "@eslint/js" "8.42.0"
+    "@humanwhocodes/config-array" "^0.11.10"
     "@humanwhocodes/module-importer" "^1.0.1"
     "@nodelib/fs.walk" "^1.2.8"
     ajv "^6.10.0"
@@ -6112,10 +6112,10 @@ rollup@^3.21.0:
   optionalDependencies:
     fsevents "~2.3.2"
 
-rollup@^3.23.0:
-  version "3.23.0"
-  resolved "https://mirrors.cloud.tencent.com/npm/rollup/-/rollup-3.23.0.tgz#b8d6146dac4bf058ee817f92820988e9b358b564"
-  integrity sha512-h31UlwEi7FHihLe1zbk+3Q7z1k/84rb9BSwmBSr/XjOCEaBJ2YyedQDuM0t/kfOS0IxM+vk1/zI9XxYj9V+NJQ==
+rollup@^3.23.1:
+  version "3.23.1"
+  resolved "https://mirrors.cloud.tencent.com/npm/rollup/-/rollup-3.23.1.tgz#a6e50cb86a17fc2e3248d8ec12ff8666992b0780"
+  integrity sha512-ybRdFVHOoljGEFILHLd2g/qateqUdjE6YS41WXq4p3C/WwD3xtWxV4FYWETA1u9TeXQc5K8L8zHE5d/scOvrOQ==
   optionalDependencies:
     fsevents "~2.3.2"
 
@@ -6597,10 +6597,10 @@ typescript@^4.6.4:
   resolved "https://registry.npmjs.org/typescript/-/typescript-4.9.3.tgz"
   integrity sha512-CIfGzTelbKNEnLpLdGFgdyKhG23CKdKgQPOBc+OUNrkJ2vr+KSzsSV5kq5iWhEQbok+quxgGzrAtGWCyU7tHnA==
 
-typescript@^5.0.4:
-  version "5.0.4"
-  resolved "https://mirrors.cloud.tencent.com/npm/typescript/-/typescript-5.0.4.tgz#b217fd20119bd61a94d4011274e0ab369058da3b"
-  integrity sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==
+typescript@^5.1.3:
+  version "5.1.3"
+  resolved "https://mirrors.cloud.tencent.com/npm/typescript/-/typescript-5.1.3.tgz#8d84219244a6b40b6fb2b33cc1c062f715b9e826"
+  integrity sha512-XH627E9vkeqhlZFQuL+UsyAXEnibT0kWR2FWONlr4sTjvxyJYnyefgrkyECLzM5NenmKzRAy2rR/OlYLA1HkZw==
 
 ufo@^1.0.0:
   version "1.0.0"
@@ -6702,12 +6702,12 @@ unplugin-auto-import@^0.16.4:
     unimport "^3.0.7"
     unplugin "^1.3.1"
 
-unplugin-vue-components@^0.25.0:
-  version "0.25.0"
-  resolved "https://mirrors.cloud.tencent.com/npm/unplugin-vue-components/-/unplugin-vue-components-0.25.0.tgz#e95c5edd16ad69c3afde9802e0b65f080656d0dc"
-  integrity sha512-HxrQ4GMSS1RwVww2av3a42cABo/v5AmTRN9iARv6e/xwkrfTyHhLh84kFwXxKkXK61vxDHxaryn694mQmkiVBg==
+unplugin-vue-components@^0.25.1:
+  version "0.25.1"
+  resolved "https://mirrors.cloud.tencent.com/npm/unplugin-vue-components/-/unplugin-vue-components-0.25.1.tgz#84e30374460e2e6e30b6c5bfa6127c11097c1065"
+  integrity sha512-kzS2ZHVMaGU2XEO2keYQcMjNZkanDSGDdY96uQT9EPe+wqSZwwgbFfKVJ5ti0+8rGAcKHColwKUvctBhq2LJ3A==
   dependencies:
-    "@antfu/utils" "^0.7.3"
+    "@antfu/utils" "^0.7.4"
     "@rollup/pluginutils" "^5.0.2"
     chokidar "^3.5.3"
     debug "^4.3.4"
