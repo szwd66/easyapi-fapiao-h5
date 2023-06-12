@@ -1,15 +1,19 @@
 <script setup lang='ts'>
 import { showConfirmDialog, showDialog, showToast } from 'vant'
 import makeMixins from '../make/mixins/make'
-
+import mallOrder from '@/api/mall-order'
 const { checkEmailMobile } = makeMixins()
+
+const route = useRoute()
 
 const state = reactive({
   shopName: '娃哈哈',
   orderForm: {
-    number: '',
+    outOrderNo: '',
     price: '',
     email: '',
+    code: route.query.code,
+    taxNumber: route.query.taxNumber,
   },
   keyboardShow: false,
 })
@@ -18,7 +22,9 @@ const state = reactive({
  * 点击开票
  */
 function makeInvoice() {
-  if (state.orderForm.number === '') {
+  console.log(state.orderForm,999)
+  return
+  if (state.orderForm.outOrderNo === '') {
     showToast('请输入订单号')
     return
   }
@@ -34,6 +40,10 @@ function makeInvoice() {
     title: '提示',
     message: '确认抬头和金额正确并申请开票吗？',
   }).then(() => {
+    mallOrder.apply(state.orderForm).then((res) => {
+      if(res.code === 1)
+        showToast(res.message)
+    })
   })
 }
 
@@ -45,7 +55,6 @@ function openTips() {
     title: '温馨提示',
     message: '代码是写出来给人看的，附带能在机器上运行。',
   }).then(() => {
-    // on close
   })
 }
 </script>
@@ -61,7 +70,7 @@ function openTips() {
 
     <van-cell-group title="京东订单信息（已在京东申请开票的订单）" inset>
       <van-field
-        v-model="state.orderForm.number"
+        v-model="state.orderForm.outOrderNo"
         label="订单号"
         placeholder="请输入京东订单号"
         required
@@ -69,6 +78,7 @@ function openTips() {
       <van-field
         v-model="state.orderForm.price"
         readonly
+        required
         clickable
         label="金额"
         placeholder="请输入京东订单金额"
