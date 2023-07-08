@@ -2,12 +2,13 @@
 import { showConfirmDialog, showDialog, showToast } from 'vant'
 import makeMixins from '../make/mixins/make'
 import mallOrder from '@/api/mall-order'
+
 const { checkEmailMobile } = makeMixins()
 
 const route = useRoute()
 
 const state = reactive({
-  shopName: '娃哈哈',
+  shopName: '',
   orderForm: {
     outOrderNo: '',
     price: '',
@@ -22,8 +23,6 @@ const state = reactive({
  * 点击开票
  */
 function makeInvoice() {
-  console.log(state.orderForm,999)
-  return
   if (state.orderForm.outOrderNo === '') {
     showToast('请输入订单号')
     return
@@ -41,7 +40,7 @@ function makeInvoice() {
     message: '确认抬头和金额正确并申请开票吗？',
   }).then(() => {
     mallOrder.apply(state.orderForm).then((res) => {
-      if(res.code === 1)
+      if (res.code === 1)
         showToast(res.message)
     })
   })
@@ -53,7 +52,7 @@ function makeInvoice() {
 function openTips() {
   showDialog({
     title: '温馨提示',
-    message: '代码是写出来给人看的，附带能在机器上运行。',
+    message: '打开京东APP，我的 - 我的订单 - 订单详情，找到订单编号，点击「复制」即可。',
   }).then(() => {
   })
 }
@@ -65,14 +64,14 @@ function openTips() {
       <img src="https://qiniu.easyapi.com/mall/jd.png">
     </div>
     <div class="title">
-      {{ state.shopName }}京东店铺——订单开票
+      {{ state.shopName }}京东店铺 - 订单开票
     </div>
 
     <van-cell-group title="京东订单信息（已在京东申请开票的订单）" inset>
       <van-field
         v-model="state.orderForm.outOrderNo"
         label="订单号"
-        placeholder="请输入京东订单号"
+        placeholder="请输入京东订单编号"
         required
       />
       <van-field
@@ -94,7 +93,7 @@ function openTips() {
       />
     </van-cell-group>
     <div class="tips-forget" @click="openTips">
-      我不知道京东订单在哪里
+      我不知道京东订单号在哪里
     </div>
     <van-cell-group title="接收方式" inset>
       <van-field
@@ -104,8 +103,10 @@ function openTips() {
       />
     </van-cell-group>
     <div class="tips">
-      <p>xxxxxx</p>
-      <p>xxxxxx</p>
+      <p>说明：</p>
+      <p>1、请先通过京东APP我的订单申请开票，填写开票信息</p>
+      <p>2、邮箱可不填写，可通过京东APP订单查询发票信息更方便</p>
+      <p>2、如果填写的订单号不是我们店铺，将忽略本次开票申请</p>
     </div>
     <div class="bottom fixed-bottom-bgColor">
       <van-button type="primary" class="submit" block @click="makeInvoice">
