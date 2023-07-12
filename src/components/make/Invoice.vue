@@ -59,9 +59,9 @@ const state = reactive({
   selectInvoiceCategories: '',
 })
 
-function changeInvoiceCategories(row) {
-  state.selectInvoiceCategories = row.category
-  emits('getInvoiceCategory', row.category)
+function changeInvoiceCategories(category) {
+  state.selectInvoiceCategories = category
+  emits('getInvoiceCategory', category)
 }
 
 /**
@@ -95,11 +95,13 @@ function getDefaultCompany() {
       state.childCompany = res.content
       emits('getCompany', state.childCompany)
       state.childInvoiceForm.purchaserName = state.childCompany.name
-      state.childInvoiceForm.purchaserTaxpayerNumber = state.childCompany.taxNumber
+      state.childInvoiceForm.purchaserTaxpayerNumber =
+        state.childCompany.taxNumber
       state.childInvoiceForm.purchaserAddress = state.childCompany.address
       state.childInvoiceForm.purchaserPhone = state.childCompany.phone
       state.childInvoiceForm.purchaserBank = state.childCompany.bank
-      state.childInvoiceForm.purchaserBankAccount = state.childCompany.bankAccount
+      state.childInvoiceForm.purchaserBankAccount =
+        state.childCompany.bankAccount
       state.childInvoiceForm.companyId = state.childCompany.companyId
     }
   })
@@ -135,30 +137,63 @@ function selectInvoiceType() {
  * 获取电子发票文案说明
  */
 function findSetting() {
-  findSettingApi({ fieldKeys: 'electronic_invoice_make_time' }).then((res) => {
+  findSettingApi({
+    fieldKeys: 'electronic_invoice_make_time,h5_pc_invoice_categories',
+  }).then((res) => {
     if (res.code === 1)
-      state.electronicInvoiceMakeTime = res.content[0].fieldValue
+      res.content.forEach((item) => {
+        if (item.fieldKey === 'electronic_invoice_make_time') {
+          state.electronicInvoiceMakeTime = item.fieldValue
+        }
+        if (item.fieldKey === 'h5_pc_invoice_categories') {
+          state.invoiceCategories = JSON.parse(item.fieldValue)
+          changeInvoiceCategories(state.invoiceCategories[0])
+        }
+      })
   })
 }
 
 onMounted(() => {
   findSetting()
   state.childInvoiceForm = props.invoiceForm as any
-  state.invoiceCategories = localStorage.get('invoiceCategories') as any
-  state.selectInvoiceCategories = state.invoiceCategories[0].category
-  changeInvoiceCategories(state.invoiceCategories[0])
 })
 </script>
 
 <template>
   <div>
     <div class="invoice-type">
-      <p class="title">
-        请选择发票类型
-      </p>
-      <div class="invoice-type-list" v-for="(item, index) in state.invoiceCategories" :key="index" @click="changeInvoiceCategories(item)" :style="state.selectInvoiceCategories === item.category ? `border:2px solid ${invoiceTag(item).color}` : 'border:2px solid #f8f8f8' ">
-        <van-tag class="invoice-tag" size="large" type="primary" :color="state.selectInvoiceCategories === item.category ? invoiceTag(item).color : '#969799'">{{ invoiceTag(item).name }}</van-tag>
-        <span class="invoice-title" :style="state.selectInvoiceCategories === item.category ? `color:${invoiceTag(item).color}` : 'color:#969799' ">{{ item.category }}</span>
+      <p class="title">请选择发票类型</p>
+      <div
+        class="invoice-type-list"
+        v-for="(item, index) in state.invoiceCategories"
+        :key="index"
+        @click="changeInvoiceCategories(item)"
+        :style="
+          state.selectInvoiceCategories === item
+            ? `border:2px solid ${invoiceTag(item).color}`
+            : 'border:2px solid #f8f8f8'
+        "
+      >
+        <van-tag
+          class="invoice-tag"
+          size="large"
+          type="primary"
+          :color="
+            state.selectInvoiceCategories === item
+              ? invoiceTag(item).color
+              : '#969799'
+          "
+          >{{ invoiceTag(item).name }}</van-tag
+        >
+        <span
+          class="invoice-title"
+          :style="
+            state.selectInvoiceCategories === item
+              ? `color:${invoiceTag(item).color}`
+              : 'color:#969799'
+          "
+          >{{ item}}</span
+        >
       </div>
     </div>
 
@@ -166,7 +201,7 @@ onMounted(() => {
       <van-cell>
         <template #title>
           <div>
-            <span style="margin-right: 3px; color: #ee0a24;">*</span>
+            <span style="margin-right: 3px; color: #ee0a24">*</span>
             <span class="custom-title">抬头类型</span>
           </div>
         </template>
@@ -175,20 +210,25 @@ onMounted(() => {
           direction="horizontal"
           @change="selectInvoiceType"
         >
-          <van-radio name="企业">
-            企业
-          </van-radio>
-          <van-radio name="个人">
-            个人或事业单位
-          </van-radio>
+          <van-radio name="企业"> 企业 </van-radio>
+          <van-radio name="个人"> 个人或事业单位 </van-radio>
         </van-radio-group>
       </van-cell>
-      <van-cell v-if="state.childInvoiceForm.property === '纸质'" title="发票类型">
-        <van-radio-group v-model="state.childInvoiceForm.category" direction="horizontal">
+      <van-cell
+        v-if="state.childInvoiceForm.property === '纸质'"
+        title="发票类型"
+      >
+        <van-radio-group
+          v-model="state.childInvoiceForm.category"
+          direction="horizontal"
+        >
           <van-radio style="margin-bottom: 5px" name="增值税普通发票">
             增值税普通发票
           </van-radio>
-          <van-radio v-if="state.childInvoiceForm.type === '企业'" name="增值税专用发票">
+          <van-radio
+            v-if="state.childInvoiceForm.type === '企业'"
+            name="增值税专用发票"
+          >
             增值税专用发票
           </van-radio>
         </van-radio-group>
@@ -259,7 +299,7 @@ onMounted(() => {
 </template>
 
 <style lang="less" scoped>
-.invoice-tag{
+.invoice-tag {
   margin-right: 8px;
 }
 
@@ -272,14 +312,14 @@ onMounted(() => {
   }
 
   .invoice-type-list {
-    display:flex;
+    display: flex;
     align-items: center;
     background: #fff;
     padding: 12px 10px;
     border-radius: 8px;
-    margin-top:10px;
+    margin-top: 10px;
 
-    .invoice-title{
+    .invoice-title {
       font-size: 16px;
       font-weight: bolder;
     }

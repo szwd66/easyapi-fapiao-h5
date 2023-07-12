@@ -79,6 +79,10 @@ function receiveCompany(val) {
   state.company = val
 }
 
+function receiveCategory(category){
+  state.invoiceForm.category = category
+}
+
 /**
  * 开具发票
  */
@@ -99,7 +103,6 @@ function makeInvoice() {
       forbidClick: true,
       duration: 0,
     })
-    state.invoiceForm.category = '增值税电子普通发票'
     state.invoiceForm.outOrderIds = state.outOrder.outOrderId
     state.invoiceForm.companyId = state.company.companyId
     mergeMakeInvoiceApi(state.invoiceForm).then((res) => {

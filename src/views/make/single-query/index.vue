@@ -106,6 +106,10 @@ function receiveCompany(val) {
   state.company = val
 }
 
+function receiveCategory(category){
+  state.invoiceForm.category = category
+}
+
 /**
  * 开具发票
  */
@@ -133,7 +137,6 @@ function makeInvoice() {
         forbidClick: true,
         duration: 0,
       })
-      state.invoiceForm.category = '增值税电子普通发票'
       state.invoiceForm.outOrderNo = state.outOrder.outOrderNo
       const items = JSON.parse(JSON.stringify(state.outOrder.items))
       items.forEach((item) => {

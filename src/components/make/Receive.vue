@@ -88,7 +88,7 @@ onMounted(() => {
   <div>
     <van-cell-group v-if="props.ifElectronic" title="接收方式" inset>
       <van-field
-        v-if="!ifNeedEmail"
+        v-if="!props.ifNeedEmail"
         v-model="state.childForm.email"
         label="电子邮箱"
       />

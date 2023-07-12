@@ -50,8 +50,11 @@ function getOrder() {
   for (let i = 0; i < state.seletedOutOrderList.length; i++) {
     state.outOrderIds += `${state.seletedOutOrderList[i].outOrderId},`
     state.invoiceForm.outOrderIds = state.outOrderIds
-    state.invoiceForm.category = '增值税电子普通发票'
   }
+}
+
+function receiveCategory(category){
+  state.invoiceForm.category = category
 }
 
 /**
