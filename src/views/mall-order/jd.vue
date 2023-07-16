@@ -13,7 +13,7 @@ const state = reactive({
     outOrderNo: '',
     price: '',
     email: '',
-    code: route.query.code,
+    qrCode: route.query.qrCode,
     taxNumber: route.query.taxNumber,
   },
   keyboardShow: false,
