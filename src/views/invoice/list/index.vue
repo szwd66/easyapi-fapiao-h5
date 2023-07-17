@@ -170,8 +170,8 @@ onMounted(() => {
         <div class="record-list_item_top">
           <div>
             <span class="price">￥{{ item.price }}</span>
-            <van-tag :color="invoiceTag(item).color">
-              {{ invoiceTag(item).name }}
+            <van-tag :color="invoiceTag(item.category).color">
+              {{ invoiceTag(item.category).name }}
             </van-tag>
           </div>
           <span class="status">{{ item.statements }}</span>
