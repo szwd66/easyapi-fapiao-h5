@@ -121,7 +121,7 @@ onMounted(() => {
       />
     </van-cell-group>
     <div class="remark">
-      如果无法提交开票申请，请联系客服13656171020
+      如果无法提交开票申请，请联系发票客服13656171020（仅能解决发票无法开具问题）
     </div>
     <div v-if="state.ifProductMake || state.ifMoneyMake" class="bottom fixed-bottom-bgColor">
       <van-button type="primary" class="submit" block @click="gotoMake">
