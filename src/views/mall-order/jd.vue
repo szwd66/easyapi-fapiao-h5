@@ -106,7 +106,7 @@ function openTips() {
       <p>说明：</p>
       <p>1、请先通过京东APP我的订单申请开票，填写开票信息</p>
       <p>2、邮箱可不填写，可通过京东APP订单查询发票信息更方便</p>
-      <p>2、如果填写的订单号不是我们店铺，将忽略本次开票申请</p>
+      <p>3、如果填写的订单号不是我们店铺，将忽略本次开票申请</p>
     </div>
     <div class="bottom fixed-bottom-bgColor">
       <van-button type="primary" class="submit" block @click="makeInvoice">
