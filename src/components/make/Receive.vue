@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { getDefaultAddressApi } from '@/api/address'
 import { getCustomerApi } from '@/api/customer'
-import { localStorage } from '@/utils/local-storage'
 
 const props = defineProps({
   ifElectronic: {
@@ -64,17 +63,10 @@ function getDefaultAddress() {
  * 获取开票用户信息
  */
 function getCustomer() {
-  if (localStorage.get('invoiceForm')) {
-    state.childForm.email = JSON.parse(localStorage.get('invoiceForm')).email
-    state.childForm.addrMobile = JSON.parse(
-      localStorage.get('invoiceForm'),
-    ).addrMobile
-  } else {
-    getCustomerApi({}).then((res) => {
-      state.childForm.email = res.content.email ? res.content.email : ''
-      state.childForm.addrMobile = res.content.mobile ? res.content.mobile : ''
-    })
-  }
+  getCustomerApi({}).then((res) => {
+    state.childForm.email = res.content.email ? res.content.email : ''
+    state.childForm.addrMobile = res.content.mobile ? res.content.mobile : ''
+  })
 }
 
 onMounted(() => {

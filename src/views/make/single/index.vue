@@ -79,7 +79,7 @@ function receiveCompany(val) {
   state.company = val
 }
 
-function receiveCategory(category){
+function receiveCategory(category) {
   state.invoiceForm.category = category
 }
 
@@ -130,9 +130,6 @@ function deleteProduct(id) {
   for (let i = 0; i < state.productList.length; i++) {
     if (id === state.productList[i].productId)
       state.productList.splice(i, 1)
-
-    localStorage.set('productList', JSON.stringify(state.productList))
-    state.productList = JSON.parse(localStorage.get('productList'))
   }
   state.invoiceForm.price = 0
   calculatedAmount()

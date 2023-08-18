@@ -45,7 +45,7 @@ function getOrder() {
   state.invoiceForm.price = localStorage.get('tot') ? localStorage.get('tot') : 0.0
   state.seletedOutOrderList = []
   if (localStorage.get('seleted'))
-    state.seletedOutOrderList = JSON.parse(localStorage.get('seleted'))
+    state.seletedOutOrderList = localStorage.get('seleted')
 
   for (let i = 0; i < state.seletedOutOrderList.length; i++) {
     state.outOrderIds += `${state.seletedOutOrderList[i].outOrderId},`
@@ -53,7 +53,7 @@ function getOrder() {
   }
 }
 
-function receiveCategory(category){
+function receiveCategory(category) {
   state.invoiceForm.category = category
 }
 

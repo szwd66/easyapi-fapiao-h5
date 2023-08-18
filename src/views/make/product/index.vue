@@ -1,12 +1,18 @@
 <script setup lang="ts">
-import { closeToast, showConfirmDialog, showLoadingToast, showToast } from 'vant'
+import {
+  closeToast,
+  showConfirmDialog,
+  showLoadingToast,
+  showToast,
+} from 'vant'
 import makeMixins from '../mixins/make'
 import { getProductListApi } from '@/api/product'
 import { productMakeInvoiceApi } from '@/api/make'
 import { localStorage } from '@/utils/local-storage'
 import { useStore } from '@/stores'
 
-const { common, getInvoiceRemark, ifNeedMobileEmail, checkEmailMobile } = makeMixins()
+const { common, getInvoiceRemark, ifNeedMobileEmail, checkEmailMobile }
+  = makeMixins()
 const store = useStore()
 const router = useRouter()
 
@@ -57,14 +63,9 @@ function calcAmount() {
 }
 
 /** 删除商品 */
-function deleteProduct(id) {
-  for (let i = 0; i < state.productList.length; i++) {
-    if (id === state.productList[i].productId)
-      state.productList.splice(i, 1)
-
-    localStorage.set('productList', JSON.stringify(state.productList))
-    state.productList = JSON.parse(localStorage.get('productList'))
-  }
+function deleteProduct(index: any) {
+  state.productList.splice(index, 1)
+  localStorage.set('productList', state.productList)
   state.invoiceForm.price = 0
   calcAmount()
 }
@@ -82,8 +83,9 @@ function appendProduct() {
   let obj = {}
 
   if (
-    state.productListAll.filter(x => x.number > 0 && (!x.price || x.price === 0 || x.price < 0))
-      .length > 0
+    state.productListAll.filter(
+      x => x.number > 0 && (!x.price || x.price === 0 || x.price < 0),
+    ).length > 0
   )
     return showToast('请输入正确的商品金额')
 
@@ -97,12 +99,8 @@ function appendProduct() {
         name: state.productListAll[i].name,
         number: state.productListAll[i].number,
       }
-      const oldList = localStorage.get('productList')
-        ? JSON.parse(localStorage.get('productList'))
-        : []
-      oldList.push(obj)
-      localStorage.set('productList', JSON.stringify(oldList))
-      state.productList = JSON.parse(localStorage.get('productList'))
+      state.productList.push(obj)
+      localStorage.set('productList', state.productList)
     }
   }
   calcAmount()
@@ -126,8 +124,10 @@ function onProductSearch() {
 function calcTotalPrice() {
   let total = 0
   if (state.productListAll !== null) {
-    for (let i = 0; i < state.productListAll.length; i++)
-      total += state.productListAll[i].price * (state.productListAll[i].number || 0)
+    for (let i = 0; i < state.productListAll.length; i++) {
+      total
+        += state.productListAll[i].price * (state.productListAll[i].number || 0)
+    }
 
     state.productPrice = total
   }
@@ -145,7 +145,10 @@ function receiveCategory(val) {
  * 开具发票
  */
 function makeInvoice() {
-  if (state.invoiceForm.type === '个人' && state.invoiceForm.purchaserName === '')
+  if (
+    state.invoiceForm.type === '个人'
+    && state.invoiceForm.purchaserName === ''
+  )
     return showToast('请输入发票抬头')
 
   if (state.productList === null)
@@ -157,30 +160,32 @@ function makeInvoice() {
   showConfirmDialog({
     title: '提示',
     message: '确认抬头正确并开票吗？',
-  })
-    .then(() => {
-      showLoadingToast({
-        message: '开票中...',
-        forbidClick: true,
-        duration: 0,
-      })
-      state.invoiceForm.companyId = state.company.companyId
-      state.invoiceForm.products = state.productList
-      productMakeInvoiceApi(state.invoiceForm).then((res) => {
-        closeToast()
-        if (res.code === 1)
-          router.push({ path: '/make/success' })
-        else
-          showToast(res.message)
-      })
-      localStorage.remove('productList')
+  }).then(() => {
+    showLoadingToast({
+      message: '开票中...',
+      forbidClick: true,
+      duration: 0,
     })
+    state.invoiceForm.companyId = state.company.companyId
+    state.invoiceForm.products = state.productList
+    productMakeInvoiceApi(state.invoiceForm).then((res) => {
+      closeToast()
+      if (res.code === 1)
+        router.push({ path: '/make/success' })
+      else showToast(res.message)
+    })
+    localStorage.remove('productList')
+  })
 }
 
 onMounted(() => {
-  state.productList = localStorage.get('productList')
-    ? JSON.parse(localStorage.get('productList'))
-    : []
+  if (localStorage.get('productList')) {
+    try {
+      state.productList = JSON.parse(localStorage.get('productList'))
+    } catch {
+      state.productList = localStorage.get('productList')
+    }
+  }
   if (localStorage.get('type'))
     state.invoiceForm.type = localStorage.get('type')
 
@@ -223,7 +228,11 @@ onMounted(() => {
           <li>操作</li>
         </ul>
         <van-cell class="line" />
-        <ul v-for="(product, index) in state.productList" :key="index" class="product-content">
+        <ul
+          v-for="(product, index) in state.productList"
+          :key="index"
+          class="product-content"
+        >
           <li style="width: 30%; line-height: 15px; padding-top: 12px">
             {{ product.name }}
           </li>
@@ -233,7 +242,7 @@ onMounted(() => {
           <li>{{ product.unit }}</li>
           <li>{{ product.number }}</li>
           <li>{{ product.price }}</li>
-          <li style="color: #1989fa" @click="deleteProduct(product.productId)">
+          <li style="color: #1989fa" @click="deleteProduct(index)">
             删除
           </li>
         </ul>

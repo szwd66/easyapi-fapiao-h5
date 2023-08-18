@@ -127,7 +127,7 @@ function change() {
 
 function goElectronicInvoice() {
   localStorage.set('tot', totalPrice.value)
-  localStorage.set('seleted', JSON.stringify(state.selectList))
+  localStorage.set('seleted', state.selectList)
   router.push('/make/merge-order')
 }
 /**
