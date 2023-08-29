@@ -157,6 +157,9 @@ onMounted(() => {
           placeholder="请输入街道、小区门牌号"
           border
           required
+          autosize
+          rows="1"
+          type="textarea"
           :rules="[{ required: true, message: '请输入街道、小区门牌号' }]"
         />
       </van-cell-group>
