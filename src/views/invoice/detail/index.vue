@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { closeToast, showLoadingToast, showToast } from 'vant'
 import Clipboard from 'clipboard'
-import {getInvoiceApi, sendEmail} from '@/api/invoice'
+import { getInvoiceApi, sendEmail } from '@/api/invoice'
 import { getOutOrderCountApi } from '@/api/out-order'
 import { copyText } from '@/utils/invoice'
 import { useStore } from '@/stores'
@@ -114,6 +114,10 @@ onMounted(() => {
 <template>
   <Header v-if="store.ifShowH5NavBar" header-title="发票详情" />
   <div class="invoice-detail">
+    <div class="types">
+      <van-icon name="checked" size="20" />
+      {{ state.invoiceDetail.statements }}
+    </div>
     <van-cell-group inset @click="viewPicture">
       <van-cell
         :title="`${state.invoiceDetail.category}（${state.invoiceDetail.statements}）`"
@@ -223,6 +227,10 @@ onMounted(() => {
 
 <style lang='less'>
 .invoice-detail {
+  .types{
+    margin-bottom: 20px;
+    text-align: center;
+  }
   .van-cell__value {
     min-width: 70%;
     text-align: left;
