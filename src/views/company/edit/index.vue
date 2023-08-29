@@ -123,28 +123,34 @@ onMounted(() => {
           placeholder="请输入公司名称"
           border
           required
+          autosize
+          rows="1"
+          type="textarea"
           :rules="[{ required: true, message: '请输入公司名称' }]"
           @keyup="searchCompanyList"
           @focus="state.listShow = true"
           @blur="inputBlur"
         />
-        <div v-if="state.listShow && state.searchList !== ''" class="rise-list">
-          <ul>
-            <li
-              v-for="(item, index) in state.searchList"
-              :key="index"
-              @mousedown="chooseCompany(index)"
-            >
-              {{ item.name }}
-            </li>
-          </ul>
-        </div>
+        <!--        <div v-if="state.listShow && state.searchList !== ''" class="rise-list"> -->
+        <!--          <ul> -->
+        <!--            <li -->
+        <!--              v-for="(item, index) in state.searchList" -->
+        <!--              :key="index" -->
+        <!--              @mousedown="chooseCompany(index)" -->
+        <!--            > -->
+        <!--              {{ item.name }} -->
+        <!--            </li> -->
+        <!--          </ul> -->
+        <!--        </div> -->
         <van-field
           v-model="state.companyForm.taxNumber"
           label="公司税号"
           placeholder="请输入纳税人识别号"
           border
           required
+          autosize
+          rows="1"
+          type="textarea"
           :rules="[{ required: true, message: '请输入纳税人识别号' }]"
         />
         <van-field
@@ -152,24 +158,36 @@ onMounted(() => {
           label="注册地址"
           placeholder="请输入地址"
           border
+          autosize
+          rows="1"
+          type="textarea"
         />
         <van-field
           v-model="state.companyForm.phone"
           label="注册电话"
           placeholder="请输入电话"
           border
+          autosize
+          rows="1"
+          type="textarea"
         />
         <van-field
           v-model="state.companyForm.bank"
           label="开户银行"
           placeholder="请输入开户行"
           border
+          autosize
+          rows="1"
+          type="textarea"
         />
         <van-field
           v-model="state.companyForm.bankAccount"
           label="银行账号"
           placeholder="请输入开户行账号"
           border
+          autosize
+          rows="1"
+          type="textarea"
         />
       </van-cell-group>
 
