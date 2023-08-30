@@ -105,6 +105,32 @@ function sendToEmail() {
   })
 }
 
+/**
+ * 判断状态
+ */
+function getState(type) {
+  if (type === '已开票')
+    return 'checked'
+  if (type === '等待其他途径开票')
+    return 'question'
+  if (type === '待审核')
+    return 'more'
+  if (type === '审核未通过')
+    return 'warning'
+  if (type === '开票失败')
+    return 'clear'
+  if (type === '放弃开票')
+    return 'warning'
+  if (type === '红冲中')
+    return 'more'
+  if (type === '已红冲')
+    return 'info'
+  if (type === '已作废')
+    return 'delete'
+  if (type === '作废中')
+    return 'more'
+}
+
 onMounted(() => {
   getInvoiceDetail()
   getOutOrderCount()
@@ -115,12 +141,12 @@ onMounted(() => {
   <Header v-if="store.ifShowH5NavBar" header-title="发票详情" />
   <div class="invoice-detail">
     <div class="types">
-      <van-icon name="checked" size="20" />
+      <van-icon :name="getState(state.invoiceDetail.statements)" size="20" />
       {{ state.invoiceDetail.statements }}
     </div>
     <van-cell-group inset @click="viewPicture">
       <van-cell
-        :title="`${state.invoiceDetail.category}（${state.invoiceDetail.statements}）`"
+        :title="`${state.invoiceDetail.category}`"
         is-link
       />
       <van-cell
@@ -227,9 +253,20 @@ onMounted(() => {
 
 <style lang='less'>
 .invoice-detail {
+  margin-bottom: 60px;
   .types{
-    margin-bottom: 20px;
+    position: absolute;
+    top: 0;
+    margin: 0 auto;
+    background-color: #00B2C7;
+    color: white;
+    width: 100%;
+    height: 120px;
+    line-height: 80px;
+    font-size: 22px;
     text-align: center;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
   }
   .van-cell__value {
     min-width: 70%;
@@ -245,8 +282,7 @@ onMounted(() => {
 
 <style lang='less' scoped>
 .invoice-detail {
-  padding-top: 20px;
-
+  padding-top: 80px;
   .submit {
     border: none;
     height: 40px;
