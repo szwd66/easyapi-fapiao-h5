@@ -1,11 +1,11 @@
 <script setup lang='ts'>
 import dayjs from 'dayjs'
 import { showToast } from 'vant'
+import Clipboard from 'clipboard'
 import { getInvoiceListApi } from '@/api/invoice'
 import { useStore } from '@/stores'
-import { invoiceTag } from '@/utils/invoice-category'
+import { getState, invoiceTag } from '@/utils/invoice-category'
 import { copyText } from '@/utils/invoice'
-import Clipboard from "clipboard";
 
 const store = useStore()
 const router = useRouter()
@@ -29,6 +29,9 @@ const state = reactive({
   minDate: new Date(2000, 0, 1),
   windowHeight: 0,
   ifRouter: true,
+  invoiceDetail: {
+    statements: '',
+  },
 })
 
 /**
@@ -69,9 +72,9 @@ function loadMore() {
  * 跳转详情
  */
 function gotoDetail(id) {
-  if (!state.ifRouter) {
+  if (!state.ifRouter)
     return
-  }
+
   setTimeout(() => {
     router.push({ path: '/invoice/detail', query: { id } })
   }, 10)
@@ -174,7 +177,7 @@ onMounted(() => {
               {{ invoiceTag(item.category).name }}
             </van-tag>
           </div>
-          <span class="status">{{ item.statements }}</span>
+          <span :style="`color:${getState(item.statements)}`" class="status">{{ item.statements }}</span>
         </div>
         <div class="record-list_item_bottom">
           <p class="text">
@@ -182,7 +185,7 @@ onMounted(() => {
           </p>
           <p class="record-list_item_bottom_time">
             <span>{{ item.addTime }}</span>
-            <van-button class="copyBtn" v-if="item.state === 1" size="mini" type="primary" data-clipboard-action="copy" :data-clipboard-text="copyText(item)" @click="copyLink">
+            <van-button v-if="item.state === 1" class="copyBtn" size="mini" type="primary" data-clipboard-action="copy" :data-clipboard-text="copyText(item)" @click="copyLink">
               复制发票信息
             </van-button>
           </p>

@@ -81,6 +81,7 @@ function getInvoiceDetail() {
     if (res.code === 1) {
       state.invoiceDetail = res.content
       state.copyInfo = copyText(res.content)
+      state.invoiceDetail.electronicInvoiceImg = 'https://qiniu.easyapi.com/2023/08/30/1693378671374.png'
     }
   })
 }
@@ -114,7 +115,7 @@ function getState(type) {
   if (type === '等待其他途径开票')
     return 'question'
   if (type === '待审核')
-    return 'more'
+    return 'clock'
   if (type === '审核未通过')
     return 'warning'
   if (type === '开票失败')
@@ -225,9 +226,9 @@ onMounted(() => {
       <img
         :src="state.invoiceDetail.electronicInvoiceImg"
         alt=""
-        style="width: 350px"
+        class="electronic"
       >
-      <div style="margin-bottom: 20px">
+      <div style="margin-bottom: 10px">
         <van-button
           type="primary"
           data-clipboard-action="copy"
@@ -238,13 +239,16 @@ onMounted(() => {
           复制发票下载地址
         </van-button>
       </div>
-      <div style="width: 300px; font-size: 12px">
-        <textarea
+      <div style="width: 100%; font-size: 12px">
+        <van-field
           :value="state.invoiceDetail.electronicInvoiceUrl"
-          style="width: 300px"
+          rows="1"
+          autosize
+          type="textarea"
+          class="textarea"
         />
       </div>
-      <p style="margin-top: 20px">
+      <p style="margin-top: 10px">
         复制发票下载地址并在浏览器中打开进行下载
       </p>
     </van-popup>
@@ -277,6 +281,13 @@ onMounted(() => {
       word-break: break-all;
     }
   }
+}
+.electronic{
+  width: 100%;
+}
+.textarea{
+  width: 100%;
+  border: 0.5px solid #bbbbbb;
 }
 </style>
 

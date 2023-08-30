@@ -29,3 +29,25 @@ export function invoiceTag(category: any) {
   if (category === '全电电子专用发票')
     return { name: '全电专', color: '#665823', bgColor: '#f8f4e5' }
 }
+export function getState(statements: any) {
+  if (statements === '已开票')
+    return 'green'
+  if (statements === '等待其他途径开票')
+    return '#eada57'
+  if (statements === '待审核')
+    return '#1345a9'
+  if (statements === '审核未通过')
+    return '#CE1B1B'
+  if (statements === '开票失败')
+    return '#CE1B1B'
+  if (statements === '放弃开票')
+    return '#a8a7a7'
+  if (statements === '红冲中')
+    return '#eada57'
+  if (statements === '已红冲')
+    return '#565454'
+  if (statements === '已作废')
+    return '#eada57'
+  if (statements === '作废中')
+    return '#726f6f'
+}
