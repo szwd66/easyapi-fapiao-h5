@@ -4,7 +4,7 @@ import { showToast } from 'vant'
 import Clipboard from 'clipboard'
 import { getInvoiceListApi } from '@/api/invoice'
 import { useStore } from '@/stores'
-import { getState, invoiceTag } from '@/utils/invoice-category'
+import { getColorByStatements, invoiceTag } from '@/utils/invoice-category'
 import { copyText } from '@/utils/invoice'
 
 const store = useStore()
@@ -177,7 +177,7 @@ onMounted(() => {
               {{ invoiceTag(item.category).name }}
             </van-tag>
           </div>
-          <span :style="`color:${getState(item.statements)}`" class="status">{{ item.statements }}</span>
+          <span :style="`color:${getColorByStatements(item.statements)}`" class="status">{{ item.statements }}</span>
         </div>
         <div class="record-list_item_bottom">
           <p class="text">

@@ -29,25 +29,34 @@ export function invoiceTag(category: any) {
   if (category === '全电电子专用发票')
     return { name: '全电专', color: '#665823', bgColor: '#f8f4e5' }
 }
-export function getState(statements: any) {
+
+export function getColorByStatements(statements: any) {
   if (statements === '已开票')
-    return 'green'
-  if (statements === '等待其他途径开票')
-    return '#eada57'
+    return '#15ad31'
+
   if (statements === '待审核')
-    return '#1345a9'
-  if (statements === '审核未通过')
-    return '#CE1B1B'
+    return '2a9efb'
+
   if (statements === '开票失败')
     return '#CE1B1B'
-  if (statements === '放弃开票')
+
+  if (statements === '放弃开票' || statements === '已红冲' || statements === '已作废' || statements === '审核未通过')
     return '#a8a7a7'
-  if (statements === '红冲中')
-    return '#eada57'
-  if (statements === '已红冲')
-    return '#565454'
-  if (statements === '已作废')
-    return '#eada57'
-  if (statements === '作废中')
-    return '#726f6f'
+
+  if (statements === '等待其他途径开票' || statements === '红冲中' || statements === '作废中')
+    return '#e6a23c'
+}
+
+/**
+ * 判断状态
+ */
+export function getIconByStatements(statements) {
+  if (statements === '已开票')
+    return 'checked'
+
+  if (statements === '等待其他途径开票' || statements === '待审核' || statements === '红冲中' || statements === '作废中')
+    return 'clock'
+
+  if (statements === '开票失败' || statements === '审核未通过' || statements === '放弃开票' || statements === '已红冲' || statements === '已作废')
+    return 'clear'
 }

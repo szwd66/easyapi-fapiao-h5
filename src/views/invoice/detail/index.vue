@@ -1,6 +1,7 @@
 <script setup lang='ts'>
-import { closeToast, showLoadingToast, showToast } from 'vant'
+import { closeToast, showImagePreview, showLoadingToast, showToast } from 'vant'
 import Clipboard from 'clipboard'
+import { getIconByStatements } from '@/utils/invoice-category'
 import { getInvoiceApi, sendEmail } from '@/api/invoice'
 import { getOutOrderCountApi } from '@/api/out-order'
 import { copyText } from '@/utils/invoice'
@@ -81,7 +82,6 @@ function getInvoiceDetail() {
     if (res.code === 1) {
       state.invoiceDetail = res.content
       state.copyInfo = copyText(res.content)
-      state.invoiceDetail.electronicInvoiceImg = 'https://qiniu.easyapi.com/2023/08/30/1693378671374.png'
     }
   })
 }
@@ -106,30 +106,8 @@ function sendToEmail() {
   })
 }
 
-/**
- * 判断状态
- */
-function getState(type) {
-  if (type === '已开票')
-    return 'checked'
-  if (type === '等待其他途径开票')
-    return 'question'
-  if (type === '待审核')
-    return 'clock'
-  if (type === '审核未通过')
-    return 'warning'
-  if (type === '开票失败')
-    return 'clear'
-  if (type === '放弃开票')
-    return 'warning'
-  if (type === '红冲中')
-    return 'more'
-  if (type === '已红冲')
-    return 'info'
-  if (type === '已作废')
-    return 'delete'
-  if (type === '作废中')
-    return 'more'
+function viewImagePreview(imgs: any) {
+  showImagePreview(imgs)
 }
 
 onMounted(() => {
@@ -142,14 +120,11 @@ onMounted(() => {
   <Header v-if="store.ifShowH5NavBar" header-title="发票详情" />
   <div class="invoice-detail">
     <div class="types">
-      <van-icon :name="getState(state.invoiceDetail.statements)" size="20" />
+      <van-icon :name="getIconByStatements(state.invoiceDetail.statements)" size="20" />
       {{ state.invoiceDetail.statements }}
     </div>
     <van-cell-group inset @click="viewPicture">
-      <van-cell
-        :title="`${state.invoiceDetail.category}`"
-        is-link
-      />
+      <van-cell :title="`${state.invoiceDetail.category}`" is-link />
       <van-cell
         v-if="state.outOrderCount > 0"
         :title="`1张发票，含${state.outOrderCount}个订单`"
@@ -163,58 +138,27 @@ onMounted(() => {
         </van-tag>
       </van-cell>
     </van-cell-group>
-
     <van-cell-group title="发票详情" inset>
       <van-cell :value="state.invoiceDetail.purchaserName" title="发票抬头" />
-      <van-cell
-        :value="state.invoiceDetail.purchaserTaxpayerNumber"
-        title="税号"
-      />
-      <van-cell
-        :value="
-          state.invoiceDetail.purchaserAddress
-            + state.invoiceDetail.purchaserPhone
-        "
-        title="地址、电话"
-      />
-      <van-cell
-        :value="
-          state.invoiceDetail.purchaserBank
-            + state.invoiceDetail.purchaserBankAccount
-        "
-        title="开户行及账号"
-      />
+      <van-cell :value="state.invoiceDetail.purchaserTaxpayerNumber" title="税号" />
+      <van-cell :value="state.invoiceDetail.purchaserAddress + state.invoiceDetail.purchaserPhone" title="地址、电话" />
+      <van-cell :value="state.invoiceDetail.purchaserBank + state.invoiceDetail.purchaserBankAccount" title="开户行及账号" />
       <van-cell :value="state.invoiceDetail.price" title="发票金额" />
       <van-cell :value="state.invoiceDetail.remark" title="备注" />
     </van-cell-group>
-
-    <van-cell-group
-      v-if="state.invoiceDetail.category.indexOf('电子') !== -1"
-      title="接收方式"
-      inset
-    >
+    <van-cell-group v-if="state.invoiceDetail.category.indexOf('电子') !== -1" title="接收方式" inset>
       <van-cell :value="state.invoiceDetail.email" title="电子邮件" />
       <van-cell :value="state.invoiceDetail.addrMobile" title="手机号码" />
     </van-cell-group>
-
-    <van-cell-group
-      v-if="
-        state.invoiceDetail.category === '增值税普通发票'
-          || state.invoiceDetail.category === '增值税专用发票'
-      "
-      title="接收方式"
-      inset
-    >
+    <van-cell-group v-if="state.invoiceDetail.category === '增值税普通发票' || state.invoiceDetail.category === '增值税专用发票'" title="接收方式" inset>
       <van-field label="收件人" readonly />
       <van-field label="手机号码" readonly />
     </van-cell-group>
-
     <van-action-bar v-if="state.invoiceDetail.state === 1">
       <van-action-bar-button data-clipboard-action="copy" class="copyPdfUrl" :data-clipboard-text="state.copyInfo" color="#01a8b9" text="复制发票信息" @click="copyLink" />
       <van-action-bar-button color="#409eff" text="预览发票" @click="viewPicture" />
       <van-action-bar-button v-if="state.invoiceDetail.category.indexOf('电子') !== -1" type="success" text="发送邮箱" @click="sendToEmail" />
     </van-action-bar>
-
     <van-popup
       v-model:show="state.popupVisible"
       style="padding: 30px"
@@ -223,11 +167,7 @@ onMounted(() => {
       <p style="font-size: 18px; margin-bottom: 20px">
         发票预览
       </p>
-      <img
-        :src="state.invoiceDetail.electronicInvoiceImg"
-        alt=""
-        class="electronic"
-      >
+      <img :src="state.invoiceDetail.electronicInvoiceImg" alt="" class="electronic" @click="viewImagePreview([state.invoiceDetail.electronicInvoiceImg])">
       <div style="margin-bottom: 10px">
         <van-button
           type="primary"
@@ -241,11 +181,12 @@ onMounted(() => {
       </div>
       <div style="width: 100%; font-size: 12px">
         <van-field
-          :value="state.invoiceDetail.electronicInvoiceUrl"
+          v-model="state.invoiceDetail.electronicInvoiceUrl"
           rows="1"
           autosize
           type="textarea"
           class="textarea"
+          readonly
         />
       </div>
       <p style="margin-top: 10px">
@@ -257,7 +198,7 @@ onMounted(() => {
 
 <style lang='less'>
 .invoice-detail {
-  margin-bottom: 60px;
+  margin-bottom: 65px;
   .types{
     position: absolute;
     top: 0;
@@ -269,8 +210,8 @@ onMounted(() => {
     line-height: 80px;
     font-size: 22px;
     text-align: center;
-    border-bottom-left-radius: 25px;
-    border-bottom-right-radius: 25px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
   }
   .van-cell__value {
     min-width: 70%;
