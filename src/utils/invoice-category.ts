@@ -35,7 +35,7 @@ export function getColorByStatements(statements: any) {
     return '#15ad31'
 
   if (statements === '待审核')
-    return '2a9efb'
+    return '#2a9efb'
 
   if (statements === '开票失败')
     return '#CE1B1B'
