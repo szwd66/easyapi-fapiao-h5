@@ -12,7 +12,8 @@ watch(mode, (val) => {
     theme.value = 'dark'
     document.querySelector('html')
       .setAttribute('data-theme', 'dark')
-  } else {
+  }
+  else {
     theme.value = 'light'
     document.querySelector('html')
       .setAttribute('data-theme', 'light')
