@@ -118,9 +118,6 @@ function getCustomCategoryList() {
  * 开具发票
  */
 function makeInvoice() {
-  if (!checkEmailMobile(state.invoiceForm))
-    return
-
   if (state.invoiceForm.type === '个人' && state.invoiceForm.purchaserName === '')
     return showToast('请输入发票抬头')
 
@@ -134,6 +131,9 @@ function makeInvoice() {
 
   if (state.fieldValue.length === 0)
     return showToast('附件一栏请上传付款记录凭证')
+
+  if (!checkEmailMobile(state.invoiceForm))
+    return
 
   showConfirmDialog({
     title: '提示',

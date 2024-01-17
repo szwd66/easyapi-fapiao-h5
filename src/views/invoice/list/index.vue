@@ -49,9 +49,11 @@ function getInvoiceList() {
     if (res.code === 1) {
       state.pagination.totalPages = res.totalPages
       state.invoiceList = state.invoiceList.concat(res.content)
-    } else {
+    }
+    else {
       state.empty = true
       state.invoiceList = []
+      state.pagination.totalPages = 0
     }
   })
 }
@@ -90,7 +92,8 @@ function onConfirm(date) {
   state.date = `${formatDate(start)} - ${formatDate(end)}`
   state.startAddTime = dayjs(date[0]).format('YYYY-MM-DD 00:00:00')
   state.endAddTime = dayjs(date[1]).format('YYYY-MM-DD 23:59:59')
-  state.pagination.page = 0
+  state.pagination.page = 1
+  state.pagination.totalPages = 0
   state.invoiceList = []
   state.empty = false
   state.showDown = false
@@ -103,12 +106,14 @@ function clearDate() {
   state.date = ''
   state.startAddTime = ''
   state.endAddTime = ''
-  state.pagination.page = 0
+  state.pagination.page = 1
+  state.pagination.totalPages = 0
   state.invoiceList = []
   state.empty = false
   state.showDown = true
   state.showCross = false
   state.finished = false
+  getInvoiceList()
 }
 
 function getWindowHeight() {
@@ -153,15 +158,16 @@ onMounted(() => {
         @confirm="onConfirm"
       />
     </div>
-    <div v-if="state.empty">
+    <div v-show="state.empty">
       <van-empty image="search" description="暂时还没有开票记录" />
     </div>
     <van-list
-      v-else
+      v-show="!state.empty"
       v-model:loading="state.loading"
       :finished="state.finished"
       finished-text="没有更多数据了"
       :style="{ height: `${state.windowHeight}px` }"
+      :offset="10"
       @load="loadMore"
     >
       <div

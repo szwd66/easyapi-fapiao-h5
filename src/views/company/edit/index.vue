@@ -44,12 +44,18 @@ function deleteData() {
 }
 
 function searchCompanyList() {
-  if (state.name.length < 4)
+  if (state.name.length < 4) {
+    state.searchList = []
     return
+  }
 
   getCompanyCodeListApi({ name: state.name }).then((res) => {
     if (res.code === 1)
       state.searchList = res.content
+    else
+      state.searchList = []
+  }).catch(() => {
+    state.searchList = []
   })
 }
 
@@ -78,7 +84,8 @@ function confirm() {
         if (res.code === 1)
           history.back()
       })
-    } else {
+    }
+    else {
       createCompanyApi(state.companyForm).then((res) => {
         if (res.code === 1)
           history.back()
@@ -118,75 +125,38 @@ onMounted(() => {
     <van-form @submit="confirm">
       <van-cell-group inset>
         <van-field
-          v-model="state.name"
-          label="公司名称"
-          placeholder="请输入公司名称"
-          border
-          required
-          autosize
-          rows="1"
-          type="textarea"
-          :rules="[{ required: true, message: '请输入公司名称' }]"
-          @keyup="searchCompanyList"
-          @focus="state.listShow = true"
-          @blur="inputBlur"
+          v-model="state.name" label="公司名称" placeholder="请输入公司名称" border required autosize rows="1"
+          type="textarea" :rules="[{ required: true, message: '请输入公司名称' }]" @keyup="searchCompanyList"
+          @focus="state.listShow = true" @blur="inputBlur"
         />
-        <!--        <div v-if="state.listShow && state.searchList !== ''" class="rise-list"> -->
-        <!--          <ul> -->
-        <!--            <li -->
-        <!--              v-for="(item, index) in state.searchList" -->
-        <!--              :key="index" -->
-        <!--              @mousedown="chooseCompany(index)" -->
-        <!--            > -->
-        <!--              {{ item.name }} -->
-        <!--            </li> -->
-        <!--          </ul> -->
-        <!--        </div> -->
+        <div v-if="state.listShow && state.searchList.length > 0" class="searchList">
+          <ul>
+            <li
+              v-for="(item, index) in state.searchList" :key="index" class="searchList-item"
+              @mousedown="chooseCompany(index)"
+            >
+              {{ item.name }}
+            </li>
+          </ul>
+        </div>
         <van-field
-          v-model="state.companyForm.taxNumber"
-          label="公司税号"
-          placeholder="请输入纳税人识别号"
-          border
-          required
-          autosize
-          rows="1"
-          type="textarea"
-          :rules="[{ required: true, message: '请输入纳税人识别号' }]"
+          v-model="state.companyForm.taxNumber" label="公司税号" placeholder="请输入纳税人识别号" border required autosize
+          rows="1" type="textarea" :rules="[{ required: true, message: '请输入纳税人识别号' }]"
         />
         <van-field
-          v-model="state.companyForm.address"
-          label="注册地址"
-          placeholder="请输入地址"
-          border
-          autosize
-          rows="1"
+          v-model="state.companyForm.address" label="注册地址" placeholder="请输入地址" border autosize rows="1"
           type="textarea"
         />
         <van-field
-          v-model="state.companyForm.phone"
-          label="注册电话"
-          placeholder="请输入电话"
-          border
-          autosize
-          rows="1"
+          v-model="state.companyForm.phone" label="注册电话" placeholder="请输入电话" border autosize rows="1"
           type="textarea"
         />
         <van-field
-          v-model="state.companyForm.bank"
-          label="开户银行"
-          placeholder="请输入开户行"
-          border
-          autosize
-          rows="1"
+          v-model="state.companyForm.bank" label="开户银行" placeholder="请输入开户行" border autosize rows="1"
           type="textarea"
         />
         <van-field
-          v-model="state.companyForm.bankAccount"
-          label="银行账号"
-          placeholder="请输入开户行账号"
-          border
-          autosize
-          rows="1"
+          v-model="state.companyForm.bankAccount" label="银行账号" placeholder="请输入开户行账号" border autosize rows="1"
           type="textarea"
         />
       </van-cell-group>
@@ -214,6 +184,27 @@ onMounted(() => {
 <style lang='less' scoped>
 .company-edit {
   padding-top: 15px;
+  position: relative;
+
+  .searchList {
+    position: absolute;
+    background-color: #fff;
+    right: 16px;
+    left: 35%;
+    border-radius: 6px;
+    padding: 10px;
+    z-index: 999;
+    line-height: 30px;
+    box-shadow: 0px 0px 12px rgba(0, 0, 0, .12);
+    max-height: 200px;
+    overflow-y: scroll;
+
+    .searchList-item {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
 
   .default {
     margin-top: 15px;
