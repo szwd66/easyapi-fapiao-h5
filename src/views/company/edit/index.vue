@@ -195,7 +195,7 @@ onMounted(() => {
     padding: 10px;
     z-index: 999;
     line-height: 30px;
-    box-shadow: 0px 0px 12px rgba(0, 0, 0, .12);
+    box-shadow: 0 0 12px rgba(0, 0, 0, .12);
     max-height: 200px;
     overflow-y: scroll;
 
