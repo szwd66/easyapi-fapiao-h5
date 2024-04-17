@@ -161,8 +161,8 @@ function makeInvoice() {
 function getShop() {
   getShopApi().then((res) => {
     if (res.code === 1) {
-      localStorage.set('ifElectronic', res.content.ifElectronic)
-      localStorage.set('ifPaper', res.content.ifPaper)
+      localStorage.set('ifElectronic', true)
+      localStorage.set('ifPaper', false)
     }
   })
 }
