@@ -24,10 +24,10 @@
     "store": "^2.0.12",
     "vant": "4.8.11",
     "vue": "^3.4.23",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.2"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.14.0",
+    "@antfu/eslint-config": "^2.15.0",
     "@babel/core": "^7.24.4",
     "@babel/preset-env": "^7.24.4",
     "@babel/preset-typescript": "^7.24.1",
@@ -39,7 +39,7 @@
     "@vitejs/plugin-vue": "^5.0.4",
     "@vitejs/plugin-vue-jsx": "^3.1.0",
     "autoprefixer": "^10.4.19",
-    "babel-plugin-module-resolver": "^5.0.0",
+    "babel-plugin-module-resolver": "^5.0.2",
     "commitizen": "^4.3.0",
     "cross-env": "^7.0.3",
     "eslint": "^9.0.0",
