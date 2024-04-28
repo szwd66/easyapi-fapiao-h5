@@ -29,7 +29,7 @@ const state = reactive({
     price: '',
     remark: '',
     email: '',
-    addrMobile: '',
+    mobile: '',
     updateTime: '',
     electronicInvoiceImg: '',
     electronicInvoiceUrl: '',
@@ -148,7 +148,7 @@ onMounted(() => {
     </van-cell-group>
     <van-cell-group v-if="state.invoiceDetail.category.indexOf('电子') !== -1" title="接收方式" inset>
       <van-cell :value="state.invoiceDetail.email" title="电子邮件" />
-      <van-cell :value="state.invoiceDetail.addrMobile" title="手机号码" />
+      <van-cell :value="state.invoiceDetail.mobile" title="手机号码" />
     </van-cell-group>
     <van-cell-group v-if="state.invoiceDetail.category === '增值税普通发票' || state.invoiceDetail.category === '增值税专用发票'" title="接收方式" inset>
       <van-field label="收件人" readonly />

@@ -46,7 +46,7 @@ const state = reactive({
     purchaserPhone: '',
     purchaserBank: '',
     purchaserBankAccount: '',
-    addrMobile: '',
+    mobile: '',
     email: '',
     remark: '',
     price: 0.0,

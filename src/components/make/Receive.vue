@@ -21,7 +21,7 @@ const router = useRouter()
 
 const state = reactive({
   childForm: {
-    addrMobile: '',
+    mobile: '',
     email: '',
     addressId: '',
   },
@@ -65,7 +65,7 @@ function getDefaultAddress() {
 function getCustomer() {
   getCustomerApi({}).then((res) => {
     state.childForm.email = res.content.email ? res.content.email : ''
-    state.childForm.addrMobile = res.content.mobile ? res.content.mobile : ''
+    state.childForm.mobile = res.content.mobile ? res.content.mobile : ''
   })
 }
 
@@ -92,13 +92,13 @@ onMounted(() => {
       />
       <van-field
         v-if="!props.ifNeedMobile"
-        v-model="state.childForm.addrMobile"
+        v-model="state.childForm.mobile"
         label="手机号码"
         maxlength="11"
       />
       <van-field
         v-if="props.ifNeedMobile"
-        v-model="state.childForm.addrMobile"
+        v-model="state.childForm.mobile"
         label="手机号码"
         maxlength="11"
         required
