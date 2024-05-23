@@ -11,6 +11,7 @@ export default function () {
     remarkPlaceholder: '可输入发票备注信息', // 发票备注填写说明
     ifNeedMobile: false, // 手机号码是否必填
     ifNeedEmail: false, // 邮箱是否必填
+    ifCategoryMakeFileRequired: false, // 附件是否必填
   })
 
   /**
@@ -41,6 +42,20 @@ export default function () {
       }
     })
   }
+
+  /**
+   * 获取附件是否必填
+   */
+  const ifCategoryMakeFileRequired = () => {
+    const params = {
+      fieldKeys: 'if-category-make-file-required',
+    }
+    findSettingApi(params).then((res) => {
+      if (res.code === 1)
+        common.ifCategoryMakeFileRequired = res.content[0].fieldValue === 'true'
+    })
+  }
+
   /**
    * 检查邮箱和手机号码
    */
@@ -50,16 +65,19 @@ export default function () {
       if (data.email === '') {
         showToast('请输入邮箱')
         return false
-      } else if (!validEmail(data.email)) {
+      }
+      else if (!validEmail(data.email)) {
         showToast('邮箱格式不正确')
         return false
       }
-    } else {
+    }
+    else {
       if (data.email) {
         if (!validEmail(data.email)) {
           showToast('邮箱格式不正确')
           return false
-        } else {
+        }
+        else {
           return true
         }
       }
@@ -69,18 +87,22 @@ export default function () {
       if (data.mobile === '') {
         showToast('请输入手机号码')
         return false
-      } else if (!validMobile(data.mobile)) {
+      }
+      else if (!validMobile(data.mobile)) {
         showToast('手机号码格式不正确')
         return false
-      } else {
+      }
+      else {
         return true
       }
-    } else {
+    }
+    else {
       if (data.mobile) {
         if (!validMobile(data.mobile)) {
           showToast('手机号码格式不正确')
           return false
-        } else {
+        }
+        else {
           return true
         }
       }
@@ -93,5 +115,6 @@ export default function () {
     getInvoiceRemark,
     ifNeedMobileEmail,
     checkEmailMobile,
+    ifCategoryMakeFileRequired,
   }
 }

@@ -8,7 +8,7 @@ import { validPrice } from '@/utils/validate'
 import { localStorage } from '@/utils/local-storage'
 import { useStore } from '@/stores'
 
-const { common, getInvoiceRemark, ifNeedMobileEmail, checkEmailMobile } = makeMixins()
+const { common, getInvoiceRemark, ifNeedMobileEmail, checkEmailMobile, ifCategoryMakeFileRequired } = makeMixins()
 const store = useStore()
 const router = useRouter()
 const route = useRoute()
@@ -104,11 +104,18 @@ function deleteFieldValue(file, { index }) {
  * 获取自定义发票分类
  */
 function getCustomCategoryList() {
-  getCustomCategoryListApi({}).then((res) => {
+  const params = {
+    size: 1000,
+  }
+  getCustomCategoryListApi(params).then((res) => {
     if (res.code === 1) {
       state.customCategoryList = res.content
       state.customCategoryList.forEach((item) => {
         item.text = item.name
+        if (item.ifDefault) {
+          state.customCategory.customCategoryId = item.customCategoryId
+          state.customCategory.name = item.name
+        }
       })
     }
   })
@@ -129,7 +136,7 @@ function makeInvoice() {
   else if (!validPrice(state.invoiceForm.price))
     return showToast('请输入合法开票金额，最多2位小数')
 
-  if (state.fieldValue.length === 0)
+  if (common.ifCategoryMakeFileRequired && state.fieldValue.length === 0)
     return showToast('附件一栏请上传付款记录凭证')
 
   if (!checkEmailMobile(state.invoiceForm))
@@ -194,6 +201,7 @@ onMounted(() => {
   getKey()
   getInvoiceRemark()
   ifNeedMobileEmail()
+  ifCategoryMakeFileRequired()
 })
 </script>
 
@@ -254,7 +262,7 @@ onMounted(() => {
         label="发票备注"
         :placeholder="common.remarkPlaceholder"
       />
-      <van-cell title="附件" label="可上传最多3张" required>
+      <van-cell title="附件" label="可上传最多3张" :required="common.ifCategoryMakeFileRequired">
         <van-uploader
           v-model="state.imageList"
           :max-count="3"

@@ -14,6 +14,8 @@ const router = useRouter()
 const state = reactive({
   outOrderCount: 0,
   popupVisible: false,
+  showEmail: false,
+  email: '',
   invoiceDetail: {
     state: 0,
     category: '',
@@ -96,13 +98,26 @@ function getOutOrderCount() {
   })
 }
 
+function openShowEmail() {
+  state.showEmail = true
+  state.email = state.invoiceDetail.email
+}
+
 /**
  * 发送邮箱
  */
 function sendToEmail() {
-  sendEmail({ email: state.invoiceDetail.email, outOrderNo: state.invoiceDetail.outOrderNo }).then((res) => {
-    if (res.code === 1)
+  if (!state.email)
+    return showToast('请输入邮箱')
+  const params = {
+    email: state.email,
+    outOrderNo: state.invoiceDetail.outOrderNo,
+  }
+  sendEmail(params).then((res) => {
+    if (res.code === 1) {
       showToast(res.message)
+      state.showEmail = false
+    }
   })
 }
 
@@ -157,8 +172,28 @@ onMounted(() => {
     <van-action-bar v-if="state.invoiceDetail.state === 1">
       <van-action-bar-button data-clipboard-action="copy" class="copyPdfUrl" :data-clipboard-text="state.copyInfo" color="#01a8b9" text="复制发票信息" @click="copyLink" />
       <van-action-bar-button color="#409eff" text="预览发票" @click="viewPicture" />
-      <van-action-bar-button v-if="state.invoiceDetail.category.indexOf('电子') !== -1" type="success" text="发送邮箱" @click="sendToEmail" />
+      <van-action-bar-button v-if="state.invoiceDetail.category.indexOf('电子') !== -1" type="success" text="发送邮箱" @click="openShowEmail" />
     </van-action-bar>
+    <van-popup
+      v-model:show="state.showEmail"
+      align="center"
+      class="send-email"
+    >
+      <div class="title">
+        发送邮箱
+      </div>
+      <van-field
+        v-model="state.email"
+        clickable
+        label="邮箱"
+        placeholder="请输入邮箱"
+        required
+        border
+      />
+      <van-button type="primary" block @click="sendToEmail">
+        确认
+      </van-button>
+    </van-popup>
     <van-popup
       v-model:show="state.popupVisible"
       style="padding: 30px"
@@ -229,6 +264,16 @@ onMounted(() => {
 .textarea{
   width: 100%;
   border: 0.5px solid #bbbbbb;
+}
+.send-email{
+  padding: 20px;
+  .title{
+    font-size: 18px;
+  }
+  .van-field{
+    margin: 20px 0;
+    flex-wrap: nowrap;
+  }
 }
 </style>
 
