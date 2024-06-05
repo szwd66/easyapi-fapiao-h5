@@ -262,10 +262,10 @@ onMounted(() => {
         label="发票备注"
         :placeholder="common.remarkPlaceholder"
       />
-      <van-cell title="附件" label="可上传最多3张" :required="common.ifCategoryMakeFileRequired">
+      <van-cell title="附件" label="可上传最多5张" :required="common.ifCategoryMakeFileRequired">
         <van-uploader
           v-model="state.imageList"
-          :max-count="3"
+          :max-count="5"
           :data="{ key: state.qnKey, token: state.qnToken }"
           :after-read="onAfterRead"
           :before-delete="deleteFieldValue"
