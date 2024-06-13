@@ -42,7 +42,7 @@ function getAddress() {
  */
 function getAreaList() {
   getAreaListApi({ }).then((res) => {
-    if (res.status === 1) {
+    if (res.status === '1') {
       const provinces = res.provinces
       const province_list = {}
       const city_list = {}
@@ -58,7 +58,8 @@ function getAreaList() {
               const districtsKey = k.id.toString()
               county_list[districtsKey] = k.name
             }
-          } else {
+          }
+          else {
             county_list[cityKey] = i.name
           }
         }
@@ -95,7 +96,8 @@ function confirm() {
         if (res.code === 1)
           history.back()
       })
-    } else {
+    }
+    else {
       createAddressApi(state.addressForm).then((res) => {
         if (res.code === 1)
           history.back()
