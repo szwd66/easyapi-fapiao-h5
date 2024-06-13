@@ -6,14 +6,8 @@ import { localStorage } from '@/utils/local-storage'
 import { invoiceTag } from '@/utils/invoice-category'
 
 const props = defineProps({
-  ifElectronic: {
-    type: Boolean,
-  },
   invoiceForm: {
     type: Object,
-  },
-  ifPaper: {
-    type: Boolean,
   },
   company: {
     type: Object,
@@ -95,13 +89,13 @@ function getDefaultCompany() {
       state.childCompany = res.content
       emits('getCompany', state.childCompany)
       state.childInvoiceForm.purchaserName = state.childCompany.name
-      state.childInvoiceForm.purchaserTaxpayerNumber =
-        state.childCompany.taxNumber
+      state.childInvoiceForm.purchaserTaxpayerNumber
+        = state.childCompany.taxNumber
       state.childInvoiceForm.purchaserAddress = state.childCompany.address
       state.childInvoiceForm.purchaserPhone = state.childCompany.phone
       state.childInvoiceForm.purchaserBank = state.childCompany.bank
-      state.childInvoiceForm.purchaserBankAccount =
-        state.childCompany.bankAccount
+      state.childInvoiceForm.purchaserBankAccount
+        = state.childCompany.bankAccount
       state.childInvoiceForm.companyId = state.childCompany.companyId
     }
   })
@@ -122,7 +116,8 @@ function selectInvoiceType() {
   if (state.childInvoiceForm.type === '企业') {
     getDefaultCompany()
     getDefaultAddress()
-  } else if (state.childInvoiceForm.type === '个人') {
+  }
+  else if (state.childInvoiceForm.type === '个人') {
     state.childInvoiceForm.purchaserName = ''
     state.childInvoiceForm.purchaserTaxpayerNumber = ''
     state.childInvoiceForm.purchaserAddress = ''
@@ -140,16 +135,17 @@ function findSetting() {
   findSettingApi({
     fieldKeys: 'electronic_invoice_make_time,h5_pc_invoice_categories',
   }).then((res) => {
-    if (res.code === 1)
+    if (res.code === 1) {
       res.content.forEach((item) => {
-        if (item.fieldKey === 'electronic_invoice_make_time') {
+        if (item.fieldKey === 'electronic_invoice_make_time')
           state.electronicInvoiceMakeTime = item.fieldValue
-        }
+
         if (item.fieldKey === 'h5_pc_invoice_categories') {
           state.invoiceCategories = JSON.parse(item.fieldValue)
           changeInvoiceCategories(state.invoiceCategories[0])
         }
       })
+    }
   })
 }
 
@@ -162,17 +158,19 @@ onMounted(() => {
 <template>
   <div>
     <div class="invoice-type">
-      <p class="title">请选择发票类型</p>
+      <p class="title">
+        请选择发票类型
+      </p>
       <div
-        class="invoice-type-list"
         v-for="(item, index) in state.invoiceCategories"
         :key="index"
-        @click="changeInvoiceCategories(item)"
+        class="invoice-type-list"
         :style="
           state.selectInvoiceCategories === item
             ? `border:2px solid ${invoiceTag(item).color}`
             : 'border:2px solid #f8f8f8'
         "
+        @click="changeInvoiceCategories(item)"
       >
         <van-tag
           class="invoice-tag"
@@ -183,8 +181,9 @@ onMounted(() => {
               ? invoiceTag(item).color
               : '#969799'
           "
-          >{{ invoiceTag(item).name }}</van-tag
         >
+          {{ invoiceTag(item).name }}
+        </van-tag>
         <span
           class="invoice-title"
           :style="
@@ -192,8 +191,7 @@ onMounted(() => {
               ? `color:${invoiceTag(item).color}`
               : 'color:#969799'
           "
-          >{{ item}}</span
-        >
+        >{{ item }}</span>
       </div>
     </div>
 
@@ -210,8 +208,12 @@ onMounted(() => {
           direction="horizontal"
           @change="selectInvoiceType"
         >
-          <van-radio name="企业"> 企业 </van-radio>
-          <van-radio name="个人"> 个人或事业单位 </van-radio>
+          <van-radio name="企业">
+            企业
+          </van-radio>
+          <van-radio name="个人">
+            个人或事业单位
+          </van-radio>
         </van-radio-group>
       </van-cell>
       <van-cell

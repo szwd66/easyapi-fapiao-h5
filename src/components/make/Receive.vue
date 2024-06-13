@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { getDefaultAddressApi } from '@/api/address'
 import { getCustomerApi } from '@/api/customer'
+import { findSettingApi } from '@/api/setting'
 
 const props = defineProps({
-  ifElectronic: {
-    type: Boolean,
-  },
   invoiceForm: {
     type: Object,
   },
@@ -33,6 +31,7 @@ const state = reactive({
     bank: '',
     addressId: '',
   },
+  ifElectronic: false,
 })
 
 /**
@@ -69,8 +68,20 @@ function getCustomer() {
   })
 }
 
+function findSetting() {
+  findSettingApi({
+    fieldKeys: 'if_shudian_invoice',
+  }).then((res) => {
+    if (res.code === 1) {
+      if (res.content[0].fieldValue === 'true')
+        state.ifElectronic = true
+    }
+  })
+}
+
 onMounted(() => {
   state.childForm = props.invoiceForm
+  findSetting()
   getDefaultAddress()
   getCustomer()
 })
@@ -78,7 +89,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <van-cell-group v-if="props.ifElectronic" title="接收方式" inset>
+    <van-cell-group v-if="state.ifElectronic" title="接收方式" inset>
       <van-field
         v-if="!props.ifNeedEmail"
         v-model="state.childForm.email"
@@ -105,7 +116,7 @@ onMounted(() => {
       />
     </van-cell-group>
 
-    <van-cell-group v-if="!props.ifElectronic" title="接收方式" inset>
+    <van-cell-group v-else title="接收方式" inset>
       <van-field
         v-model="state.childAddress.name"
         right-icon="arrow"
@@ -130,7 +141,7 @@ onMounted(() => {
       />
     </van-cell-group>
 
-    <div v-if="!props.ifElectronic" class="page-part">
+    <div v-if="!state.ifElectronic" class="page-part">
       开票金额不足200元，需支付邮费
     </div>
   </div>

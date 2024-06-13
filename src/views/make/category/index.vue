@@ -16,8 +16,6 @@ const route = useRoute()
 const state = reactive({
   showCustomCategory: false,
   keyboardShow: false,
-  ifElectronic: localStorage.get('ifElectronic'),
-  ifPaper: localStorage.get('ifPaper'),
   isShow: false,
   isHide: true,
   qnKey: '',
@@ -52,6 +50,7 @@ const state = reactive({
     customCategoryId: null,
     companyId: null,
   },
+  init: false,
 })
 
 function getToken() {
@@ -154,11 +153,13 @@ function makeInvoice() {
       })
       state.invoiceForm.customCategoryId = state.customCategory.customCategoryId
       state.invoiceForm.companyId = state.company.companyId
-      state.invoiceForm.extends.push({
-        fieldKey: 'attch',
-        fieldName: '附件',
-        fieldValue: state.fieldValue.toString(),
-      })
+      if (state.fieldValue.length > 0) {
+        state.invoiceForm.extends.push({
+          fieldKey: 'attch',
+          fieldName: '附件',
+          fieldValue: state.fieldValue.toString(),
+        })
+      }
       categoryMakeInvoiceApi(state.invoiceForm).then((res) => {
         closeToast()
         if (res.code === 1)
@@ -186,7 +187,7 @@ function onConfirm(value) {
   state.showCustomCategory = false
 }
 
-onMounted(() => {
+onMounted(async () => {
   if (route.query.accessToken)
     localStorage.set('accessToken', route.query.accessToken)
 
@@ -196,6 +197,7 @@ onMounted(() => {
   if (localStorage.get('type'))
     state.invoiceForm.type = localStorage.get('type')
 
+  state.init = true
   getCustomCategoryList()
   getToken()
   getKey()
@@ -209,16 +211,14 @@ onMounted(() => {
   <Header v-if="store.ifShowH5NavBar" header-title="开具电子发票" />
   <div class="make-invoice">
     <Invoice
+      v-if="state.init"
       :is-show="state.isShow"
       :is-hide="state.isHide"
-      :if-electronic="state.ifElectronic"
       :invoice-form="state.invoiceForm"
-      :if-paper="state.ifPaper"
       :company="state.company"
       @getCompany="receiveCompany"
       @getInvoiceCategory="receiveCategory"
     />
-
     <van-cell-group title="发票内容" inset>
       <van-field
         v-model="state.customCategory.name"
@@ -238,7 +238,6 @@ onMounted(() => {
           @confirm="onConfirm"
         />
       </van-popup>
-
       <van-field
         v-model="state.invoiceForm.price"
         class="merge-order_price"
@@ -272,15 +271,13 @@ onMounted(() => {
         />
       </van-cell>
     </van-cell-group>
-
     <Receive
-      :if-electronic="state.ifElectronic"
+      v-if="state.init"
       :invoice-form="state.invoiceForm"
       :if-need-email="common.ifNeedEmail"
       :if-need-mobile="common.ifNeedMobile"
       :address="state.address"
     />
-
     <div class="bottom fixed-bottom-bgColor">
       <van-button type="primary" class="submit" block @click="makeInvoice">
         申请开票

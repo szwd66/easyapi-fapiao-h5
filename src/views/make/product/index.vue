@@ -20,8 +20,6 @@ const state = reactive({
   loadingList: true,
   isShow: false,
   isHide: true,
-  ifElectronic: localStorage.get('ifElectronic'),
-  ifPaper: localStorage.get('ifPaper'),
   showPopup: false,
   productList: [], // 商品列表
   company: {
@@ -182,7 +180,8 @@ onMounted(() => {
   if (localStorage.get('productList')) {
     try {
       state.productList = JSON.parse(localStorage.get('productList'))
-    } catch {
+    }
+    catch {
       state.productList = localStorage.get('productList')
     }
   }
@@ -202,9 +201,9 @@ onMounted(() => {
     <Invoice
       :is-show="state.isShow"
       :is-hide="state.isHide"
-      :if-electronic="state.ifElectronic"
+
       :invoice-form="state.invoiceForm"
-      :if-paper="state.ifPaper"
+
       :company="state.company"
       @getCompany="receiveCompany"
       @getInvoiceCategory="receiveCategory"
@@ -267,13 +266,11 @@ onMounted(() => {
     </div>
 
     <Receive
-      :if-electronic="state.ifElectronic"
       :invoice-form="state.invoiceForm"
       :if-need-email="common.ifNeedEmail"
       :if-need-mobile="common.ifNeedMobile"
       :address="state.address"
     />
-
     <div class="bottom fixed-bottom-bgColor">
       <van-button type="primary" class="submit" block @click="makeInvoice">
         提交

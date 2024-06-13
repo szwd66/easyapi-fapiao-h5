@@ -13,7 +13,6 @@ const route = useRoute()
 
 const state = reactive({
   taxNumber: '',
-  ifPaper: localStorage.get('ifPaper'),
   isShow: false,
   isHide: true,
   amountOfMoney: '0',
@@ -112,7 +111,8 @@ function makeInvoice() {
           path: '/single-order-success',
           query: { returnUrl: state.returnUrl },
         })
-      } else {
+      }
+      else {
         showToast(res.message)
       }
     })
@@ -139,19 +139,22 @@ onMounted(() => {
   if (route.query.accessToken) {
     localStorage.set('accessToken', route.query.accessToken)
     state.accessToken = localStorage.get('accessToken')
-  } else if (state.accessToken === '') {
+  }
+  else if (state.accessToken === '') {
     showToast('accessToken不能为空！')
   }
   if (route.query.outOrderNo) {
     localStorage.set('outOrderNo', route.query.outOrderNo)
     state.outOrderNo = localStorage.get('outOrderNo')
-  } else if (state.outOrderNo === '') {
+  }
+  else if (state.outOrderNo === '') {
     showToast('outOrderNo不能为空！')
   }
   if (route.query.returnUrl) {
     localStorage.set('returnUrl', route.query.returnUrl)
     state.accessToken = localStorage.get('returnUrl')
-  } else if (state.returnUrl === '') {
+  }
+  else if (state.returnUrl === '') {
     showToast('returnUrl不能为空！')
   }
   state.accessToken = localStorage.get('accessToken')
@@ -175,9 +178,7 @@ onMounted(() => {
     <Invoice
       :is-show="state.isShow"
       :is-hide="state.isHide"
-      :if-electronic="state.ifElectronic"
       :invoice-form="state.invoiceForm"
-      :if-paper="state.ifPaper"
       :company="state.company"
       @getCompany="receiveCompany"
       @getInvoiceCategory="receiveCategory"
@@ -231,7 +232,6 @@ onMounted(() => {
     </div>
 
     <Receive
-      :if-electronic="state.ifElectronic"
       :invoice-form="state.invoiceForm"
       :if-need-email="common.ifNeedEmail"
       :if-need-mobile="common.ifNeedMobile"

@@ -3,7 +3,6 @@ import { closeToast, showConfirmDialog, showLoadingToast, showToast } from 'vant
 import makeMixins from '../mixins/make'
 import { getShortNameByTaxCodeApi, getStateApi, queryShopOrderApi } from '@/api/query'
 import { makeInvoiceApi } from '@/api/make'
-import { getShopApi } from '@/api/shop'
 import { localStorage } from '@/utils/local-storage'
 import { useStore } from '@/stores'
 
@@ -15,8 +14,6 @@ const route = useRoute()
 const state = reactive({
   isHide: true,
   isShow: false,
-  ifElectronic: localStorage.get('ifElectronic'),
-  ifPaper: localStorage.get('ifPaper'),
   active: '商品明细',
   list: [
     {
@@ -106,7 +103,7 @@ function receiveCompany(val) {
   state.company = val
 }
 
-function receiveCategory(category){
+function receiveCategory(category) {
   state.invoiceForm.category = category
 }
 
@@ -155,23 +152,9 @@ function makeInvoice() {
     })
 }
 
-/**
- * 获取店铺信息
- */
-function getShop() {
-  getShopApi().then((res) => {
-    if (res.code === 1) {
-      localStorage.set('ifElectronic', true)
-      localStorage.set('ifPaper', false)
-    }
-  })
-}
-
 onMounted(() => {
   if (route.query.accessToken)
     localStorage.set('accessToken', route.query.accessToken)
-
-  getShop()
   if (route.query.taxNumber)
     localStorage.set('taxNumber', route.query.taxNumber)
 
@@ -181,7 +164,8 @@ onMounted(() => {
   if (route.query.outOrderNo) {
     localStorage.set('outOrderNo', route.query.outOrderNo)
     state.outOrderNo = localStorage.get('outOrderNo')
-  } else if (state.outOrderNo === '') {
+  }
+  else if (state.outOrderNo === '') {
     showToast('outOrderNo不能为空！')
   }
   state.outOrderNo = localStorage.get('outOrderNo')
@@ -197,9 +181,7 @@ onMounted(() => {
     <Invoice
       :is-show="state.isShow"
       :is-hide="state.isHide"
-      :if-electronic="state.ifElectronic"
       :invoice-form="state.invoiceForm"
-      :if-paper="state.ifPaper"
       :company="state.company"
       @getCompany="receiveCompany"
       @getInvoiceCategory="receiveCategory"
@@ -273,7 +255,6 @@ onMounted(() => {
     </div>
 
     <Receive
-      :if-electronic="state.ifElectronic"
       :invoice-form="state.invoiceForm"
       :if-need-email="common.ifNeedEmail"
       :if-need-mobile="common.ifNeedMobile"

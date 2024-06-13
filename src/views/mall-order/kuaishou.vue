@@ -15,8 +15,6 @@ const state = reactive({
   keyboardShow: false,
   isShow: false,
   isHide: false,
-  ifPaper: localStorage.get('ifPaper'),
-  ifElectronic: localStorage.get('ifElectronic'),
   company: {
     companyId: '',
   },
@@ -90,9 +88,7 @@ function receiveCompany(val) {
     <Invoice
       :is-show="state.isShow"
       :is-hide="state.isHide"
-      :if-electronic="state.ifElectronic"
       :invoice-form="state.invoiceForm"
-      :if-paper="state.ifPaper"
       :company="state.company"
       @getCompany="receiveCompany"
       @getInvoiceCategory="receiveCategory"

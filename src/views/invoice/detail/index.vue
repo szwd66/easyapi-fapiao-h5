@@ -38,6 +38,7 @@ const state = reactive({
     url: '',
   },
   copyInfo: '',
+  attachList: [],
 })
 
 /**
@@ -84,6 +85,7 @@ function getInvoiceDetail() {
     if (res.code === 1) {
       state.invoiceDetail = res.content
       state.copyInfo = copyText(res.content)
+      state.attachList = res.content.invoiceExtends && res.content.invoiceExtends.length > 0 ? res.content.invoiceExtends.filter(item => item.fieldKey === 'attch' && item.fieldValue)[0].fieldValue.split(',') : []
     }
   })
 }
@@ -161,6 +163,14 @@ onMounted(() => {
       <van-cell :value="state.invoiceDetail.price" title="发票金额" />
       <van-cell :value="state.invoiceDetail.remark" title="备注" />
     </van-cell-group>
+    <div v-if="state.attachList.length > 0" class="card">
+      <div class="title">
+        附件
+      </div>
+      <div class="attch">
+        <img v-for="(item, index) in state.attachList" :key="index" :src="item" @click="viewImagePreview(state.attachList)">
+      </div>
+    </div>
     <van-cell-group v-if="state.invoiceDetail.category.indexOf('电子') !== -1" title="接收方式" inset>
       <van-cell :value="state.invoiceDetail.email" title="电子邮件" />
       <van-cell :value="state.invoiceDetail.mobile" title="手机号码" />
@@ -285,6 +295,30 @@ onMounted(() => {
     height: 40px;
     border-radius: 5px;
     color: #fff;
+  }
+
+  .card{
+    padding: 0 15px;
+
+    .title{
+      color: #969799;
+      padding: 15px 0;
+    }
+
+    .attch{
+      padding: 15px 15px 5px 15px;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-wrap: wrap;
+
+      img{
+        width: 120px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+      }
+    }
   }
 }
 </style>

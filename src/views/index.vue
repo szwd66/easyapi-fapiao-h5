@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { localStorage } from '@/utils/local-storage'
-import { getShopApi } from '@/api/shop'
 import { findSettingApi } from '@/api/setting'
 import { getOrderTypeListApi } from '@/api/order-type'
 
@@ -23,7 +22,8 @@ function initialization() {
   localStorage.remove('ifOrderMake')
   if (route.query.accessToken) {
     localStorage.set('accessToken', route.query.accessToken)
-  } else {
+  }
+  else {
     if (!localStorage.get('accessToken'))
       router.push('/error')
   }
@@ -35,19 +35,6 @@ function gotoMake() {
 
   if (state.ifMoneyMake)
     router.push('/make/category')
-}
-
-/**
- * 获取发票类型
- */
-function getShop() {
-  getShopApi().then((res) => {
-    if (res.code === 1) {
-      localStorage.set('ifElectronic', true)
-      localStorage.set('ifPaper', false)
-      localStorage.set('invoiceCategories', res.content.invoiceCategories)
-    }
-  })
 }
 
 /**
@@ -72,10 +59,12 @@ function findSetting() {
         if (setting.fieldKey === 'if_product') {
           state.ifProductMake = setting.fieldValue === 'true'
           localStorage.set('ifProductMake', state.ifProductMake)
-        } else if (setting.fieldKey === 'if_money') {
+        }
+        else if (setting.fieldKey === 'if_money') {
           state.ifMoneyMake = setting.fieldValue === 'true'
           localStorage.set('ifMoneyMake', state.ifMoneyMake)
-        } else if (setting.fieldKey === 'if_order') {
+        }
+        else if (setting.fieldKey === 'if_order') {
           state.ifOrderMake = setting.fieldValue === 'true'
           localStorage.set('ifOrderMake', state.ifOrderMake)
         }
@@ -86,7 +75,6 @@ function findSetting() {
 
 onMounted(() => {
   initialization()
-  getShop()
   getOrderTypeList()
   setTimeout(() => {
     findSetting()

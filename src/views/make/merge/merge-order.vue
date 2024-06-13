@@ -10,8 +10,6 @@ const store = useStore()
 const router = useRouter()
 
 const state = reactive({
-  ifElectronic: localStorage.get('ifElectronic'),
-  ifPaper: localStorage.get('ifPaper'),
   isShow: false,
   isHide: true,
   orderType: '',
@@ -83,7 +81,8 @@ function makeInvoice() {
         router.push({
           path: '/make/success',
         })
-      } else {
+      }
+      else {
         showToast(res.message)
       }
     })
@@ -110,9 +109,7 @@ onMounted(() => {
     <Invoice
       :is-show="state.isShow"
       :is-hide="state.isHide"
-      :if-electronic="state.ifElectronic"
       :invoice-form="state.invoiceForm"
-      :if-paper="state.ifPaper"
       :company="state.company"
       @getCompany="receiveCompany"
       @getInvoiceCategory="receiveCategory"
@@ -134,7 +131,6 @@ onMounted(() => {
     </van-cell-group>
 
     <Receive
-      :if-electronic="state.ifElectronic"
       :invoice-form="state.invoiceForm"
       :if-need-email="common.ifNeedEmail"
       :if-need-mobile="common.ifNeedMobile"
