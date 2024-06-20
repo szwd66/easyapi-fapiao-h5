@@ -111,6 +111,7 @@ function getCustomCategoryList() {
       state.customCategoryList = res.content
       state.customCategoryList.forEach((item) => {
         item.text = item.name
+        item.value = item.customCategoryId
         if (item.ifDefault) {
           state.customCategory.customCategoryId = item.customCategoryId
           state.customCategory.name = item.name
@@ -233,7 +234,6 @@ onMounted(async () => {
         <van-picker
           show-toolbar
           :columns="state.customCategoryList"
-          value-key="name"
           @cancel="state.showCustomCategory = false"
           @confirm="onConfirm"
         />
