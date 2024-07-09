@@ -149,7 +149,7 @@ onMounted(() => {
         is-link
         @click="gotoOutOrder"
       />
-      <van-cell v-if="state.invoiceDetail.auditState" title="未通过原因：">
+      <van-cell v-if="state.invoiceDetail.consoleReason" title="未通过原因：">
         <van-tag type="warning">
           {{ state.invoiceDetail.consoleReason }}
         </van-tag>
