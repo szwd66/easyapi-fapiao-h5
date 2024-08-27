@@ -123,8 +123,11 @@ function sendToEmail() {
   })
 }
 
-function viewImagePreview(imgs: any) {
-  showImagePreview(imgs)
+function viewImagePreview(imgs: any, index: number) {
+  showImagePreview({
+    images: imgs,
+    startPosition: index
+  })
 }
 
 onMounted(() => {
@@ -142,13 +145,8 @@ onMounted(() => {
     </div>
     <van-cell-group inset @click="viewPicture">
       <van-cell :title="`${state.invoiceDetail.category}`" is-link />
-      <van-cell
-        v-if="state.outOrderCount > 0"
-        :title="`1张发票，含${state.outOrderCount}个订单`"
-        :label="state.invoiceDetail.updateTime"
-        is-link
-        @click="gotoOutOrder"
-      />
+      <van-cell v-if="state.outOrderCount > 0" :title="`1张发票，含${state.outOrderCount}个订单`"
+        :label="state.invoiceDetail.updateTime" is-link @click="gotoOutOrder" />
       <van-cell v-if="state.invoiceDetail.consoleReason" title="未通过原因：">
         <van-tag type="warning">
           {{ state.invoiceDetail.consoleReason }}
@@ -168,71 +166,50 @@ onMounted(() => {
         附件
       </div>
       <div class="attch">
-        <img v-for="(item, index) in state.attachList" :key="index" :src="item" @click="viewImagePreview(state.attachList)">
+        <img v-for="(item, index) in state.attachList" :key="index" :src="item + '?imageView2/2/w/120/h/120'"
+          @click="viewImagePreview(state.attachList, index)" />
       </div>
     </div>
     <van-cell-group v-if="state.invoiceDetail.category.indexOf('电子') !== -1" title="接收方式" inset>
       <van-cell :value="state.invoiceDetail.email" title="电子邮件" />
       <van-cell :value="state.invoiceDetail.mobile" title="手机号码" />
     </van-cell-group>
-    <van-cell-group v-if="state.invoiceDetail.category === '增值税普通发票' || state.invoiceDetail.category === '增值税专用发票'" title="接收方式" inset>
+    <van-cell-group v-if="state.invoiceDetail.category === '增值税普通发票' || state.invoiceDetail.category === '增值税专用发票'"
+      title="接收方式" inset>
       <van-field label="收件人" readonly />
       <van-field label="手机号码" readonly />
     </van-cell-group>
     <van-action-bar v-if="state.invoiceDetail.state === 1">
-      <van-action-bar-button data-clipboard-action="copy" class="copyPdfUrl" :data-clipboard-text="state.copyInfo" color="#01a8b9" text="复制发票信息" @click="copyLink" />
+      <van-action-bar-button data-clipboard-action="copy" class="copyPdfUrl" :data-clipboard-text="state.copyInfo"
+        color="#01a8b9" text="复制发票信息" @click="copyLink" />
       <van-action-bar-button color="#409eff" text="预览发票" @click="viewPicture" />
-      <van-action-bar-button v-if="state.invoiceDetail.category.indexOf('电子') !== -1" type="success" text="发送邮箱" @click="openShowEmail" />
+      <van-action-bar-button v-if="state.invoiceDetail.category.indexOf('电子') !== -1" type="success" text="发送邮箱"
+        @click="openShowEmail" />
     </van-action-bar>
-    <van-popup
-      v-model:show="state.showEmail"
-      align="center"
-      class="send-email"
-    >
+    <van-popup v-model:show="state.showEmail" align="center" class="send-email">
       <div class="title">
         发送邮箱
       </div>
-      <van-field
-        v-model="state.email"
-        clickable
-        label="邮箱"
-        placeholder="请输入邮箱"
-        required
-        border
-      />
+      <van-field v-model="state.email" clickable label="邮箱" placeholder="请输入邮箱" required border />
       <van-button type="primary" block @click="sendToEmail">
         确认
       </van-button>
     </van-popup>
-    <van-popup
-      v-model:show="state.popupVisible"
-      style="padding: 30px"
-      align="center"
-    >
+    <van-popup v-model:show="state.popupVisible" style="padding: 30px" align="center">
       <p style="font-size: 18px; margin-bottom: 20px">
         发票预览
       </p>
-      <img :src="state.invoiceDetail.electronicInvoiceImg" alt="" class="electronic" @click="viewImagePreview([state.invoiceDetail.electronicInvoiceImg])">
+      <img :src="state.invoiceDetail.electronicInvoiceImg" alt="" class="electronic"
+        @click="viewImagePreview([state.invoiceDetail.electronicInvoiceImg], 0)">
       <div style="margin-bottom: 10px">
-        <van-button
-          type="primary"
-          data-clipboard-action="copy"
-          class="copyPdfUrl submit"
-          :data-clipboard-text="state.copyInfo"
-          @click="copyLink"
-        >
+        <van-button type="primary" data-clipboard-action="copy" class="copyPdfUrl submit"
+          :data-clipboard-text="state.copyInfo" @click="copyLink">
           复制发票下载地址
         </van-button>
       </div>
       <div style="width: 100%; font-size: 12px">
-        <van-field
-          v-model="state.invoiceDetail.electronicInvoiceUrl"
-          rows="1"
-          autosize
-          type="textarea"
-          class="textarea"
-          readonly
-        />
+        <van-field v-model="state.invoiceDetail.electronicInvoiceUrl" rows="1" autosize type="textarea" class="textarea"
+          readonly />
       </div>
       <p style="margin-top: 10px">
         复制发票下载地址并在浏览器中打开进行下载
@@ -244,7 +221,8 @@ onMounted(() => {
 <style lang='less'>
 .invoice-detail {
   margin-bottom: 65px;
-  .types{
+
+  .types {
     position: absolute;
     top: 0;
     margin: 0 auto;
@@ -258,6 +236,7 @@ onMounted(() => {
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
   }
+
   .van-cell__value {
     min-width: 70%;
     text-align: left;
@@ -268,19 +247,24 @@ onMounted(() => {
     }
   }
 }
-.electronic{
+
+.electronic {
   width: 100%;
 }
-.textarea{
+
+.textarea {
   width: 100%;
   border: 0.5px solid #bbbbbb;
 }
-.send-email{
+
+.send-email {
   padding: 20px;
-  .title{
+
+  .title {
     font-size: 18px;
   }
-  .van-field{
+
+  .van-field {
     margin: 20px 0;
     flex-wrap: nowrap;
   }
@@ -290,6 +274,7 @@ onMounted(() => {
 <style lang='less' scoped>
 .invoice-detail {
   padding-top: 80px;
+
   .submit {
     border: none;
     height: 40px;
@@ -297,15 +282,15 @@ onMounted(() => {
     color: #fff;
   }
 
-  .card{
+  .card {
     padding: 0 15px;
 
-    .title{
+    .title {
       color: #969799;
       padding: 15px 0;
     }
 
-    .attch{
+    .attch {
       padding: 15px 15px 5px 15px;
       background: #fff;
       border-radius: 8px;
@@ -313,8 +298,9 @@ onMounted(() => {
       display: flex;
       flex-wrap: wrap;
 
-      img{
+      img {
         width: 120px;
+        height: 120px;
         margin-right: 10px;
         margin-bottom: 10px;
       }
