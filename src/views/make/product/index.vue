@@ -6,8 +6,8 @@ import {
   showToast,
 } from 'vant'
 import makeMixins from '../mixins/make'
-import { getProductListApi } from '@/api/product'
-import { productMakeInvoiceApi } from '@/api/make'
+import product from '@/api/product'
+import make from '@/api/make'
 import { localStorage } from '@/utils/local-storage'
 import { useStore } from '@/stores'
 
@@ -70,7 +70,7 @@ function deleteProduct(index: any) {
 
 /** 获取商品服务列表 */
 function getProductList(params) {
-  getProductListApi(params).then((res) => {
+  product.getProductList(params).then((res) => {
     if (res.code === 1)
       state.productListAll = res.content
   })
@@ -84,8 +84,9 @@ function appendProduct() {
     state.productListAll.filter(
       x => x.number > 0 && (!x.price || x.price === 0 || x.price < 0),
     ).length > 0
-  )
+  ) {
     return showToast('请输入正确的商品金额')
+  }
 
   for (let i = 0; i < state.productListAll.length; i++) {
     if (state.productListAll[i].number > 0) {
@@ -146,8 +147,9 @@ function makeInvoice() {
   if (
     state.invoiceForm.type === '个人'
     && state.invoiceForm.purchaserName === ''
-  )
+  ) {
     return showToast('请输入发票抬头')
+  }
 
   if (state.productList === null)
     return showToast('商品服务不能为空')
@@ -166,7 +168,7 @@ function makeInvoice() {
     })
     state.invoiceForm.companyId = state.company.companyId
     state.invoiceForm.products = state.productList
-    productMakeInvoiceApi(state.invoiceForm).then((res) => {
+    make.productMakeInvoice(state.invoiceForm).then((res) => {
       closeToast()
       if (res.code === 1)
         router.push({ path: '/make/success' })
@@ -205,8 +207,8 @@ onMounted(() => {
       :invoice-form="state.invoiceForm"
 
       :company="state.company"
-      @getCompany="receiveCompany"
-      @getInvoiceCategory="receiveCategory"
+      @get-company="receiveCompany"
+      @get-invoice-category="receiveCategory"
     />
 
     <div class="invoice-contents">

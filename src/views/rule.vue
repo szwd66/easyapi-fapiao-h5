@@ -1,12 +1,12 @@
 <script setup lang='ts'>
-import { findSettingApi } from '@/api/setting'
+import setting from '@/api/setting'
 
 const state = shallowReactive({
   content: '',
 })
 
 function findSetting() {
-  findSettingApi({ fieldKeys: 'invoice-rule' }).then((res) => {
+  setting.findSetting({ fieldKeys: 'invoice-rule' }).then((res) => {
     if (res.code === 1)
       state.content = res.content[0].fieldValue
     else

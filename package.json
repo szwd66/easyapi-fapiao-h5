@@ -27,7 +27,7 @@
     "vue-router": "^4.4.3"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.27.0",
+    "@antfu/eslint-config": "^3.0.0",
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.4",
     "@babel/preset-typescript": "^7.24.7",
@@ -42,7 +42,7 @@
     "babel-plugin-module-resolver": "^5.0.2",
     "commitizen": "^4.3.0",
     "cross-env": "^7.0.3",
-    "eslint": "^9.9.0",
+    "eslint": "^9.9.1",
     "less": "^4.2.0",
     "path-to-regexp": "^7.1.0",
     "postcss": "^8.4.41",

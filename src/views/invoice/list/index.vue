@@ -2,7 +2,7 @@
 import dayjs from 'dayjs'
 import { showToast } from 'vant'
 import Clipboard from 'clipboard'
-import { getInvoiceListApi } from '@/api/invoice'
+import invoice from '@/api/invoice'
 import { useStore } from '@/stores'
 import { getColorByStatements, invoiceTag } from '@/utils/invoice-category'
 import { copyText } from '@/utils/invoice'
@@ -44,7 +44,7 @@ function getInvoiceList() {
     startAddTime: state.startAddTime,
     endAddTime: state.endAddTime,
   }
-  getInvoiceListApi(params).then((res) => {
+  invoice.getInvoiceList(params).then((res) => {
     state.loading = false
     if (res.code === 1) {
       state.pagination.totalPages = res.totalPages

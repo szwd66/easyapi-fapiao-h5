@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { defaultAddressApi, getAddressListApi } from '@/api/address'
+import address from '@/api/address'
 import { useStore } from '@/stores'
 
 const store = useStore()
@@ -15,7 +15,7 @@ const state = reactive({
  * 获取地址列表
  */
 function getAddressList() {
-  getAddressListApi({}).then((res) => {
+  address.getAddressList({}).then((res) => {
     state.loading = false
     if (res.code === 1)
       state.addressList = res.content
@@ -27,8 +27,7 @@ function getAddressList() {
 function select(item) {
   if (route.query.from)
     return
-
-  defaultAddressApi(item.addressId).then((res) => {
+  address.defaultAddress(item.addressId).then((res) => {
     if (res.code === 1)
       history.back()
   })

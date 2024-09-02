@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { localStorage } from '@/utils/local-storage'
-import { findSettingApi } from '@/api/setting'
-import { getOrderTypeListApi } from '@/api/order-type'
+import setting from '@/api/setting'
+import orderType from '@/api/order-type'
 
 const route = useRoute()
 const router = useRouter()
@@ -41,7 +41,7 @@ function gotoMake() {
  * 获取订单类型列表
  */
 function getOrderTypeList() {
-  getOrderTypeListApi().then((res) => {
+  orderType.getOrderTypeList().then((res) => {
     if (res.code === 1)
       state.orderTypeList = res.content
   })
@@ -51,7 +51,7 @@ function getOrderTypeList() {
  * 获取发票开票类型
  */
 function findSetting() {
-  findSettingApi({
+  setting.findSetting({
     fieldKeys: 'if_product' + ',' + 'if_money' + ',' + 'if_order',
   }).then((res) => {
     if (res.code === 1) {

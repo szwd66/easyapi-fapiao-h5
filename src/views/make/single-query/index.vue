@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { closeToast, showConfirmDialog, showLoadingToast, showToast } from 'vant'
 import makeMixins from '../mixins/make'
-import { getShortNameByTaxCodeApi, getStateApi, queryShopOrderApi } from '@/api/query'
-import { makeInvoiceApi } from '@/api/make'
+import make from '@/api/make'
+import query from '@/api/query'
 import { localStorage } from '@/utils/local-storage'
 import { useStore } from '@/stores'
 
@@ -60,7 +60,7 @@ function showDetail(name) {
  * 获取发票状态
  */
 function getShopOrder() {
-  getStateApi(state.outOrderNo).then((res) => {
+  query.getState(state.outOrderNo).then((res) => {
     if (res.code === 1) {
       router.replace({
         path: '/invoice/detail',
@@ -68,7 +68,7 @@ function getShopOrder() {
       })
     }
   })
-  queryShopOrderApi(state.outOrderNo).then((res) => {
+  query.queryShopOrder(state.outOrderNo).then((res) => {
     if (res.code === 1) {
       state.outOrder = res.content
       state.invoiceForm.price = res.content.price
@@ -86,7 +86,7 @@ function getShortNameByTaxCode() {
     nos,
     accessToken: localStorage.get('accessToken'),
   }
-  getShortNameByTaxCodeApi(data).then((res) => {
+  query.getShortNameByTaxCode(data).then((res) => {
     if (res.code === 1) {
       state.taxNumbers = res.data.content
       state.outOrder.items.forEach((item) => {
@@ -118,8 +118,9 @@ function makeInvoice() {
     if (
       state.invoiceForm.purchaserName === ''
       || state.invoiceForm.purchaserTaxpayerNumber === ''
-    )
+    ) {
       return showToast('企业发票抬头未选择')
+    }
   }
   if (!checkEmailMobile(state.invoiceForm))
     return
@@ -142,7 +143,7 @@ function makeInvoice() {
       })
       state.invoiceForm.items = items
       state.invoiceForm.companyId = state.company.companyId
-      makeInvoiceApi(state.invoiceForm).then((res) => {
+      make.makeInvoice(state.invoiceForm).then((res) => {
         closeToast()
         if (res.code === 1)
           router.go(0)
@@ -183,8 +184,8 @@ onMounted(() => {
       :is-hide="state.isHide"
       :invoice-form="state.invoiceForm"
       :company="state.company"
-      @getCompany="receiveCompany"
-      @getInvoiceCategory="receiveCategory"
+      @get-company="receiveCompany"
+      @get-invoice-category="receiveCategory"
     />
 
     <div class="invoice-contents">

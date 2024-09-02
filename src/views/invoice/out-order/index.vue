@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { getOutOrderListApi } from '@/api/invoice'
+import invoice from '@/api/invoice'
 import { useStore } from '@/stores'
 
 const store = useStore()
@@ -27,12 +27,13 @@ function getOutOrderList() {
     page: state.pagination.page - 1,
     size: state.pagination.size,
   }
-  getOutOrderListApi(params).then((res) => {
+  invoice.getOutOrderList(params).then((res) => {
     state.loading = false
     if (res.code === 1) {
       state.outOrders = state.outOrders.concat(res.content)
       state.pagination.totalPages = res.totalPages
-    } else {
+    }
+    else {
       state.empty = true
       state.outOrders = []
       state.pagination.totalPages = 0

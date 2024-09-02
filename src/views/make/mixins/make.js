@@ -3,7 +3,7 @@
  */
 import { showToast } from 'vant'
 import { reactive } from 'vue'
-import { findSettingApi } from '@/api/setting'
+import setting from '@/api/setting'
 import { validEmail, validMobile } from '@/utils/validate'
 
 export default function () {
@@ -18,7 +18,7 @@ export default function () {
    * 获取发票备注填写说明
    */
   const getInvoiceRemark = () => {
-    findSettingApi({ fieldKeys: 'make-placeholder-remark' }).then((res) => {
+    setting.findSetting({ fieldKeys: 'make-placeholder-remark' }).then((res) => {
       if (res.code === 1)
         common.remarkPlaceholder = res.content[0].fieldValue
     })
@@ -31,7 +31,7 @@ export default function () {
     const params = {
       fieldKeys: 'if_need_mobile' + ',' + 'if_need_email',
     }
-    findSettingApi(params).then((res) => {
+    setting.findSetting(params).then((res) => {
       if (res.code === 1) {
         for (const setting of res.content) {
           if (setting.fieldKey === 'if_need_mobile')
@@ -50,7 +50,7 @@ export default function () {
     const params = {
       fieldKeys: 'if-category-make-file-required',
     }
-    findSettingApi(params).then((res) => {
+    setting.findSetting(params).then((res) => {
       if (res.code === 1)
         common.ifCategoryMakeFileRequired = res.content[0].fieldValue === 'true'
     })

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { getOutOrderListApi } from '@/api/out-order'
-import { getShopApi } from '@/api/shop'
+import outOrder from '@/api/out-order'
+import shop from '@/api/shop'
 import { useStore } from '@/stores'
 import { localStorage } from '@/utils/local-storage'
 
@@ -64,12 +64,13 @@ function getMinusOutOrderList() {
     page: 0,
     size: 10000,
   }
-  getOutOrderListApi(params).then((res) => {
+  outOrder.getOutOrderList(params).then((res) => {
     if (res.code === 1) {
       state.minusOutOrderList = res.content
       for (let i = 0; i < state.minusOutOrderList.length; i++)
         state.minusAmount += Number(state.minusOutOrderList[i].price)
-    } else {
+    }
+    else {
       state.minusAmount = 0.0
       state.minusOutOrderList = []
     }
@@ -85,7 +86,7 @@ function getOutOrderList() {
     page: state.pagination.page - 1,
     size: state.pagination.size,
   }
-  getOutOrderListApi(params).then((res) => {
+  outOrder.getOutOrderList(params).then((res) => {
     state.loading = false
     if (res.code === 1) {
       const data = res.content
@@ -93,7 +94,8 @@ function getOutOrderList() {
       for (const v of data) v.status = false
 
       state.outOrderList = state.outOrderList.concat(data)
-    } else {
+    }
+    else {
       state.empty = true
       state.outOrderList = []
       state.pagination.totalPages = 0
@@ -134,7 +136,7 @@ function goElectronicInvoice() {
  * 获取发票类型
  */
 function getShop() {
-  getShopApi().then((res) => {
+  shop.getShop().then((res) => {
     if (res.code === 1)
       state.minPrice = res.content.minPrice
   })

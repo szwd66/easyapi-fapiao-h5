@@ -1,8 +1,8 @@
 <script setup lang='ts'>
 import { closeToast, showConfirmDialog, showLoadingToast, showToast } from 'vant'
 import makeMixins from '../mixins/make'
-import { mergeMakeInvoiceApi } from '@/api/make'
-import { getOutOrderListApi } from '@/api/out-order'
+import make from '@/api/make'
+import outOrder from '@/api/out-order'
 import { localStorage } from '@/utils/local-storage'
 import { useStore } from '@/stores'
 
@@ -62,7 +62,7 @@ function getOutOrder() {
     state: 0,
     no: outOrderNo,
   }
-  getOutOrderListApi(params).then((res) => {
+  outOrder.getOutOrderList(params).then((res) => {
     if (res.code === 1) {
       router.push({
         path: '/invoice/detail',
@@ -104,7 +104,7 @@ function makeInvoice() {
     })
     state.invoiceForm.outOrderIds = state.outOrder.outOrderId
     state.invoiceForm.companyId = state.company.companyId
-    mergeMakeInvoiceApi(state.invoiceForm).then((res) => {
+    make.mergeMakeInvoice(state.invoiceForm).then((res) => {
       closeToast()
       if (res.code === 1) {
         router.push({
@@ -180,8 +180,8 @@ onMounted(() => {
       :is-hide="state.isHide"
       :invoice-form="state.invoiceForm"
       :company="state.company"
-      @getCompany="receiveCompany"
-      @getInvoiceCategory="receiveCategory"
+      @get-company="receiveCompany"
+      @get-invoice-category="receiveCategory"
     />
 
     <div class="invoice-contents">

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { closeToast, showConfirmDialog, showLoadingToast, showToast } from 'vant'
 import makeMixins from '../mixins/make'
-import { mergeMakeInvoiceApi } from '@/api/make'
+import make from '@/api/make'
 import { localStorage } from '@/utils/local-storage'
 import { useStore } from '@/stores'
 
@@ -75,7 +75,7 @@ function makeInvoice() {
       duration: 0,
     })
     state.invoiceForm.companyId = state.company.companyId
-    mergeMakeInvoiceApi(state.invoiceForm).then((res) => {
+    make.mergeMakeInvoice(state.invoiceForm).then((res) => {
       closeToast()
       if (res.code === 1) {
         router.push({
@@ -111,8 +111,8 @@ onMounted(() => {
       :is-hide="state.isHide"
       :invoice-form="state.invoiceForm"
       :company="state.company"
-      @getCompany="receiveCompany"
-      @getInvoiceCategory="receiveCategory"
+      @get-company="receiveCompany"
+      @get-invoice-category="receiveCategory"
     />
 
     <van-cell-group title="发票内容" inset>

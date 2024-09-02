@@ -1,12 +1,6 @@
 <script setup lang='ts'>
 import { closeToast, showConfirmDialog, showLoadingToast, showToast } from 'vant'
-import {
-  createCompanyApi,
-  deleteCompanyApi,
-  getCompanyApi,
-  getCompanyCodeListApi,
-  updateCompanyApi,
-} from '@/api/company'
+import company from '@/api/company'
 import { useStore } from '@/stores'
 
 const store = useStore()
@@ -36,7 +30,7 @@ function deleteData() {
     title: '提示',
     message: '确定删除?',
   }).then(() => {
-    deleteCompanyApi(route.query.id).then((res) => {
+    company.deleteCompany(route.query.id).then((res) => {
       if (res.code === 1)
         history.back()
     })
@@ -49,7 +43,7 @@ function searchCompanyList() {
     return
   }
 
-  getCompanyCodeListApi({ name: state.name }).then((res) => {
+  company.getCompanyCodeList({ name: state.name }).then((res) => {
     if (res.code === 1)
       state.searchList = res.content
     else
@@ -80,13 +74,13 @@ function confirm() {
     message: '确定提交吗？',
   }).then(() => {
     if (route.query.id) {
-      updateCompanyApi(route.query.id, state.companyForm).then((res) => {
+      company.updateCompany(route.query.id, state.companyForm).then((res) => {
         if (res.code === 1)
           history.back()
       })
     }
     else {
-      createCompanyApi(state.companyForm).then((res) => {
+      company.createCompany(state.companyForm).then((res) => {
         if (res.code === 1)
           history.back()
       })
@@ -104,7 +98,7 @@ function getCompany() {
     message: '加载中...',
     forbidClick: true,
   })
-  getCompanyApi(route.query.id).then((res) => {
+  company.getCompany(route.query.id).then((res) => {
     closeToast()
     if (res.code === 1) {
       state.companyForm = res.content

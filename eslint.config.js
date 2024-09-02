@@ -1,18 +1,17 @@
-import antfu from '@antfu/eslint-config'
+const antfu = require('@antfu/eslint-config').default
 
-export default await antfu(
-  {
-    ingores: [
-      '.vscode',
-      'dist',
-      'node_modules',
-      'public'
-    ],
+module.exports = antfu({
+  ingores: [
+    '.vscode',
+    'dist',
+    'node_modules',
+    'public',
+    '*.md',
+  ],
+}, {
+  rules: {
+    '@typescript-eslint/brace-style': 'off',
+    'vue/comma-dangle': 'off',
+    'vue/dot-location': 'off',
   },
-  {
-    rules: {
-      "brace-style": "off",
-      "@typescript-eslint/brace-style": "off"
-    },
-  },
-)
+})

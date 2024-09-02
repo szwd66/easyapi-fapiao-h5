@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { closeToast, showLoadingToast } from 'vant'
-import { getCompanyListApi, updateCompanySetDefaultApi } from '@/api/company'
+import company from '@/api/company'
 import { useStore } from '@/stores'
 
 const store = useStore()
@@ -32,7 +32,7 @@ function getCompanyList() {
     size: state.pagination.size,
     page: state.pagination.page,
   }
-  getCompanyListApi(params).then((res) => {
+  company.getCompanyList(params).then((res) => {
     state.loading = false
     closeToast()
     if (res.code === 1) {
@@ -42,7 +42,8 @@ function getCompanyList() {
         if (item.ifDefault)
           state.checked = item.companyId
       })
-    } else {
+    }
+    else {
       state.companyList = []
       state.pagination.totalPages = 0
     }
@@ -64,7 +65,7 @@ function select(item) {
 
   state.checked = item.companyId
   // 设置为默认抬头
-  updateCompanySetDefaultApi(item.companyId).then((res) => {
+  company.updateCompanySetDefault(item.companyId).then((res) => {
     if (res.code === 1)
       history.back()
   })

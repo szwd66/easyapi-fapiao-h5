@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { getDefaultAddressApi } from '@/api/address'
-import { getCustomerApi } from '@/api/customer'
-import { findSettingApi } from '@/api/setting'
+import address from '@/api/address'
+import customer from '@/api/customer'
+import setting from '@/api/setting'
 
 const props = defineProps({
   invoiceForm: {
@@ -51,7 +51,7 @@ function gotoAddress() {
  * 获取默认地址
  */
 function getDefaultAddress() {
-  getDefaultAddressApi('test').then((res) => {
+  address.getDefaultAddress('test').then((res) => {
     if (res.code === 1) {
       state.childAddress = res.content
       state.childForm.addressId = state.childAddress.addressId
@@ -62,14 +62,14 @@ function getDefaultAddress() {
  * 获取开票用户信息
  */
 function getCustomer() {
-  getCustomerApi({}).then((res) => {
+  customer.getCustomer({}).then((res) => {
     state.childForm.email = res.content.email ? res.content.email : ''
     state.childForm.mobile = res.content.mobile ? res.content.mobile : ''
   })
 }
 
 function findSetting() {
-  findSettingApi({
+  setting.findSetting({
     fieldKeys: 'if_shudian_invoice',
   }).then((res) => {
     if (res.code === 1) {

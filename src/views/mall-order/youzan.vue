@@ -1,7 +1,6 @@
 <script setup lang='ts'>
 import { showConfirmDialog, showDialog, showToast } from 'vant'
 import makeMixins from '../make/mixins/make'
-import { localStorage } from '@/utils/local-storage'
 
 const { checkEmailMobile } = makeMixins()
 
@@ -90,8 +89,8 @@ function receiveCompany(val) {
       :is-hide="state.isHide"
       :invoice-form="state.invoiceForm"
       :company="state.company"
-      @getCompany="receiveCompany"
-      @getInvoiceCategory="receiveCategory"
+      @get-company="receiveCompany"
+      @get-invoice-category="receiveCategory"
     />
 
     <van-cell-group title="订单信息" inset>

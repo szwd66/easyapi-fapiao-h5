@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { getDefaultCompanyApi } from '@/api/company'
-import { getDefaultAddressApi } from '@/api/address'
-import { findSettingApi } from '@/api/setting'
+import company from '@/api/company'
+import address from '@/api/address'
+import setting from '@/api/setting'
 import { localStorage } from '@/utils/local-storage'
 import { invoiceTag } from '@/utils/invoice-category'
 
@@ -84,7 +84,7 @@ function purchaserMoreHide() {
 }
 
 function getDefaultCompany() {
-  getDefaultCompanyApi().then((res) => {
+  company.getDefaultCompany().then((res) => {
     if (res.code === 1) {
       state.childCompany = res.content
       emits('getCompany', state.childCompany)
@@ -103,7 +103,7 @@ function getDefaultCompany() {
 
 function getDefaultAddress() {
   // todo username更换
-  getDefaultAddressApi('test').then((res) => {
+  address.getDefaultAddress('test').then((res) => {
     if (res.code === 1) {
       state.address = res.content
       state.childInvoiceForm.addressId = state.address.addressId
@@ -132,7 +132,7 @@ function selectInvoiceType() {
  * 获取电子发票文案说明
  */
 function findSetting() {
-  findSettingApi({
+  setting.findSetting({
     fieldKeys: 'electronic_invoice_make_time,h5_pc_invoice_categories',
   }).then((res) => {
     if (res.code === 1) {

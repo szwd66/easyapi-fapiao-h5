@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 import { showConfirmDialog } from 'vant'
-import { createAddressApi, deleteAddressApi, getAddressApi, updateAddressApi } from '@/api/address'
-import { getAreaListApi } from '@/api/area'
+import address from '@/api/address'
+import area from '@/api/area'
 import { useStore } from '@/stores'
 
 const store = useStore()
@@ -28,7 +28,7 @@ const state = reactive({
  * 获取地址详情
  */
 function getAddress() {
-  getAddressApi(route.query.id).then((res) => {
+  address.getAddress(route.query.id).then((res) => {
     if (res.code === 1) {
       state.addressForm = res.content
       state.addressForm.area
@@ -41,7 +41,7 @@ function getAddress() {
  * 获取省市区列表
  */
 function getAreaList() {
-  getAreaListApi({ }).then((res) => {
+  area.getAreaList({ }).then((res) => {
     if (res.status === '1') {
       const provinces = res.provinces
       const province_list = {}
@@ -79,7 +79,7 @@ function deleteData() {
     title: '提示',
     message: '确定删除?',
   }).then(() => {
-    deleteAddressApi(route.query.id).then((res) => {
+    address.deleteAddress(route.query.id).then((res) => {
       if (res.code === 1)
         history.back()
     })
@@ -92,13 +92,13 @@ function confirm() {
     message: '确定提交吗？',
   }).then(() => {
     if (route.query.id) {
-      updateAddressApi(route.query.id, state.addressForm).then((res) => {
+      address.updateAddress(route.query.id, state.addressForm).then((res) => {
         if (res.code === 1)
           history.back()
       })
     }
     else {
-      createAddressApi(state.addressForm).then((res) => {
+      address.createAddress(state.addressForm).then((res) => {
         if (res.code === 1)
           history.back()
       })

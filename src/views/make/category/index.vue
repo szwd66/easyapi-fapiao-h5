@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { closeToast, showConfirmDialog, showLoadingToast, showToast } from 'vant'
 import makeMixins from '../mixins/make'
-import { getQiniuKeyApi, getQiniuTokenApi, qiniuUploadApi } from '@/api/qiniu'
-import { getCustomCategoryListApi } from '@/api/custom-category'
-import { categoryMakeInvoiceApi } from '@/api/make'
+import qiniu from '@/api/qiniu'
+import make from '@/api/make'
+import customCategory from '@/api/custom-category'
 import { validPrice } from '@/utils/validate'
 import { localStorage } from '@/utils/local-storage'
 import { useStore } from '@/stores'
@@ -54,13 +54,13 @@ const state = reactive({
 })
 
 function getToken() {
-  getQiniuTokenApi().then((res) => {
+  qiniu.getQiniuToken().then((res) => {
     state.qnToken = res.content.uploadToken
   })
 }
 
 function getKey() {
-  getQiniuKeyApi().then((res) => {
+  qiniu.getQiniuKey().then((res) => {
     state.qnKey = res.content.key
   })
 }
@@ -78,7 +78,7 @@ function uploadImgToQiniu(qnToken, qnKey, file) {
   data.append('token', qnToken)
   data.append('key', qnKey)
   data.append('file', file.file)
-  qiniuUploadApi(data)
+  qiniu.qiniuUpload(data)
     .then((res: any) => {
       state.fieldValue.push(`https://qiniu.easyapi.com/${res.key}`)
       // 上传成功后，重新更新七牛参数
@@ -106,7 +106,7 @@ function getCustomCategoryList() {
   const params = {
     size: 1000,
   }
-  getCustomCategoryListApi(params).then((res) => {
+  customCategory.getCustomCategoryList(params).then((res) => {
     if (res.code === 1) {
       state.customCategoryList = res.content
       state.customCategoryList.forEach((item) => {
@@ -161,7 +161,7 @@ function makeInvoice() {
           fieldValue: state.fieldValue.toString(),
         })
       }
-      categoryMakeInvoiceApi(state.invoiceForm).then((res) => {
+      make.categoryMakeInvoice(state.invoiceForm).then((res) => {
         closeToast()
         if (res.code === 1)
           router.push({ path: '/make/success' })
@@ -217,8 +217,8 @@ onMounted(async () => {
       :is-hide="state.isHide"
       :invoice-form="state.invoiceForm"
       :company="state.company"
-      @getCompany="receiveCompany"
-      @getInvoiceCategory="receiveCategory"
+      @get-company="receiveCompany"
+      @get-invoice-category="receiveCategory"
     />
     <van-cell-group title="发票内容" inset>
       <van-field

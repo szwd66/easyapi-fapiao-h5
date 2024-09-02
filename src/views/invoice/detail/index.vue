@@ -2,8 +2,8 @@
 import { closeToast, showImagePreview, showLoadingToast, showToast } from 'vant'
 import Clipboard from 'clipboard'
 import { getIconByStatements } from '@/utils/invoice-category'
-import { getInvoiceApi, sendEmail } from '@/api/invoice'
-import { getOutOrderCountApi } from '@/api/out-order'
+import invoice from '@/api/invoice'
+import outOrder from '@/api/out-order'
 import { copyText } from '@/utils/invoice'
 import { useStore } from '@/stores'
 
@@ -80,7 +80,7 @@ function getInvoiceDetail() {
     message: '加载中...',
     forbidClick: true,
   })
-  getInvoiceApi(route.query.id).then((res) => {
+  invoice.getInvoice(route.query.id).then((res) => {
     closeToast()
     if (res.code === 1) {
       state.invoiceDetail = res.content
@@ -94,7 +94,7 @@ function getInvoiceDetail() {
  * 获取外部订单数量
  */
 function getOutOrderCount() {
-  getOutOrderCountApi({ invoiceId: route.query.id }).then((res) => {
+  outOrder.getOutOrderCount({ invoiceId: route.query.id }).then((res) => {
     if (res.code === 1)
       state.outOrderCount = res.content
   })
@@ -115,7 +115,7 @@ function sendToEmail() {
     email: state.email,
     outOrderNo: state.invoiceDetail.outOrderNo,
   }
-  sendEmail(params).then((res) => {
+  invoice.sendEmail(params).then((res) => {
     if (res.code === 1) {
       showToast(res.message)
       state.showEmail = false
@@ -126,7 +126,7 @@ function sendToEmail() {
 function viewImagePreview(imgs: any, index: number) {
   showImagePreview({
     images: imgs,
-    startPosition: index
+    startPosition: index,
   })
 }
 
@@ -145,8 +145,10 @@ onMounted(() => {
     </div>
     <van-cell-group inset @click="viewPicture">
       <van-cell :title="`${state.invoiceDetail.category}`" is-link />
-      <van-cell v-if="state.outOrderCount > 0" :title="`1张发票，含${state.outOrderCount}个订单`"
-        :label="state.invoiceDetail.updateTime" is-link @click="gotoOutOrder" />
+      <van-cell
+        v-if="state.outOrderCount > 0" :title="`1张发票，含${state.outOrderCount}个订单`"
+        :label="state.invoiceDetail.updateTime" is-link @click="gotoOutOrder"
+      />
       <van-cell v-if="state.invoiceDetail.consoleReason" title="未通过原因：">
         <van-tag type="warning">
           {{ state.invoiceDetail.consoleReason }}
@@ -166,25 +168,33 @@ onMounted(() => {
         附件
       </div>
       <div class="attch">
-        <img v-for="(item, index) in state.attachList" :key="index" :src="item + '?imageView2/2/w/120/h/120'"
-          @click="viewImagePreview(state.attachList, index)" />
+        <img
+          v-for="(item, index) in state.attachList" :key="index" :src="`${item}?imageView2/2/w/120/h/120`"
+          @click="viewImagePreview(state.attachList, index)"
+        >
       </div>
     </div>
     <van-cell-group v-if="state.invoiceDetail.category.indexOf('电子') !== -1" title="接收方式" inset>
       <van-cell :value="state.invoiceDetail.email" title="电子邮件" />
       <van-cell :value="state.invoiceDetail.mobile" title="手机号码" />
     </van-cell-group>
-    <van-cell-group v-if="state.invoiceDetail.category === '增值税普通发票' || state.invoiceDetail.category === '增值税专用发票'"
-      title="接收方式" inset>
+    <van-cell-group
+      v-if="state.invoiceDetail.category === '增值税普通发票' || state.invoiceDetail.category === '增值税专用发票'"
+      title="接收方式" inset
+    >
       <van-field label="收件人" readonly />
       <van-field label="手机号码" readonly />
     </van-cell-group>
     <van-action-bar v-if="state.invoiceDetail.state === 1">
-      <van-action-bar-button data-clipboard-action="copy" class="copyPdfUrl" :data-clipboard-text="state.copyInfo"
-        color="#01a8b9" text="复制发票信息" @click="copyLink" />
+      <van-action-bar-button
+        data-clipboard-action="copy" class="copyPdfUrl" :data-clipboard-text="state.copyInfo"
+        color="#01a8b9" text="复制发票信息" @click="copyLink"
+      />
       <van-action-bar-button color="#409eff" text="预览发票" @click="viewPicture" />
-      <van-action-bar-button v-if="state.invoiceDetail.category.indexOf('电子') !== -1" type="success" text="发送邮箱"
-        @click="openShowEmail" />
+      <van-action-bar-button
+        v-if="state.invoiceDetail.category.indexOf('电子') !== -1" type="success" text="发送邮箱"
+        @click="openShowEmail"
+      />
     </van-action-bar>
     <van-popup v-model:show="state.showEmail" align="center" class="send-email">
       <div class="title">
@@ -199,17 +209,23 @@ onMounted(() => {
       <p style="font-size: 18px; margin-bottom: 20px">
         发票预览
       </p>
-      <img :src="state.invoiceDetail.electronicInvoiceImg" alt="" class="electronic"
-        @click="viewImagePreview([state.invoiceDetail.electronicInvoiceImg], 0)">
+      <img
+        :src="state.invoiceDetail.electronicInvoiceImg" alt="" class="electronic"
+        @click="viewImagePreview([state.invoiceDetail.electronicInvoiceImg], 0)"
+      >
       <div style="margin-bottom: 10px">
-        <van-button type="primary" data-clipboard-action="copy" class="copyPdfUrl submit"
-          :data-clipboard-text="state.copyInfo" @click="copyLink">
+        <van-button
+          type="primary" data-clipboard-action="copy" class="copyPdfUrl submit"
+          :data-clipboard-text="state.copyInfo" @click="copyLink"
+        >
           复制发票下载地址
         </van-button>
       </div>
       <div style="width: 100%; font-size: 12px">
-        <van-field v-model="state.invoiceDetail.electronicInvoiceUrl" rows="1" autosize type="textarea" class="textarea"
-          readonly />
+        <van-field
+          v-model="state.invoiceDetail.electronicInvoiceUrl" rows="1" autosize type="textarea" class="textarea"
+          readonly
+        />
       </div>
       <p style="margin-top: 10px">
         复制发票下载地址并在浏览器中打开进行下载
