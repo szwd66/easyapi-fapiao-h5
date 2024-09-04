@@ -1,4 +1,4 @@
-import path from 'path'
+import path from 'node:path'
 import { loadEnv } from 'vite'
 import type { ConfigEnv, UserConfig } from 'vite'
 

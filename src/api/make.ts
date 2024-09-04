@@ -7,7 +7,7 @@ const make = {
    *
    * @see https://www.easyapi.com
    */
-  makeInvoice(data): Promise<any> {
+  makeInvoice(data: any): Promise<any> {
     data.accessToken = localStorage.get('accessToken')
     return request.post('/invoice/make', data)
   },
@@ -17,7 +17,7 @@ const make = {
    *
    * @see https://www.easyapi.com
    */
-  mergeMakeInvoice(data): Promise<any> {
+  mergeMakeInvoice(data: any): Promise<any> {
     data.accessToken = localStorage.get('accessToken')
     return request.post('/merge-make', data)
   },
@@ -27,7 +27,7 @@ const make = {
    *
    * @see https://www.easyapi.com
    */
-  categoryMakeInvoice(data): Promise<any> {
+  categoryMakeInvoice(data: any): Promise<any> {
     data.accessToken = localStorage.get('accessToken')
     data.taxNumber = localStorage.get('taxNumber')
     return request.post('/invoice/category/make', data)
@@ -39,7 +39,7 @@ const make = {
    * @see https://www.easyapi.com
    */
 
-  productMakeInvoice(data): Promise<any> {
+  productMakeInvoice(data: any): Promise<any> {
     data.accessToken = localStorage.get('accessToken')
     return request.post('/invoice/product/make', data)
   },

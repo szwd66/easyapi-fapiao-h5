@@ -7,12 +7,12 @@ const product = {
    *
    * @see https://www.easyapi.com
    */
-  getProductList(searchParams): Promise<any> {
+  getProductList(params: any): Promise<any> {
     return request.get('/products', {
       params: {
         accessToken: localStorage.get('accessToken'),
         size: 100,
-        ...searchParams,
+        ...params,
       },
     })
   },

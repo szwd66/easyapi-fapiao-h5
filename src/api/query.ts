@@ -7,7 +7,7 @@ const query = {
    *
    * @see https://www.easyapi.com
    */
-  queryShopOrder(outOrderNo): Promise<any> {
+  queryShopOrder(outOrderNo: string): Promise<any> {
     return request.get(`/shop-order/${outOrderNo}/query`, {
       params: {
         accessToken: localStorage.get('accessToken'),
@@ -18,7 +18,7 @@ const query = {
   /**
    * 批量查询发票状态
    */
-  getState(outOrderNo): Promise<any> {
+  getState(outOrderNo: string): Promise<any> {
     return request.get('/invoice/state', {
       params: {
         outOrderNos: outOrderNo,
@@ -30,7 +30,7 @@ const query = {
   /**
    * 根据税号批量获取税收编码简称
    */
-  getShortNameByTaxCode(data): Promise<any> {
+  getShortNameByTaxCode(data: any): Promise<any> {
     return request.post('/tax-code/short-name', data)
   },
 }

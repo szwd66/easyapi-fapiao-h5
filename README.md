@@ -50,7 +50,6 @@ yarn build
  └──tailwind.config     #Tailwind CSS配置
 ```
 
-
 ## 命名规范
 
 * 使用kebab-case（短横线）命名方式
@@ -83,7 +82,6 @@ yarn build
     watch
 
 ## 常见问题
-
 
 **1. 编译失败**
 

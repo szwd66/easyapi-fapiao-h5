@@ -7,7 +7,7 @@ const company = {
    *
    * @see https://www.easyapi.com
    */
-  getCompanyList(params): Promise<any> {
+  getCompanyList(params: any): Promise<any> {
     return request.get('/companies', {
       params: {
         accessToken: localStorage.get('accessToken'),
@@ -21,7 +21,7 @@ const company = {
    *
    * @see https://www.easyapi.com
    */
-  getCompany(id): Promise<any> {
+  getCompany(id: number): Promise<any> {
     return request.get(`/company/${id}`, {
       params: {
         accessToken: localStorage.get('accessToken'),
@@ -35,7 +35,7 @@ const company = {
    * @see https://www.easyapi.com
    */
 
-  createCompany(data): Promise<any> {
+  createCompany(data: any): Promise<any> {
     data.accessToken = localStorage.get('accessToken')
     return request.post('/company', data)
   },
@@ -45,7 +45,7 @@ const company = {
    *
    * @see https://www.easyapi.com
    */
-  updateCompany(id, data): Promise<any> {
+  updateCompany(id: number, data: any): Promise<any> {
     data.accessToken = localStorage.get('accessToken')
     return request.put(`/company/${id}`, data)
   },
@@ -55,7 +55,7 @@ const company = {
    *
    * @see https://www.easyapi.com
    */
-  updateCompanySetDefault(id): Promise<any> {
+  updateCompanySetDefault(id: number): Promise<any> {
     return request.post(`/company/${id}/set-default`, {
       accessToken: localStorage.get('accessToken'),
     })
@@ -66,7 +66,7 @@ const company = {
    *
    * @see https://www.easyapi.com
    */
-  deleteCompany(id): Promise<any> {
+  deleteCompany(id: number): Promise<any> {
     return request.delete(`/company/${id}`, {
       params: {
         accessToken: localStorage.get('accessToken'),
@@ -79,7 +79,7 @@ const company = {
    *
    * @see https://www.easyapi.com
    */
-  defaultCompany(id): Promise<any> {
+  defaultCompany(id: number): Promise<any> {
     return request.put(`/company/${id}`, {
       accessToken: localStorage.get('accessToken'),
       ifDefault: true,
@@ -104,7 +104,7 @@ const company = {
    *
    * @see https://www.easyapi.com
    */
-  getCompanyCodeList(params): Promise<any> {
+  getCompanyCodeList(params: any): Promise<any> {
     return request.get('/company/codes', {
       params: {
         accessToken: localStorage.get('accessToken'),

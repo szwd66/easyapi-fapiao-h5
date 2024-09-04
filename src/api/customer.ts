@@ -7,7 +7,7 @@ const customer = {
    *
    * @see https://www.easyapi.com
    */
-  getCustomer(params): Promise<any> {
+  getCustomer(params: any): Promise<any> {
     return request.get('/customer', {
       params: {
         accessToken: localStorage.get('accessToken'),

@@ -1,7 +1,7 @@
 const antfu = require('@antfu/eslint-config').default
 
 module.exports = antfu({
-  ingores: [
+  ignores: [
     '.vscode',
     'dist',
     'node_modules',

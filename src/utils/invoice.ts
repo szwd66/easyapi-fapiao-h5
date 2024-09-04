@@ -1,7 +1,7 @@
 /**
  * 获取复制文案
  */
-export function copyText(invoice) {
+export function copyText(invoice: any) {
   return `${invoice.purchaserName}
    收到一张发票，${invoice.category} 
    ${invoice.price}元，开票日期：${invoice.printTime ? invoice.printTime.substring(0, 10) : ''}，

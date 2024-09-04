@@ -6,7 +6,8 @@ function back() {
   if (returnUrl) {
     if (returnUrl.includes('backwxurl')) {
       // wx.miniProgram.navigateBack(-1);
-    } else {
+    }
+    else {
       window.location.href = returnUrl
     }
   }

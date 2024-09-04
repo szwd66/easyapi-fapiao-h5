@@ -24,7 +24,7 @@ function getAddressList() {
   })
 }
 
-function select(item) {
+function select(item: any) {
   if (route.query.from)
     return
   address.defaultAddress(item.addressId).then((res) => {
@@ -33,7 +33,7 @@ function select(item) {
   })
 }
 
-function gotoEditAddress(addressId) {
+function gotoEditAddress(addressId: string) {
   router.push({
     path: '/address/edit',
     query: { id: addressId },

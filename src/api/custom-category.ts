@@ -7,7 +7,7 @@ const customCategory = {
    *
    * @see https://www.easyapi.com
    */
-  getCustomCategoryList(params): Promise<any> {
+  getCustomCategoryList(params: any): Promise<any> {
     return request.get('/custom-categories', {
       params: {
         accessToken: localStorage.get('accessToken'),

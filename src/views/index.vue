@@ -86,11 +86,11 @@ onMounted(() => {
   <div>
     <van-cell-group v-if="state.ifOrderMake === true" title="订单开票" inset>
       <van-cell
-        v-for="type in state.orderTypeList"
-        :key="type.orderTypeId"
-        :title="type.name"
+        v-for="item in state.orderTypeList"
+        :key="item.orderTypeId"
+        :title="item.name"
         is-link
-        :to="{ path: '/out-order', query: { type: type.name } }"
+        :to="{ path: '/out-order', query: { type: item.name } }"
         size="large"
       />
     </van-cell-group>

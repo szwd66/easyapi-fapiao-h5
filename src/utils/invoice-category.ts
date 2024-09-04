@@ -10,7 +10,7 @@ export const invoiceCategoryList = [
   { value: '全电电子专用发票', label: '全电电子专用发票' },
 ]
 
-export function invoiceTag(category: any) {
+export function invoiceTag(category: string) {
   if (category === '增值税电子普通发票')
     return { name: '电普', color: '#00b2c8', bgColor: '#f2fbff' }
 
@@ -23,14 +23,14 @@ export function invoiceTag(category: any) {
   if (category === '增值税专用发票')
     return { name: '专票', color: '#266253', bgColor: '#dbf5eb' }
 
-  if (category === '全电电子普通发票' || category === '数电普通发票' )
+  if (category === '全电电子普通发票' || category === '数电普通发票')
     return { name: '数电普', color: '#00b2c8', bgColor: '#f2fbff' }
 
   if (category === '全电电子专用发票' || category === '数电专用发票')
     return { name: '数电专', color: '#665823', bgColor: '#f8f4e5' }
 }
 
-export function getColorByStatements(statements: any) {
+export function getColorByStatements(statements: string) {
   if (statements === '已开票')
     return '#15ad31'
 
@@ -50,7 +50,7 @@ export function getColorByStatements(statements: any) {
 /**
  * 判断状态
  */
-export function getIconByStatements(statements) {
+export function getIconByStatements(statements: string) {
   if (statements === '已开票')
     return 'checked'
 

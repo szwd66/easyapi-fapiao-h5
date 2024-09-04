@@ -6,7 +6,7 @@ const outOrder = {
    * 获取未开票外部订单列表
    * @see https://www.easyapi.com
    */
-  getOutOrderList(params): Promise<any> {
+  getOutOrderList(params: any): Promise<any> {
     return request.get('/out-orders', {
       params: {
         accessToken: localStorage.get('accessToken'),
@@ -22,7 +22,7 @@ const outOrder = {
    *
    * @see https://www.easyapi.com
    */
-  getOutOrderCount(params): Promise<any> {
+  getOutOrderCount(params: any): Promise<any> {
     return request.get('/out-order/count', {
       params: {
         accessToken: localStorage.get('accessToken'),

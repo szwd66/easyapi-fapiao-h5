@@ -22,7 +22,7 @@ const qiniu = {
   /**
    * 七牛上传
    */
-  qiniuUpload(data) {
+  qiniuUpload(data: any) {
     return request.post('https://upload.qiniup.com/', data)
   },
 }

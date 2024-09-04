@@ -7,7 +7,7 @@ const setting = {
    *
    * @see https://www.easyapi.com
    */
-  findSetting(params): Promise<any> {
+  findSetting(params: any): Promise<any> {
     return request.get('/setting/find', {
       params: {
         accessToken: localStorage.get('accessToken'),

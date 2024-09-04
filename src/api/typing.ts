@@ -4,7 +4,9 @@ export interface ResponseBody<T = any> {
   content?: T
 }
 
-/** 统一返回结构体 */
+/**
+ * 统一返回结构体
+ */
 export interface PageResult<T = any> {
   code: number
   content: T[]

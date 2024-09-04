@@ -7,7 +7,7 @@ const address = {
    *
    * @see https://www.easyapi.com
    */
-  getAddressList(params): Promise<any> {
+  getAddressList(params: any): Promise<any> {
     return request.get('/addresses', {
       params: {
         accessToken: localStorage.get('accessToken'),
@@ -21,7 +21,7 @@ const address = {
    *
    * @see https://www.easyapi.com
    */
-  getAddress(id): Promise<any> {
+  getAddress(id: number): Promise<any> {
     return request.get(`/address/${id}`, {
       params: {
         accessToken: localStorage.get('accessToken'),
@@ -34,7 +34,7 @@ const address = {
    *
    * @see https://www.easyapi.com
    */
-  createAddress(data): Promise<any> {
+  createAddress(data: any): Promise<any> {
     data.accessToken = localStorage.get('accessToken')
     return request.post('/address', data)
   },
@@ -44,7 +44,7 @@ const address = {
    *
    * @see https://www.easyapi.com
    */
-  updateAddress(id, data): Promise<any> {
+  updateAddress(id: number, data: any): Promise<any> {
     data.accessToken = localStorage.get('accessToken')
     return request.put(`/address/${id}`, data)
   },
@@ -54,7 +54,7 @@ const address = {
    *
    * @see https://www.easyapi.com
    */
-  deleteAddress(id): Promise<any> {
+  deleteAddress(id: number): Promise<any> {
     return request.delete(`/address/${id}`, {
       params: {
         accessToken: localStorage.get('accessToken'),
@@ -65,7 +65,7 @@ const address = {
   /**
    * 获取我的默认地址信息
    */
-  getDefaultAddress(username): Promise<any> {
+  getDefaultAddress(username: string): Promise<any> {
     return request.get(`/address/${username}/default`, {
       params: {
         accessToken: localStorage.get('accessToken'),
@@ -78,7 +78,7 @@ const address = {
    *
    * @see https://www.easyapi.com
    */
-  defaultAddress(id): Promise<any> {
+  defaultAddress(id: number): Promise<any> {
     return request.put(`/address/${id}`, {
       accessToken: localStorage.get('accessToken'),
       ifDefault: true,

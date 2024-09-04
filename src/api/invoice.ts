@@ -7,7 +7,7 @@ const invoice = {
    *
    * @see https://www.easyapi.com
    */
-  getInvoiceList(params): Promise<any> {
+  getInvoiceList(params: any): Promise<any> {
     return request.get('/invoices', {
       params: {
         accessToken: localStorage.get('accessToken'),
@@ -19,7 +19,7 @@ const invoice = {
   /**
    * 获取发票详情信息
    */
-  getInvoice(id): Promise<any> {
+  getInvoice(id: number): Promise<any> {
     return request.get(`/invoice/${id}`, {
       params: {
         accessToken: localStorage.get('accessToken'),
@@ -32,7 +32,7 @@ const invoice = {
    *
    * @see https://www.easyapi.com
    */
-  queryInvoice(outOrderNo): Promise<any> {
+  queryInvoice(outOrderNo: string): Promise<any> {
     return request.get(`/invoice/${outOrderNo}/query`, {
       params: {
         accessToken: localStorage.get('accessToken'),
@@ -45,7 +45,7 @@ const invoice = {
    *
    * @param invoiceId 发票ID
    */
-  getOutOrderList(params): Promise<any> {
+  getOutOrderList(params: any): Promise<any> {
     return request.get('/out-orders', {
       params: {
         accessToken: localStorage.get('accessToken'),
@@ -57,7 +57,7 @@ const invoice = {
   /**
    * 发送邮箱
    */
-  sendEmail(params): Promise<any> {
+  sendEmail(params: any): Promise<any> {
     return request.get('/send/email', {
       params: {
         accessToken: localStorage.get('accessToken'),
