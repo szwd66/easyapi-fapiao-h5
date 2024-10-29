@@ -183,12 +183,16 @@ onMounted(() => {
         />
       </van-popup>
       <div class="bottom fixed-bottom-bgColor">
-        <van-button type="primary" class="save" block native-type="submit">
-          保存
-        </van-button>
-        <van-button v-if="route.query.id" type="danger" class="delete" block @click="deleteData">
-          删除
-        </van-button>
+        <div>
+          <van-button type="primary" block native-type="submit">
+            保存
+          </van-button>
+        </div>
+        <div>
+          <van-button v-if="route.query.id" type="danger" block @click="deleteData">
+            删除
+          </van-button>
+        </div>
       </div>
     </van-form>
   </div>
@@ -207,21 +211,14 @@ onMounted(() => {
     bottom: 0;
     width: 100%;
     padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-    .save,
-    .delete {
-      border: none;
-      height: 40px;
-      border-radius: 5px;
-      font-size: 18px;
-      font-weight: 500;
-      letter-spacing: 2px;
-      text-indent: 2px;
+    div {
+      width: 48%;
     }
 
-    .delete {
-      margin-top: 10px;
-    }
   }
 }
 </style>

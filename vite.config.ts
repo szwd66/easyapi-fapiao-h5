@@ -21,6 +21,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
     define: {
       'process.env.VUE_APP_API_BASE_URL': JSON.stringify(env.VITE_APP_API_BASE_URL),
       'process.env.VUE_APP_PUBLIC_PATH': JSON.stringify(env.VITE_APP_PUBLIC_PATH),
+      'process.env.VUE_APP_API_ACCOUNT_URL': JSON.stringify(env.VITE_APP_API_ACCOUNT_URL),
     },
 
     plugins: [

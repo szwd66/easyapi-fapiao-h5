@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { closeToast, showLoadingToast } from 'vant'
+import wx from 'jweixin-1.6.0'
 import company from '@/api/company'
 import { useStore } from '@/stores'
+import config from '@/api/config'
 
 const store = useStore()
 const router = useRouter()
@@ -98,6 +100,46 @@ function lazyLoading() {
   }
 }
 
+/**
+ * 选择微信抬头
+ */
+function selectWeiXinCompany() {
+  config.getWeiXinConfig(window.location.href).then((res) => {
+    if (res) {
+      wx.config({
+        beta: true,
+        debug: true,
+        timestamp: res.timestamp,
+        nonceStr: res.nonceStr,
+        signature: res.signature,
+        appId: res.appId,
+        jsApiList: ['chooseInvoiceTitle'],
+      })
+      wx.ready(() => {
+        wx.invoke(
+          'chooseInvoiceTitle',
+          {
+            scene: '1', // 不是必填  使用场景 1开具发票 2其他
+          },
+          (res) => {
+            // 这里处理调用结果
+            const info = res.choose_invoice_title_info
+            if (info != null && info != undefined) {
+              const infoJson = JSON.parse(info)
+              // 0单位 1个人
+              //	choose_invoice_title_info对象的结构如下：
+              // { "type":"0", "title":"企业名称", "taxNumber":"企业税号", "companyAddress":"地址", "telephone":"手机号", "bankName":"银行", "bankAccount":"银行账号" }
+            }
+          },
+        )
+      })
+      wx.error((res) => {
+        console.info(JSON.stringify(res))
+      })
+    }
+  })
+}
+
 onMounted(() => {
   getCompanyList()
   // 滚动到底部，再加载的处理事件
@@ -136,7 +178,7 @@ onMounted(() => {
               />
               <div class="company-list-item_name">
                 <div class="company-list-item_tag">
-                  <van-tag v-if="item.ifDefault" type="primary" size="medium" class="tag">
+                  <van-tag v-if="item.ifDefault" type="primary" size="medium" class="tag" @click="selectWeiXinCompany">
                     默认
                   </van-tag>
                   <span class="rise-text">{{ item.name }}</span>
@@ -164,9 +206,16 @@ onMounted(() => {
     </div>
   </div>
   <div class="bottom fixed-bottom-bgColor">
-    <van-button type="primary" class="sumbit" block @click="gotoEditCompany('')">
+    <!-- <div> -->
+    <van-button type="primary" block @click="gotoEditCompany('')">
       新增抬头
     </van-button>
+    <!-- </div> -->
+    <!-- <div>
+      <van-button block @click="selectWeiXinCompany">
+        选择微信抬头
+      </van-button>
+    </div> -->
   </div>
 </template>
 
@@ -267,16 +316,13 @@ onMounted(() => {
   bottom: 0;
   width: 100%;
   padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-  .submit {
-    border: none;
-    height: 40px;
-    border-radius: 5px;
-    font-size: 18px;
-    font-weight: 500;
-    letter-spacing: 2px;
-    text-indent: 2px;
-  }
+  // div {
+  //   width: 48%;
+  // }
 }
 
 .no-more-data {
