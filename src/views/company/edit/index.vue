@@ -163,14 +163,14 @@ onMounted(() => {
         </van-cell>
       </van-cell-group>
 
-      <div class="bottom fixed-bottom-bgColor">
+      <div class="bottom fixed-bottom-bgColor" :class="{ 'single-button': !route.query.id }">
         <div>
           <van-button type="primary" block native-type="submit">
             保存
           </van-button>
         </div>
-        <div>
-          <van-button v-if="route.query.id" type="danger" block @click="deleteData">
+        <div v-if="route.query.id">
+          <van-button type="danger" block @click="deleteData">
             删除
           </van-button>
         </div>
@@ -221,6 +221,14 @@ onMounted(() => {
       width: 48%;
     }
 
+  }
+
+  .single-button {
+    display: block;
+
+    div {
+      width: 100%;
+    }
   }
 }
 </style>

@@ -41,7 +41,7 @@ function getAddress() {
  * 获取省市区列表
  */
 function getAreaList() {
-  area.getAreaList({ }).then((res) => {
+  area.getAreaList({}).then((res) => {
     if (res.status === '1') {
       const provinces = res.provinces
       const province_list = {}
@@ -128,41 +128,20 @@ onMounted(() => {
     <van-form @submit="confirm">
       <van-cell-group inset>
         <van-field
-          v-model="state.addressForm.name"
-          label="收件人"
-          placeholder="请输入收货人姓名"
-          border
-          required
+          v-model="state.addressForm.name" label="收件人" placeholder="请输入收货人姓名" border required
           :rules="[{ required: true, message: '请输入收货人姓名' }]"
         />
         <van-field
-          v-model="state.addressForm.mobile"
-          label="联系电话"
-          placeholder="请输入收货人手机号"
-          border
-          required
+          v-model="state.addressForm.mobile" label="联系电话" placeholder="请输入收货人手机号" border required
           :rules="[{ required: true, message: '请输入收货人手机号' }]"
         />
         <van-field
-          v-model="state.addressForm.area"
-          label="所在地区"
-          placeholder="请选择省市区县"
-          border
-          readonly
-          required
-          :rules="[{ required: true, message: '请选择省市区县' }]"
-          @click="state.showPopup = true"
+          v-model="state.addressForm.area" label="所在地区" placeholder="请选择省市区县" border readonly required
+          :rules="[{ required: true, message: '请选择省市区县' }]" @click="state.showPopup = true"
         />
         <van-field
-          v-model="state.addressForm.addr"
-          label="详细地址"
-          placeholder="请输入街道、小区门牌号"
-          border
-          required
-          autosize
-          rows="1"
-          type="textarea"
-          :rules="[{ required: true, message: '请输入街道、小区门牌号' }]"
+          v-model="state.addressForm.addr" label="详细地址" placeholder="请输入街道、小区门牌号" border required autosize
+          rows="1" type="textarea" :rules="[{ required: true, message: '请输入街道、小区门牌号' }]"
         />
       </van-cell-group>
 
@@ -176,20 +155,18 @@ onMounted(() => {
 
       <van-popup v-model:show="state.showPopup" position="bottom" :style="{ height: '50%' }">
         <van-area
-          title="请选择所在地区"
-          :area-list="state.areaList"
-          @confirm="onAddrConfirm"
+          title="请选择所在地区" :area-list="state.areaList" @confirm="onAddrConfirm"
           @cancel="state.showPopup = false"
         />
       </van-popup>
-      <div class="bottom fixed-bottom-bgColor">
+      <div class="bottom fixed-bottom-bgColor" :class="{ 'single-button': !route.query.id }">
         <div>
           <van-button type="primary" block native-type="submit">
             保存
           </van-button>
         </div>
-        <div>
-          <van-button v-if="route.query.id" type="danger" block @click="deleteData">
+        <div v-if="route.query.id">
+          <van-button type="danger" block @click="deleteData">
             删除
           </van-button>
         </div>
@@ -219,6 +196,14 @@ onMounted(() => {
       width: 48%;
     }
 
+  }
+
+  .single-button {
+    display: block;
+
+    div {
+      width: 100%;
+    }
   }
 }
 </style>

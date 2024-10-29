@@ -71,7 +71,7 @@ onMounted(() => {
       </div>
     </div>
     <div class="bottom fixed-bottom-bgColor">
-      <van-button type="primary" class="submit" block @click="gotoEditAddress('')">
+      <van-button type="primary" block @click="gotoEditAddress('')">
         新增地址
       </van-button>
     </div>
@@ -134,16 +134,6 @@ onMounted(() => {
     bottom: 0;
     width: 100%;
     padding: 10px 16px;
-
-    .submit {
-      border: none;
-      height: 40px;
-      border-radius: 5px;
-      font-size: 18px;
-      font-weight: 500;
-      letter-spacing: 2px;
-      text-indent: 2px;
-    }
   }
 }
 </style>
