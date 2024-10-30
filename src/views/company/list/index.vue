@@ -137,8 +137,7 @@ function selectWeiXinCompany() {
             // { "type":"0", "title":"企业名称", "taxNumber":"企业税号", "companyAddress":"地址", "telephone":"手机号", "bankName":"银行", "bankAccount":"银行账号" }
             if (invoiceTitleInfo) {
               const target = JSON.parse(invoiceTitleInfo)
-              console.log(target)
-              if (target.type === 1) {
+              if (target.type === '1') {
                 showToast('暂不支持添加个人发票抬头')
                 return
               }
@@ -200,7 +199,7 @@ onMounted(() => {
               />
               <div class="company-list-item_name">
                 <div class="company-list-item_tag">
-                  <van-tag v-if="item.ifDefault" type="primary" size="medium" class="tag" @click="selectWeiXinCompany">
+                  <van-tag v-if="item.ifDefault" type="primary" size="medium" class="tag">
                     默认
                   </van-tag>
                   <span class="rise-text">{{ item.name }}</span>
@@ -228,16 +227,16 @@ onMounted(() => {
     </div>
   </div>
   <div class="bottom fixed-bottom-bgColor">
-    <!-- <div> -->
-    <van-button type="primary" block @click="gotoEditCompany('')">
-      新增抬头
-    </van-button>
-    <!-- </div> -->
-    <!-- <div>
+    <div>
+      <van-button type="primary" block @click="gotoEditCompany('')">
+        新增抬头
+      </van-button>
+    </div>
+    <div>
       <van-button block @click="selectWeiXinCompany">
         选择微信抬头
       </van-button>
-    </div> -->
+    </div>
   </div>
 </template>
 
