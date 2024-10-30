@@ -341,9 +341,9 @@ onMounted(() => {
   align-items: center;
   justify-content: space-between;
 
-  // div {
-  //   width: 48%;
-  // }
+  div {
+    width: 48%;
+  }
 }
 
 .no-more-data {
