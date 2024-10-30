@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { closeToast, showLoadingToast } from 'vant'
+import { closeToast, showLoadingToast, showToast } from 'vant'
 import wx from 'jweixin-1.6.0'
 import company from '@/api/company'
 import { useStore } from '@/stores'
@@ -104,7 +104,9 @@ function lazyLoading() {
  * 选择微信抬头
  */
 function selectWeiXinCompany() {
-  config.getWeiXinConfig().then((res) => {
+  const currentUrl = window.location.href
+  showToast(currentUrl)
+  config.getWeiXinConfig(currentUrl).then((res) => {
     if (res) {
       wx.config({
         beta: true,
