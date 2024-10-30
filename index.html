@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="theme-color" content="#ffffff" />
-    <meta name="description" content="EasyAPI电子发票" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover, user-scalable=no"/>
-    <link rel="icon" href="/favicon.ico" />
-    <title>开具发票</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="description" content="EasyAPI电子发票" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, viewport-fit=cover, user-scalable=no" />
+  <link rel="icon" href="/favicon.ico" />
+  <title>开具发票</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="module" src="/src/main.ts"></script>
+  <script src="https://static-card.dushu365.com/static/components/vConsole@v3.3.2/vconsole.min.js"></script>
+  <script>
+    window.onload = () => {
+      setTimeout(() => {
+        window.vConsole = new VConsole()
+      }, 10)
+    }
+  </script>
+</body>
+
 </html>

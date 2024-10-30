@@ -132,7 +132,7 @@ function selectWeiXinCompany() {
             scene: '1', // 不是必填  使用场景 1开具发票 2其他
           },
           (res) => {
-            showToast(res)
+            console.log(res, 111)
             // const invoiceTitleInfo = res.choose_invoice_title_info
 
             // // 0单位 1个人
