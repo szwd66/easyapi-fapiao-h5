@@ -132,11 +132,18 @@ function selectWeiXinCompany() {
             scene: '1', // 不是必填  使用场景 1开具发票 2其他
           },
           (res) => {
+            showToast(res)
             const invoiceTitleInfo = res.choose_invoice_title_info
+
             // 0单位 1个人
             // { "type":"0", "title":"企业名称", "taxNumber":"企业税号", "companyAddress":"地址", "telephone":"手机号", "bankName":"银行", "bankAccount":"银行账号" }
             if (invoiceTitleInfo) {
               const target = JSON.stringify(invoiceTitleInfo) as any
+
+              if (target.type === 1) {
+                showToast('不支持添加个人发票抬头')
+                return
+              }
               const data = {
                 name: target.title,
                 taxNumber: target.taxNumber,
