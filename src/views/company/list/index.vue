@@ -101,16 +101,24 @@ function lazyLoading() {
 }
 
 /**
+ * 创建发票抬头
+ */
+function createCompany(data) {
+  company.createCompany(data).then((res) => {
+    if (res.code === 1) {
+      getCompanyList()
+    }
+  })
+}
+
+/**
  * 选择微信抬头
  */
 function selectWeiXinCompany() {
-  const currentUrl = window.location.href
-  showToast(currentUrl)
-  config.getWeiXinConfig(currentUrl).then((res) => {
+  config.getWeiXinConfig(window.location.href).then((res) => {
     if (res) {
       wx.config({
         beta: true,
-        debug: true,
         timestamp: res.timestamp,
         nonceStr: res.nonceStr,
         signature: res.signature,
@@ -124,19 +132,26 @@ function selectWeiXinCompany() {
             scene: '1', // 不是必填  使用场景 1开具发票 2其他
           },
           (res) => {
-            // 这里处理调用结果
-            const info = res.choose_invoice_title_info
-            if (info != null && info != undefined) {
-              const infoJson = JSON.parse(info)
-              // 0单位 1个人
-              //	choose_invoice_title_info对象的结构如下：
-              // { "type":"0", "title":"企业名称", "taxNumber":"企业税号", "companyAddress":"地址", "telephone":"手机号", "bankName":"银行", "bankAccount":"银行账号" }
+            const invoiceTitleInfo = res.choose_invoice_title_info
+            // 0单位 1个人
+            // { "type":"0", "title":"企业名称", "taxNumber":"企业税号", "companyAddress":"地址", "telephone":"手机号", "bankName":"银行", "bankAccount":"银行账号" }
+            if (invoiceTitleInfo) {
+              const target = JSON.stringify(invoiceTitleInfo) as any
+              const data = {
+                name: target.title,
+                taxNumber: target.taxNumber,
+                address: target.companyAddress,
+                phone: target.telephone,
+                bank: target.bankName,
+                bankAccount: target.bankAccount,
+              }
+              createCompany(data)
             }
           },
         )
       })
-      wx.error((res) => {
-        console.info(JSON.stringify(res))
+      wx.error((error) => {
+        showToast(JSON.stringify(error))
       })
     }
   })
