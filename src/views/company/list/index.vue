@@ -104,7 +104,7 @@ function lazyLoading() {
  * 选择微信抬头
  */
 function selectWeiXinCompany() {
-  config.getWeiXinConfig(window.location.href).then((res) => {
+  config.getWeiXinConfig().then((res) => {
     if (res) {
       wx.config({
         beta: true,
