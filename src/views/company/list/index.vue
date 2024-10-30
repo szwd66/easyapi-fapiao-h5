@@ -106,7 +106,7 @@ function lazyLoading() {
 function createCompany(data) {
   company.createCompany(data).then((res) => {
     if (res.code === 1) {
-      getCompanyList()
+      companyNameSearch()
     }
   })
 }
@@ -137,8 +137,9 @@ function selectWeiXinCompany() {
             // { "type":"0", "title":"企业名称", "taxNumber":"企业税号", "companyAddress":"地址", "telephone":"手机号", "bankName":"银行", "bankAccount":"银行账号" }
             if (invoiceTitleInfo) {
               const target = JSON.parse(invoiceTitleInfo)
+              console.log(target)
               if (target.type === 1) {
-                showToast('咱不支持添加个人发票抬头')
+                showToast('暂不支持添加个人发票抬头')
                 return
               }
               const data = {
