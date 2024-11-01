@@ -1,11 +1,11 @@
 <script setup lang='ts'>
-import { closeToast, showImagePreview, showLoadingToast, showToast } from 'vant'
-import Clipboard from 'clipboard'
-import { getIconByStatements } from '@/utils/invoice-category'
 import invoice from '@/api/invoice'
 import outOrder from '@/api/out-order'
-import { copyText } from '@/utils/invoice'
 import { useStore } from '@/stores'
+import { copyText } from '@/utils/invoice'
+import { getIconByStatements } from '@/utils/invoice-category'
+import Clipboard from 'clipboard'
+import { closeToast, showImagePreview, showLoadingToast, showToast } from 'vant'
 
 const store = useStore()
 const route = useRoute()
@@ -160,14 +160,16 @@ onMounted(() => {
       <van-cell :value="state.invoiceDetail.purchaserTaxpayerNumber" title="税号" />
       <van-cell :value="state.invoiceDetail.purchaserAddress + state.invoiceDetail.purchaserPhone" title="地址、电话" />
       <van-cell :value="state.invoiceDetail.purchaserBank + state.invoiceDetail.purchaserBankAccount" title="开户行及账号" />
-      <van-cell :value="state.invoiceDetail.price" title="发票金额" />
+      <van-cell :value="state.invoiceDetail.price" title="发票金额">
+        ￥{{ state.invoiceDetail.price }}
+      </van-cell>
       <van-cell :value="state.invoiceDetail.remark" title="备注" />
     </van-cell-group>
     <div v-if="state.attachList.length > 0" class="card">
       <div class="title">
         附件
       </div>
-      <div class="attch">
+      <div class="attachment">
         <img
           v-for="(item, index) in state.attachList" :key="index" :src="`${item}?imageView2/2/w/120/h/120`"
           @click="viewImagePreview(state.attachList, index)"
@@ -306,7 +308,7 @@ onMounted(() => {
       padding: 15px 0;
     }
 
-    .attch {
+    .attachment {
       padding: 15px 15px 5px 15px;
       background: #fff;
       border-radius: 8px;
