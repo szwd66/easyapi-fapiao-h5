@@ -171,7 +171,7 @@ onMounted(() => {
       </div>
       <div class="attachment">
         <img
-          v-for="(item, index) in state.attachList" :key="index" :src="`${item}?imageView2/2/w/120/h/120`"
+          v-for="(item, index) in state.attachList" :key="index" :src="`${item}!icon.jpg`"
           @click="viewImagePreview(state.attachList, index)"
         >
       </div>
