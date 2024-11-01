@@ -119,6 +119,7 @@ function selectWeiXinCompany() {
     if (res) {
       wx.config({
         beta: true,
+        debug: true,
         timestamp: res.timestamp,
         nonceStr: res.nonceStr,
         signature: res.signature,
