@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import company from '@/api/company'
 import address from '@/api/address'
+import company from '@/api/company'
 import setting from '@/api/setting'
-import { localStorage } from '@/utils/local-storage'
 import { invoiceTag } from '@/utils/invoice-category'
+import { localStorage } from '@/utils/local-storage'
 
 const props = defineProps({
   invoiceForm: {
@@ -212,7 +212,7 @@ onMounted(() => {
             企业
           </van-radio>
           <van-radio name="个人">
-            个人或事业单位
+            个人/事业单位
           </van-radio>
         </van-radio-group>
       </van-cell>
