@@ -15,6 +15,7 @@ function findSetting() {
 }
 
 onMounted(() => {
+  document.title = '开票规则'
   findSetting()
 })
 </script>

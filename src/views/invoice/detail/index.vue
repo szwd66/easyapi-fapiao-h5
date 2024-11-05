@@ -1,11 +1,11 @@
 <script setup lang='ts'>
+import Clipboard from 'clipboard'
+import { closeToast, showImagePreview, showLoadingToast, showToast } from 'vant'
 import invoice from '@/api/invoice'
 import outOrder from '@/api/out-order'
 import { useStore } from '@/stores'
 import { copyText } from '@/utils/invoice'
 import { getIconByStatements } from '@/utils/invoice-category'
-import Clipboard from 'clipboard'
-import { closeToast, showImagePreview, showLoadingToast, showToast } from 'vant'
 
 const store = useStore()
 const route = useRoute()
@@ -131,6 +131,7 @@ function viewImagePreview(imgs: any, index: number) {
 }
 
 onMounted(() => {
+  document.title = '发票详情'
   getInvoiceDetail()
   getOutOrderCount()
 })

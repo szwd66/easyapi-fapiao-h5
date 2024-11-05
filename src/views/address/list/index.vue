@@ -41,6 +41,7 @@ function gotoEditAddress(addressId: string) {
 }
 
 onMounted(() => {
+  document.title = '地址管理'
   getAddressList()
 })
 </script>

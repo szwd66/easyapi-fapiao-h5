@@ -108,8 +108,13 @@ function getCompany() {
 }
 
 onMounted(() => {
-  if (route.query.id)
+  if (route.query.id) {
+    document.title = '编辑抬头'
     getCompany()
+  }
+  else {
+    document.title = '新增抬头'
+  }
 })
 </script>
 

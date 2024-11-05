@@ -135,6 +135,7 @@ function copyLink() {
 }
 
 onMounted(() => {
+  document.title = '开票记录'
   getWindowHeight()
   getInvoiceList()
 })

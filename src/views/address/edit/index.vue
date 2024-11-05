@@ -115,9 +115,13 @@ function onAddrConfirm(e) {
 }
 
 onMounted(() => {
-  if (route.query.id)
+  if (route.query.id) {
+    document.title = '编辑地址'
     getAddress()
-
+  }
+  else {
+    document.title = '新增地址'
+  }
   getAreaList()
 })
 </script>

@@ -162,6 +162,7 @@ function selectWeiXinCompany() {
 }
 
 onMounted(() => {
+  document.title = '抬头管理'
   getCompanyList()
   // 滚动到底部，再加载的处理事件
   window.addEventListener('scroll', lazyLoading)
