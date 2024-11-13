@@ -20,6 +20,7 @@ const state = reactive({
   searchList: [], // 智能提示的抬头列表
   name: '',
   listShow: false,
+  isComposing: false,
 })
 
 /**
@@ -40,14 +41,19 @@ function deleteData() {
 function searchCompanyList() {
   if (state.name.length < 4) {
     state.searchList = []
+    state.listShow = false
     return
   }
 
   company.getCompanyCodeList({ name: state.name }).then((res) => {
-    if (res.code === 1)
+    if (res.code === 1) {
       state.searchList = res.content
-    else
+      openDropDown()
+    }
+    else {
       state.searchList = []
+      inputBlur()
+    }
   }).catch(() => {
     state.searchList = []
   })
@@ -88,8 +94,39 @@ function confirm() {
   })
 }
 
+function handleInput() {
+  if (!state.isComposing) {
+    searchCompanyList()
+  }
+}
+function handleCompositionStart() {
+  state.isComposing = true
+}
+function handleCompositionEnd() {
+  state.isComposing = false
+  searchCompanyList()
+}
+
+/**
+ * 发票抬头失焦后
+ */
 function inputBlur() {
   state.listShow = false
+}
+/**
+ * 发票抬头聚焦后
+ */
+function inputFocus() {
+  if (state.name.length > 3 && state.searchList.length > 0) {
+    openDropDown()
+  }
+}
+function openDropDown() {
+  const helper = document.querySelector('.helper') as any
+  const element = document.querySelector('.searchList') as any
+  const distanceToTop = helper.offsetTop
+  element.style.top = `${distanceToTop}px`
+  state.listShow = true
 }
 
 function getCompany() {
@@ -125,10 +162,11 @@ onMounted(() => {
       <van-cell-group inset>
         <van-field
           v-model="state.name" label="公司名称" placeholder="请输入公司名称" border required autosize rows="1"
-          type="textarea" :rules="[{ required: true, message: '请输入公司名称' }]" @keyup="searchCompanyList"
-          @focus="state.listShow = true" @blur="inputBlur"
+          type="textarea" :rules="[{ required: true, message: '请输入公司名称' }]" @compositionstart="handleCompositionStart"
+          @compositionend="handleCompositionEnd" @input="handleInput" @focus="inputFocus" @blur="inputBlur"
         />
-        <div v-if="state.listShow && state.searchList.length > 0" class="searchList">
+        <div class="helper" />
+        <div v-show="state.listShow && state.searchList.length > 0" class="searchList">
           <ul>
             <li
               v-for="(item, index) in state.searchList" :key="index" class="searchList-item"
@@ -190,22 +228,24 @@ onMounted(() => {
   position: relative;
 
   .searchList {
-    position: absolute;
+    position: fixed;
     background-color: #fff;
-    right: 16px;
-    left: 35%;
-    border-radius: 6px;
-    padding: 10px;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    padding: 0 16px;
     z-index: 999;
-    line-height: 30px;
-    box-shadow: 0 0 12px rgba(0, 0, 0, .12);
-    max-height: 200px;
     overflow-y: scroll;
 
     .searchList-item {
+      font-size: 14px;
+      color: #1989FA;
+      padding: 10px 0;
+      line-height: 24px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      border-bottom: 1px solid rgba(235, 237, 240, .5);
     }
   }
 
