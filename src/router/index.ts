@@ -25,6 +25,7 @@ import outOrder from '@/views/out-order/index.vue'
 import mallOrderJd from '@/views/mall-order/jd.vue'
 import mallOrderKuaishou from '@/views/mall-order/kuaishou.vue'
 import mallOrderYouZan from '@/views/mall-order/youzan.vue'
+import tripPeoplesList from '@/views/trip-peoples/list/index.vue'
 
 NProgress.configure({ showSpinner: true })
 
@@ -134,6 +135,11 @@ const routes = [
     path: '/mall-order/youzan',
     name: 'OrderMakeYouZan',
     component: mallOrderYouZan,
+  },
+  {
+    path: '/trip-peoples/list/:id',
+    name: 'tripPeoplesList',
+    component: tripPeoplesList,
   },
 ]
 

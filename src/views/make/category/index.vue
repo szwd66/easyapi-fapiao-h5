@@ -1,18 +1,20 @@
 <script setup lang="ts">
+import customCategory from '@/api/custom-category'
+import make from '@/api/make'
+import qiniu from '@/api/qiniu'
+import TripPeople from '@/components/make/TripPeople.vue'
+import { useStore } from '@/stores'
+import { localStorage } from '@/utils/local-storage'
+import { validPrice } from '@/utils/validate'
 import { closeToast, showConfirmDialog, showLoadingToast, showToast } from 'vant'
 import makeMixins from '../mixins/make'
-import qiniu from '@/api/qiniu'
-import make from '@/api/make'
-import customCategory from '@/api/custom-category'
-import { validPrice } from '@/utils/validate'
-import { localStorage } from '@/utils/local-storage'
-import { useStore } from '@/stores'
 
 const { common, getInvoiceRemark, ifNeedMobileEmail, checkEmailMobile, ifCategoryMakeFileRequired } = makeMixins()
 const store = useStore()
 const router = useRouter()
 const route = useRoute()
 
+const tripPeopleInfo = ref(null)
 const state = reactive({
   showCustomCategory: false,
   keyboardShow: false,
@@ -49,8 +51,11 @@ const state = reactive({
     extends: [],
     customCategoryId: null,
     companyId: null,
+    specificBusiness: [],
+    specificBusinessCode: '',
   },
   init: false,
+  tripData: null,
 })
 
 function getToken() {
@@ -110,6 +115,7 @@ function getCustomCategoryList() {
     if (res.code === 1) {
       state.customCategoryList = res.content
       state.customCategoryList.forEach((item) => {
+        state.invoiceForm.specificBusinessCode = item.specificBusinessCode
         item.text = item.name
         item.value = item.customCategoryId
         if (item.ifDefault) {
@@ -141,7 +147,14 @@ function makeInvoice() {
 
   if (!checkEmailMobile(state.invoiceForm))
     return
-
+  if (state.invoiceForm.specificBusinessCode === '09') {
+    state.tripData.forEach((item) => {
+      if (item.travelDateFormatter) {
+        item.tripPeopleForm.travelDate = `${item.travelDateFormatter[0]}-${item.travelDateFormatter[1]}-${item.travelDateFormatter[2]}`
+      }
+      state.invoiceForm.specificBusiness.push(item.tripPeopleForm)
+    })
+  }
   showConfirmDialog({
     title: '提示',
     message: '确认抬头和金额正确并申请开票吗？',
@@ -188,6 +201,9 @@ function onConfirm(value) {
   state.showCustomCategory = false
 }
 
+function getTripPeople(data) {
+  state.tripData = data
+}
 onMounted(async () => {
   if (route.query.accessToken)
     localStorage.set('accessToken', route.query.accessToken)
@@ -271,6 +287,7 @@ onMounted(async () => {
         />
       </van-cell>
     </van-cell-group>
+    <TripPeople v-if="state.invoiceForm.specificBusinessCode === '09' " ref="tripPeopleInfo" @get-trip-people="getTripPeople" />
     <Receive
       v-if="state.init"
       :invoice-form="state.invoiceForm"
